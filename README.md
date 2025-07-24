@@ -9,7 +9,7 @@ This is a fullstack web application project using:
 
 ## 📁 Project Structure
 technical-blog/  
-├── backend/           # Spring Boot (Java) / IntelliJ  
+├── backend/           # Spring Boot (Java) / IntelliJ Community  
 │   ├── src/  
 │   ├── build.gradle  
 │   ├── settings.gradle  
