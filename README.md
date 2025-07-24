@@ -9,12 +9,12 @@ This is a fullstack web application project using:
 
 ## 📁 Project Structure
 technical-blog/  
-├── backend/           # Spring Boot (Java)  
+├── backend/           # Spring Boot (Java)  IntelliJ
 │   ├── src/  
 │   ├── build.gradle  
 │   ├── settings.gradle  
 │   └── ...  
-├── frontend/          # React + Vite (TypeScript)  
+├── frontend/          # React + Vite (TypeScript)  VsCode
 │   ├── src/  
 │   ├── public/  
 │   ├── package.json  
