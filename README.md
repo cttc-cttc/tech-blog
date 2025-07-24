@@ -8,17 +8,17 @@ This is a fullstack web application project using:
 ---
 
 ## 📁 Project Structure
-technical-blog/
-├── backend/           # Spring Boot (Java)
-│   ├── src/
-│   ├── build.gradle
-│   ├── settings.gradle
-│   └── ...
-├── frontend/          # React + Vite (TypeScript)
-│   ├── src/
-│   ├── public/
-│   ├── package.json
-│   ├── vite.config.ts
-│   └── ...
-├── .gitignore
-└── README.md
+technical-blog/  
+├── backend/           # Spring Boot (Java)  
+│   ├── src/  
+│   ├── build.gradle  
+│   ├── settings.gradle  
+│   └── ...  
+├── frontend/          # React + Vite (TypeScript)  
+│   ├── src/  
+│   ├── public/  
+│   ├── package.json  
+│   ├── vite.config.ts  
+│   └── ...  
+├── .gitignore  
+└── README.md  
