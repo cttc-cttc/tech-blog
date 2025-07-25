@@ -22,3 +22,15 @@ technical-blog/
 │   └── ...  
 ├── .gitignore  
 └── README.md  
+
+---
+
+## install command
+- yarn install
+- yarn install axios
+
+
+---
+
+## execute command
+- yarn dev
