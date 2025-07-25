@@ -27,7 +27,7 @@ technical-blog/
 
 ## install command
 - yarn install
-- yarn install axios
+- yarn add axios
 - yarn add -D eslint prettier eslint-plugin-react eslint-plugin-react-hooks eslint-config-prettier eslint-plugin-prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser
 - yarn add tailwindcss @tailwindcss/vite
 - yarn add -D @types/node
