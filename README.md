@@ -26,17 +26,15 @@ technical-blog/
 ---
 
 ## install command
-- yarn install
 - yarn add axios
 - yarn add -D eslint prettier eslint-plugin-react eslint-plugin-react-hooks eslint-config-prettier eslint-plugin-prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser
+
 - yarn add tailwindcss @tailwindcss/vite
 - yarn add -D @types/node
 - npx shadcn@latest init
-- yarn add framer-motion
-- yarn add -D @tailwindcss/postcss
+
 - yarn add react-router-dom
-- yarn add -D prettier
-- yarn add -D eslint-config-prettier
+
 
 ## install shadcn components command
 - npx shadcn@latest add button
@@ -45,4 +43,5 @@ technical-blog/
 ---
 
 ## execute command
+- yarn install
 - yarn dev
