@@ -6,6 +6,7 @@
 
 import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
+import Docs from './pages/Docs';
 
 function App() {
   // const [message, setMessage] = useState([]);
@@ -19,6 +20,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/docs" element={<Docs />} />
     </Routes>
   );
 }
