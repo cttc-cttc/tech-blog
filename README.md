@@ -39,6 +39,7 @@ npm i react-router-dom
 ```bash
 npx shadcn@latest add button
 npx shadcn@latest add navigation-menu
+npx shadcn@latest add dropdown-menu
 ```
 
 ## 개발 실행 환경
