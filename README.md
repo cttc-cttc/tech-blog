@@ -25,14 +25,14 @@ technical-blog/
 
 ## 설치한 패키지들
 ```bash
-yarn add axios
-yarn add -D eslint prettier eslint-plugin-react eslint-plugin-react-hooks eslint-config-prettier eslint-plugin-prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser
+npm i axios
+npm i -D eslint prettier eslint-plugin-react eslint-plugin-react-hooks eslint-config-prettier eslint-plugin-prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser
 
-yarn add tailwindcss @tailwindcss/vite
-yarn add -D @types/node
+npm i tailwindcss @tailwindcss/vite
+npm i -D @types/node
 npx shadcn@latest init
 
-yarn add react-router-dom
+npm i react-router-dom
 ```
 
 ## 설치한 shadcn 컴포넌트
@@ -43,6 +43,6 @@ npx shadcn@latest add navigation-menu
 
 ## 개발 실행 환경
 ```bash
-yarn install
-yarn dev
+npm install
+npm run dev
 ```
