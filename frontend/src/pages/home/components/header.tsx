@@ -1,6 +1,6 @@
 // import { ModeToggle } from "@/components/ui/mode-toggle";
-import { NavMenu } from "./shadcn-custom/nav-menu";
-import { DarkModeToggle } from "./shadcn-custom/dark-mode-toggle";
+import { DarkModeToggle } from "@/pages/components/shadcn-custom/dark-mode-toggle";
+import { NavMenu } from "@/pages/components/shadcn-custom/nav-menu";
 
 export default function Header() {
   return (
