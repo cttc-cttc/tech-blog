@@ -25,14 +25,16 @@ technical-blog/
 
 ## 설치한 패키지들
 ```bash
-npm i axios
-npm i -D eslint prettier eslint-plugin-react eslint-plugin-react-hooks eslint-config-prettier eslint-plugin-prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser
+npm install axios
+npm install -D eslint prettier eslint-plugin-react eslint-plugin-react-hooks eslint-config-prettier eslint-plugin-prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser
 
-npm i tailwindcss @tailwindcss/vite
-npm i -D @types/node
+npm install tailwindcss @tailwindcss/vite
+npm install -D @types/node
 npx shadcn@latest init
 
-npm i react-router-dom
+npm install react-router-dom
+
+npm install @toast-ui/react-editor @toast-ui/editor --legacy-peer-deps
 ```
 
 ## 설치한 shadcn 컴포넌트
