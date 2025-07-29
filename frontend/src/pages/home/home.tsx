@@ -1,4 +1,3 @@
-import { ThemeProvider } from "@/components/ui/theme-provider";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import { Outlet } from "react-router-dom";
@@ -15,17 +14,15 @@ export default function Home() {
   // }, []);
 
   return (
-    <ThemeProvider>
+    <div className="flex flex-col items-center min-h-screen">
       {/* <ul>
-          {message.map((text, index) => (
-            <li key={`${index}-${text}`}>{text}</li>
-          ))}
-        </ul> */}
-      <div className="flex flex-col items-center min-h-screen">
-        <Header />
-        <Outlet />
-        <Footer />
-      </div>
-    </ThemeProvider>
+            {message.map((text, index) => (
+              <li key={`${index}-${text}`}>{text}</li>
+            ))}
+          </ul> */}
+      <Header />
+      <Outlet />
+      <Footer />
+    </div>
   );
 }

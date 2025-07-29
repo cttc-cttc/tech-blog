@@ -1,8 +1,8 @@
 "use client";
 
-import * as React from "react";
+// import * as React from "react";
 import { Link } from "react-router-dom";
-import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react";
+// import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react";
 
 import {
   NavigationMenu,
@@ -14,49 +14,49 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
-const components: { title: string; href: string; description: string }[] = [
-  {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Hover Card",
-    href: "/docs/primitives/hover-card",
-    description: "For sighted users to preview content available behind a link.",
-  },
-  {
-    title: "Progress",
-    href: "/docs/primitives/progress",
-    description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-  },
-  {
-    title: "Scroll-area",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
-  },
-  {
-    title: "Tabs",
-    href: "/docs/primitives/tabs",
-    description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-  },
-  {
-    title: "Tooltip",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-];
+// const components: { title: string; href: string; description: string }[] = [
+//   {
+//     title: "Alert Dialog",
+//     href: "/docs/primitives/alert-dialog",
+//     description:
+//       "A modal dialog that interrupts the user with important content and expects a response.",
+//   },
+//   {
+//     title: "Hover Card",
+//     href: "/docs/primitives/hover-card",
+//     description: "For sighted users to preview content available behind a link.",
+//   },
+//   {
+//     title: "Progress",
+//     href: "/docs/primitives/progress",
+//     description:
+//       "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
+//   },
+//   {
+//     title: "Scroll-area",
+//     href: "/docs/primitives/scroll-area",
+//     description: "Visually or semantically separates content.",
+//   },
+//   {
+//     title: "Tabs",
+//     href: "/docs/primitives/tabs",
+//     description:
+//       "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+//   },
+//   {
+//     title: "Tooltip",
+//     href: "/docs/primitives/tooltip",
+//     description:
+//       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+//   },
+// ];
 
 export function NavMenu() {
   return (
     <NavigationMenu viewport={false}>
       <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>Home</NavigationMenuTrigger>
+        {/* <NavigationMenuItem>
+          <NavigationMenuTrigger>소개</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               <li className="row-span-3">
@@ -83,9 +83,15 @@ export function NavMenu() {
               </ListItem>
             </ul>
           </NavigationMenuContent>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <Link to="/intro">소개</Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+
+        {/* <NavigationMenuItem>
+          <NavigationMenuTrigger>일본어</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
               {components.map(component => (
@@ -95,14 +101,65 @@ export function NavMenu() {
               ))}
             </ul>
           </NavigationMenuContent>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
         <NavigationMenuItem>
-          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-            <Link to="/docs">Docs</Link>
-          </NavigationMenuLink>
+          <NavigationMenuTrigger>일본어</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[200px] gap-4">
+              <li>
+                <NavigationMenuLink asChild>
+                  <Link to="/japanese/jplt-n2-words">JLPT N2 단어</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link to="/japanese/jplt-n2-grammar">JLPT N2 문법</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link to="/japanese/res-n-hum-lang">존경어와 겸양어</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link to="/japanese/jplt-n1-words">JLPT N1 단어</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link to="/japanese/jplt-n1-grammar">JLPT N1 문법</Link>
+                </NavigationMenuLink>
+              </li>
+            </ul>
+          </NavigationMenuContent>
         </NavigationMenuItem>
+
         <NavigationMenuItem>
-          <NavigationMenuTrigger>List</NavigationMenuTrigger>
+          <NavigationMenuTrigger>IT</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[200px] gap-4">
+              <li>
+                <NavigationMenuLink asChild>
+                  <Link to="/it/html">HTML</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link to="/it/css">CSS</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link to="/it/javascript">JavaScript</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link to="/it/react">React</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link to="/it/database">DataBase</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link to="/it/java">Java</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link to="/it/spring-boot">Spring Boot</Link>
+                </NavigationMenuLink>
+              </li>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+
+        {/* <NavigationMenuItem>
+          <NavigationMenuTrigger>IT</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[300px] gap-4">
               <li>
@@ -129,26 +186,21 @@ export function NavMenu() {
               </li>
             </ul>
           </NavigationMenuContent>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
+
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Simple</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[200px] gap-4">
-              <li>
-                <NavigationMenuLink asChild>
-                  <Link to="#">Components</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link to="#">Documentation</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link to="#">Blocks</Link>
-                </NavigationMenuLink>
-              </li>
-            </ul>
-          </NavigationMenuContent>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <Link to="/it-words">IT 용어</Link>
+          </NavigationMenuLink>
         </NavigationMenuItem>
+
         <NavigationMenuItem>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <Link to="/todo-list">Todo List</Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+
+        {/* <NavigationMenuItem>
           <NavigationMenuTrigger>With Icon</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[200px] gap-4">
@@ -174,26 +226,26 @@ export function NavMenu() {
               </li>
             </ul>
           </NavigationMenuContent>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
       </NavigationMenuList>
     </NavigationMenu>
   );
 }
 
-function ListItem({
-  title,
-  children,
-  href,
-  ...props
-}: React.ComponentPropsWithoutRef<"li"> & { href: string }) {
-  return (
-    <li {...props}>
-      <NavigationMenuLink asChild>
-        <Link to={href}>
-          <div className="text-sm leading-none font-medium">{title}</div>
-          <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">{children}</p>
-        </Link>
-      </NavigationMenuLink>
-    </li>
-  );
-}
+// function ListItem({
+//   title,
+//   children,
+//   href,
+//   ...props
+// }: React.ComponentPropsWithoutRef<"li"> & { href: string }) {
+//   return (
+//     <li {...props}>
+//       <NavigationMenuLink asChild>
+//         <Link to={href}>
+//           <div className="text-sm leading-none font-medium">{title}</div>
+//           <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">{children}</p>
+//         </Link>
+//       </NavigationMenuLink>
+//     </li>
+//   );
+// }
