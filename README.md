@@ -41,6 +41,7 @@ npx shadcn@latest add button
 npx shadcn@latest add navigation-menu
 npx shadcn@latest add dropdown-menu
 npx shadcn@latest add card
+npx shadcn@latest add aspect-ratio
 ```
 
 ## 개발 실행 환경
