@@ -1,0 +1,48 @@
+/* 다크모드 적용 대상 */
+.dark .toastui-editor-defaultUI {
+  background-color: #1e1e1e;
+  color: #f5f5f5;
+}
+
+.dark .toastui-editor-defaultUI-toolbar {
+  background-color: #2c2c2c;
+  border-color: #3a3a3a;
+}
+
+.dark .toastui-editor-contents {
+  padding: 18px 25px;
+  background-color: #1e1e1e;
+  * {
+    color: #f5f5f5;
+  }
+}
+
+.dark .toastui-editor-toolbar-icons {
+  filter: brightness(1.8);
+}
+
+.dark .toastui-editor-popup-add-heading ul {
+  background-color: #1e1e1e;
+
+  li:hover {
+    background-color: #0a3a5a;
+  }
+}
+
+/* Editor의 code block */
+.dark .toastui-editor-ww-code-block {
+  pre {
+    background-color: #3a3a3a;
+  }
+}
+
+.dark .toastui-editor-ww-code-block::after {
+  filter: brightness(3.1);
+  background-color: #1c1c1c;
+  color: #555;
+}
+
+/* Viewer의 code block */
+.dark .toastui-editor-contents pre {
+  background-color: #3a3a3a;
+}

@@ -2,7 +2,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 export function HomeAspectRatio() {
   return (
-    <div className="w-full max-w-7xl -z-50">
+    <div className="w-full max-w-7xl">
       <AspectRatio ratio={16 / 5} className="bg-muted rounded-lg">
         <img
           src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"

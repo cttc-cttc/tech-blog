@@ -3,9 +3,7 @@ import EditorCommon from "@/pages/components/toast-ui-editor-custom/editor-commo
 export default function Intro() {
   return (
     <>
-      <div>
-        <EditorCommon />
-      </div>
+      <EditorCommon />
     </>
   );
 }
