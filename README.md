@@ -49,6 +49,6 @@ npx shadcn@latest add aspect-ratio
 
 ## 개발 실행 환경
 ```bash
-npm install
+npm install --legacy-peer-deps
 npm run dev
 ```
