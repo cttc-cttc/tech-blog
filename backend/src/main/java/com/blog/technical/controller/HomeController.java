@@ -25,16 +25,6 @@ public class HomeController {
         return Arrays.asList("시작 페이지", "hi react");
     }
 
-    @PostMapping("/intro-insert")
-    public IntroEntity saveIntro(IntroEntity entity) {
-        return introService.saveIntro(entity);
-    }
-
-    @GetMapping("/intro-/{id}")
-    public IntroEntity findById(@PathVariable int id) {
-        return introService.findById(id);
-    }
-
     @GetMapping("/intro")
     public String findAll() {
         List<IntroEntity> result = introService.findAll();
@@ -44,4 +34,20 @@ public class HomeController {
         }
         return "";
     }
+
+    @PostMapping("/intro-insert")
+    public IntroEntity saveIntro(IntroEntity entity) {
+        return introService.saveIntro(entity);
+    }
+
+    @PostMapping("/intro-findLastOne")
+    public IntroEntity findLastOne() {
+        return introService.findLastOne();
+    }
+
+    @PostMapping("/intro-update")
+    public IntroEntity updateIntro(IntroEntity entity) {
+        return introService.updateIntro(entity);
+    }
+
 }

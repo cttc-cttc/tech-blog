@@ -28,23 +28,36 @@ export default function Intro() {
   }, []);
 
   return (
-    <>
+    <div className="container max-w-4xl mt-6">
       <div
-        className="edit_wrap dark:dark container max-w-4xl px-[25px] py-[18px] dark:px-0 dark:py-0
+        className="edit_wrap dark:dark px-[25px] py-[18px] dark:px-0 dark:py-0
       "
       >
         {/* contents 값이 존재하면 뷰어로 내용 표시, 없으면 작성된 내용이 없다는 문자열을 표시 */}
         {contents ? (
-          <Viewer initialValue={contents} />
+          <>
+            <Viewer initialValue={contents} />
+            <div className="py-6 flex w-full justify-end">
+              <Link to="/intro/update">
+                <Button className="hover:cursor-pointer" variant="outline">
+                  수정
+                </Button>
+              </Link>
+            </div>
+          </>
         ) : (
-          <p className="text-center p-6">작성된 내용이 없습니다</p>
+          <>
+            <p className="text-center p-6">작성된 내용이 없습니다</p>
+            <div className="py-6 flex w-full justify-end">
+              <Link to="/intro/write">
+                <Button className="hover:cursor-pointer" variant="outline">
+                  글쓰기
+                </Button>
+              </Link>
+            </div>
+          </>
         )}
       </div>
-      <Link to="/intro/write">
-        <Button className="hover:cursor-pointer" variant="outline">
-          글쓰기
-        </Button>
-      </Link>
-    </>
+    </div>
   );
 }

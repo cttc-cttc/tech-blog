@@ -38,8 +38,8 @@
 
 .dark .toastui-editor-ww-code-block::after {
   filter: brightness(3.1);
-  background-color: #1c1c1c;
-  color: #555;
+  background-color: #1c1c1c !important;
+  color: #555 !important;
 }
 
 /* Viewer의 code block */

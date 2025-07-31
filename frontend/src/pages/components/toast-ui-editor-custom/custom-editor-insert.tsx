@@ -1,18 +1,18 @@
 import React, { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Editor } from "@toast-ui/react-editor";
+import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 import type { Editor as EditorType } from "@toast-ui/react-editor";
+import { Button } from "@/components/ui/button";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
-import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
-import { Button } from "@/components/ui/button";
 import "tui-color-picker/dist/tui-color-picker.css";
 import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
 import "@toast-ui/editor/dist/i18n/ko-kr";
 import "./toast-editor-dark.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
-const EditorWithViewer: React.FC = () => {
+const CustomEditorInsert: React.FC = () => {
   const editorRef = useRef<EditorType>(null);
   const formData = new FormData();
   const navigate = useNavigate();
@@ -30,12 +30,15 @@ const EditorWithViewer: React.FC = () => {
     // });
     try {
       await axios.post("/api/intro-insert", formData);
-      // const response = await axios.post("/api/intro-insert", formData);
       // console.log("posting successful:", response.data);
       navigate("/intro");
     } catch (error) {
       console.error("posting failed:", error);
     }
+  };
+
+  const prevPage = () => {
+    navigate("/intro");
   };
 
   return (
@@ -52,11 +55,16 @@ const EditorWithViewer: React.FC = () => {
         plugins={[colorSyntax]}
       />
 
-      <Button className="hover:cursor-pointer" variant="outline" onClick={handleSave}>
-        저장
-      </Button>
+      <div className="py-6 flex w-full justify-end">
+        <Button className="hover:cursor-pointer mr-2" variant="outline" onClick={prevPage}>
+          취소
+        </Button>
+        <Button className="hover:cursor-pointer" variant="outline" onClick={handleSave}>
+          저장
+        </Button>
+      </div>
     </div>
   );
 };
 
-export default EditorWithViewer;
+export default CustomEditorInsert;
