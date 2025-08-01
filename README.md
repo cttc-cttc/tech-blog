@@ -45,6 +45,8 @@ npx shadcn@latest add navigation-menu
 npx shadcn@latest add dropdown-menu
 npx shadcn@latest add card
 npx shadcn@latest add aspect-ratio
+npm install sonner next-themes --force
+npm install sonner@latest --legacy-peer-deps
 ```
 
 ## 개발 실행 환경
