@@ -7,11 +7,13 @@ import { ThemeProvider } from "./components/ui/theme-provider";
 import Intro from "./pages/home/components/intro";
 import CustomEditorInsert from "./pages/components/toast-ui-editor-custom/custom-editor-insert";
 import CustomEditorUpdate from "./pages/components/toast-ui-editor-custom/custom-editor-update";
+import { Toaster } from "./components/ui/sonner";
 
 function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
+        <Toaster position="top-center" />
         <Routes>
           <Route path="/" element={<Home />}>
             <Route index element={<HomeMain />} />

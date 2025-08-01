@@ -1,16 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { Editor } from "@toast-ui/react-editor";
-import { Editor as EditorType } from "@toast-ui/react-editor";
+import type { Editor as EditorType } from "@toast-ui/react-editor";
+import "@toast-ui/editor/toastui-editor.css";
+
 import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
-import { Button } from "@/components/ui/button";
-import "@toast-ui/editor/dist/toastui-editor.css";
-import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import "tui-color-picker/dist/tui-color-picker.css";
 import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
+// import "@toast-ui/editor/dist/toastui-editor.css";
+// import "@toast-ui/editor/dist/toastui-editor-viewer.css";
+
 import "@toast-ui/editor/dist/i18n/ko-kr";
 import "./toast-editor-dark.css";
+
+import { Button } from "@/components/ui/button";
 import axios from "axios";
+import { toast } from "sonner";
 
 const CustomEditorUpdate: React.FC = () => {
   const editorRef = useRef<EditorType>(null);
@@ -20,12 +26,13 @@ const CustomEditorUpdate: React.FC = () => {
   const [postId, setPostId] = useState("");
   const [handled, setHandled] = useState(false);
 
+  // 페이지 첫 로드 시 처리
   const pageLoad = async () => {
     try {
       const response = await axios.post("/api/intro-findLastOne");
       setPostId(response.data.post_id);
       setContents(response.data.contents);
-      console.log("data load successful:", response.data);
+      // console.log("data load successful:", response.data);
     } catch (error) {
       console.error("data load failed:", error);
     }
@@ -43,31 +50,75 @@ const CustomEditorUpdate: React.FC = () => {
       if (editorRef.current) {
         const instance = editorRef.current.getInstance();
         instance.setMarkdown(contents);
+
+        // 이미지 업로드 hook 설정
+        editorRef.current
+          .getInstance()
+          .addHook(
+            "addImageBlobHook",
+            async (blob: File, callback: (url: string, altText: string) => void) => {
+              try {
+                const formData = new FormData();
+                formData.append("image", blob);
+
+                const response = await axios.post("/api/uploadImg", formData, {
+                  headers: { "Content-Type": "multipart/form-data" },
+                });
+
+                // console.log(response.data.url);
+                const imageUrl = response.data.url; // 서버에서 URL 반환
+                callback(imageUrl, blob.name); // 이 URL이 에디터에 삽입됨
+              } catch (err) {
+                console.error("이미지 업로드 실패:", err);
+              }
+            }
+          );
       }
     }
   }, [contents, handled]);
 
+  // 저장 버튼
   const handleSave = async () => {
     const markdown = editorRef.current?.getInstance().getMarkdown();
+    if (!markdown) {
+      toast("내용을 입력해주세요.", {
+        description: "Sunday, December 03, 2023 at 9:00 AM",
+        action: {
+          label: "Undo",
+          onClick: () => console.log(""),
+        },
+      });
+      return;
+    }
+
+    // 정규표현식으로 HTML 내 이미지 추출
+    // 이후 서버에 함께 전송해서 어떤 이미지가 실제로 쓰였는지 DB에 반영
+    const html = editorRef.current?.getInstance().getHTML();
+    // console.log(html);
+    const imageUrls =
+      html.match(/<img[^>]+src="([^">]+)"/g)?.map((tag: string) => {
+        const match = tag.match(/src="([^">]+)"/);
+        return match?.[1];
+      }) || [];
 
     formData.append("post_id_str", postId);
     formData.append("contents", markdown);
     formData.append("del_flag", "0");
     formData.append("title", "test");
     formData.append("writer", "admin");
+    formData.append("images", imageUrls);
 
-    // axios.post("/api/intro-insert", formData, {
-    //   headers: { "Content-Type": "multipart/form-data" },
-    // });
     try {
       await axios.post("/api/intro-update", formData);
       // console.log("posting successful:", response.data);
+
       navigate("/intro");
     } catch (error) {
       console.error("posting failed:", error);
     }
   };
 
+  // 이전 페이지 버튼
   const prevPage = () => {
     navigate("/intro");
   };

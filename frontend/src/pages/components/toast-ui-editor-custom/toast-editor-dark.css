@@ -1,4 +1,9 @@
 /* 다크모드 적용 대상 */
+.dark .toastui-editor-contents code {
+  color: #c1798b;
+  background-color: #4a4a4a;
+}
+
 .dark .toastui-editor-defaultUI {
   background-color: #1e1e1e;
   color: #f5f5f5;
@@ -45,4 +50,88 @@
 /* Viewer의 code block */
 .dark .toastui-editor-contents pre {
   background-color: #3a3a3a;
+}
+
+/* color picker */
+.dark .toastui-editor-popup-body {
+  background-color: #3a3a3a;
+}
+.dark .toastui-editor-popup-body input[type="text"].tui-colorpicker-palette-hex {
+  color: #f5f5f5;
+}
+
+/* color picker 색상 위치 조정 */
+.toastui-editor-popup-color .tui-colorpicker-container .tui-colorpicker-palette-preview {
+  margin-top: 4px;
+}
+
+/* color picker 색상코드 표시부 길이 조정 */
+.toastui-editor-popup-body input[type="text"].tui-colorpicker-palette-hex {
+  width: 90px;
+}
+
+.toastui-editor-popup-color button {
+  border: 1px solid #e1e3e9 !important;
+}
+
+.dark .toastui-editor-popup-add-table .toastui-editor-table-description {
+  color: #e1e3e9;
+}
+
+.dark .toastui-editor-popup-add-image .toastui-editor-tabs .tab-item {
+  color: #e1e3e9;
+}
+
+.dark .toastui-editor-popup-body label {
+  color: #e1e3e9;
+}
+
+.dark .toastui-editor-popup {
+  background-color: #3a3a3a;
+}
+
+.dark .toastui-editor-contents pre code {
+  background-color: #3a3a3a;
+  color: #f5f5f5;
+}
+
+.toastui-editor-contents hr {
+  color: #c5c5c5;
+}
+
+.dark .toastui-editor-popup-add-image .toastui-editor-file-name.has-file {
+  color: #f5f5f5;
+}
+
+.dark .toastui-editor-popup-body input[type="text"] {
+  color: #f5f5f5;
+}
+
+/* 첨부한 이미지의 너비, 가운데 정렬 관련 */
+.toastui-editor-contents img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  display: block;
+  margin: 1rem auto !important; /* 가운데 정렬 및 여백 */
+  max-height: 450px; /* 필요시 최대 높이 제한 */
+  object-fit: contain;
+  border-radius: 8px; /* 디자인적으로 깔끔하게 */
+}
+
+/* 표 다크모드 외곽선 색상 */
+.dark .toastui-editor-contents table th,
+.dark .toastui-editor-contents table td {
+  border-color: #4a4a4a;
+}
+
+.toastui-editor-contents table {
+  margin: 0 auto !important;
+}
+
+p,
+th,
+td,
+code {
+  font-size: 1rem;
 }

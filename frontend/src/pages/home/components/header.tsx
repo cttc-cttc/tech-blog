@@ -1,4 +1,3 @@
-// import { ModeToggle } from "@/components/ui/mode-toggle";
 import { DarkModeToggle } from "@/pages/components/shadcn-custom/dark-mode-toggle";
 import { NavMenu } from "@/pages/components/shadcn-custom/nav-menu";
 import { Link } from "react-router-dom";
@@ -14,7 +13,6 @@ export default function Header() {
         </div>
         <div className="flex flex-1 justify-end">
           <NavMenu />
-          {/* <ModeToggle /> */}
           <DarkModeToggle />
         </div>
       </header>
