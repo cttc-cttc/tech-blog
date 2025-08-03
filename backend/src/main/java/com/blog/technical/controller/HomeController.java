@@ -30,7 +30,7 @@ public class HomeController {
         List<IntroEntity> result = introService.findAll();
 
         if(!result.isEmpty()) {
-            return result.getFirst().getContents();
+            return result.getLast().getContents();
         }
         return "";
     }

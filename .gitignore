@@ -15,6 +15,7 @@ backend/.gradle/
 backend/build/
 backend/out/
 backend/*.iml
+backend/uploads/
 
 # === IDEs ===
 .idea/
