@@ -20,40 +20,42 @@ const CustomEditorInsert: React.FC = () => {
 
   // 저장 버튼
   const handleSave = async () => {
-    const markdown = editorRef.current?.getInstance().getMarkdown();
-    if (!markdown) {
-      toast("내용을 입력해주세요.", {
-        description: "Sunday, December 03, 2023 at 9:00 AM",
-        action: {
-          label: "Undo",
-          onClick: () => console.log(""),
-        },
-      });
-      return;
-    }
+    if (editorRef.current) {
+      const markdown = editorRef.current.getInstance().getMarkdown();
+      if (!markdown) {
+        toast.warning("내용을 입력해주세요.", {
+          // description: "빈 내용은 등록할 수 없습니다.",
+          action: {
+            label: "확인",
+            onClick: () => toast.dismiss(),
+          },
+        });
+        return;
+      }
 
-    // 정규표현식으로 HTML 내 이미지 추출
-    // 이후 서버에 함께 전송해서 어떤 이미지가 실제로 쓰였는지 DB에 반영
-    const html = editorRef.current?.getInstance().getHTML();
-    // console.log(html);
-    const imageUrls =
-      html.match(/<img[^>]+src="([^">]+)"/g)?.map((tag: string) => {
-        const match = tag.match(/src="([^">]+)"/);
-        return match?.[1];
-      }) || [];
+      // 정규표현식으로 HTML 내 이미지 추출
+      // 이후 서버에 함께 전송해서 어떤 이미지가 실제로 쓰였는지 DB에 반영
+      const html = editorRef.current.getInstance().getHTML();
+      // console.log(html);
+      const imageUrls =
+        html.match(/<img[^>]+src="([^">]+)"/g)?.map((tag: string) => {
+          const match = tag.match(/src="([^">]+)"/);
+          return match?.[1];
+        }) || [];
 
-    formData.append("contents", markdown);
-    formData.append("del_flag", "0");
-    formData.append("title", "test");
-    formData.append("writer", "admin");
-    formData.append("images", imageUrls);
+      formData.append("contents", markdown);
+      formData.append("del_flag", "0");
+      formData.append("title", "test");
+      formData.append("writer", "admin");
+      formData.append("images", imageUrls);
 
-    try {
-      await axios.post("/api/intro-insert", formData);
-      // console.log("posting successful:", response.data);
-      navigate("/intro");
-    } catch (error) {
-      console.error("posting failed:", error);
+      try {
+        await axios.post("/api/intro-insert", formData);
+        // console.log("posting successful:", response.data);
+        navigate("/intro");
+      } catch (error) {
+        console.error("posting failed:", error);
+      }
     }
   };
 

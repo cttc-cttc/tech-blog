@@ -30,7 +30,7 @@ export default function Intro() {
   return (
     <div className="container max-w-4xl mt-6">
       <div
-        className="edit_wrap dark:dark px-[25px] py-[18px] dark:px-0 dark:py-0
+        className="edit_wrap dark:dark
       "
       >
         {/* contents 값이 존재하면 뷰어로 내용 표시, 없으면 작성된 내용이 없다는 문자열을 표시 */}

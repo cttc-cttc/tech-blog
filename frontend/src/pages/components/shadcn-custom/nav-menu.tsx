@@ -102,30 +102,6 @@ export function NavMenu() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem> */}
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>일본어</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[200px] gap-4">
-              <li>
-                <NavigationMenuLink asChild>
-                  <Link to="/japanese/jplt-n2-words">JLPT N2 단어</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link to="/japanese/jplt-n2-grammar">JLPT N2 문법</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link to="/japanese/res-n-hum-lang">존경어와 겸양어</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link to="/japanese/jplt-n1-words">JLPT N1 단어</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link to="/japanese/jplt-n1-grammar">JLPT N1 문법</Link>
-                </NavigationMenuLink>
-              </li>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
 
         <NavigationMenuItem>
           <NavigationMenuTrigger>IT</NavigationMenuTrigger>
@@ -152,6 +128,31 @@ export function NavMenu() {
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
                   <Link to="/it/spring-boot">Spring Boot</Link>
+                </NavigationMenuLink>
+              </li>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>일본어</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[200px] gap-4">
+              <li>
+                <NavigationMenuLink asChild>
+                  <Link to="/japanese/jplt-n2-words">JLPT N2 단어</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link to="/japanese/jplt-n2-grammar">JLPT N2 문법</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link to="/japanese/res-n-hum-lang">존경어와 겸양어</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link to="/japanese/jplt-n1-words">JLPT N1 단어</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link to="/japanese/jplt-n1-grammar">JLPT N1 문법</Link>
                 </NavigationMenuLink>
               </li>
             </ul>
@@ -188,11 +189,11 @@ export function NavMenu() {
           </NavigationMenuContent>
         </NavigationMenuItem> */}
 
-        <NavigationMenuItem>
+        {/* <NavigationMenuItem>
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
             <Link to="/it-words">IT 용어</Link>
           </NavigationMenuLink>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
 
         <NavigationMenuItem>
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
