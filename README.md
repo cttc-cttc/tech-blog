@@ -7,7 +7,7 @@ Spring Boot와 React Vite를 이용한 기술 블로그 사이드 프로젝트 �
 
 ## 📁 프로젝트 구조
 ```plaintext
-technical-blog/  
+tech-blog/  
 ├── backend/           # Spring Boot (Java)
 │   ├── src/  
 │   ├── build.gradle  
