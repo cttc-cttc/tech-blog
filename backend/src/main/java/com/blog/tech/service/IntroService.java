@@ -1,9 +1,9 @@
-package com.blog.technical.service;
+package com.blog.tech.service;
 
-import com.blog.technical.entity.ImageUrlEntity;
-import com.blog.technical.entity.IntroEntity;
-import com.blog.technical.repository.ImageUrlRepository;
-import com.blog.technical.repository.IntroRepository;
+import com.blog.tech.entity.ImageUrlEntity;
+import com.blog.tech.entity.IntroEntity;
+import com.blog.tech.repository.ImageUrlRepository;
+import com.blog.tech.repository.IntroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

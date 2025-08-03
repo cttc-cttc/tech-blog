@@ -1,4 +1,4 @@
-package com.blog.technical;
+package com.blog.tech;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

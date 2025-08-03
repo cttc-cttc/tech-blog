@@ -8,7 +8,7 @@ export default function Header() {
       <header className="flex w-full max-w-7xl p-6 text-gray-600 dark:text-gray-400">
         <div className="flex flex-1">
           <Link to="/">
-            <h1 className="font-bold text-4xl">kwy's technical blog</h1>
+            <h1 className="font-bold text-4xl">kwy's tech blog</h1>
           </Link>
         </div>
         <div className="flex flex-1 justify-end">

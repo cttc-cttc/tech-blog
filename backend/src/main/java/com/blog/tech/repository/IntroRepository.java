@@ -1,6 +1,6 @@
-package com.blog.technical.repository;
+package com.blog.tech.repository;
 
-import com.blog.technical.entity.IntroEntity;
+import com.blog.tech.entity.IntroEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

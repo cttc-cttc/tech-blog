@@ -1,4 +1,4 @@
-package com.blog.technical.entity;
+package com.blog.tech.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

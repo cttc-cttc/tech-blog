@@ -1,7 +1,7 @@
-package com.blog.technical.controller;
+package com.blog.tech.controller;
 
-import com.blog.technical.entity.IntroEntity;
-import com.blog.technical.service.IntroService;
+import com.blog.tech.entity.IntroEntity;
+import com.blog.tech.service.IntroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
