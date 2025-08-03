@@ -1,4 +1,4 @@
-# kwy's technical blog : Spring Boot + React (Vite)
+# kwy's tech blog : Spring Boot + React (Vite)
 
 Spring Boot와 React Vite를 이용한 기술 블로그 사이드 프로젝트 입니다.
 
