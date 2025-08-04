@@ -4,6 +4,7 @@ import com.blog.tech.entity.ImageUrlEntity;
 import com.blog.tech.entity.IntroEntity;
 import com.blog.tech.repository.ImageUrlRepository;
 import com.blog.tech.repository.IntroRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,16 +18,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class IntroService {
 
     private final IntroRepository introRepository;
     private final ImageUrlRepository imageUrlRepository;
-
-    @Autowired
-    public IntroService(IntroRepository introRepository, ImageUrlRepository imageUrlRepository) {
-        this.introRepository = introRepository;
-        this.imageUrlRepository = imageUrlRepository;
-    }
 
     public void saveIntro(IntroEntity entity, List<String> images) {
         introRepository.save(entity);

@@ -68,8 +68,8 @@ public class PasswordResetController {
         }
 
         UserEntity user = token.getUser();
-//        user.setPassword(passwordEncoder.encode(request.getNewPassword())); // BCrypt 알고리즘으로 암호화(해시)된 비밀번호
-        user.setPassword(request.getNewPassword()); // 일반 String
+        user.setPassword(passwordEncoder.encode(request.getNewPassword())); // BCrypt 알고리즘으로 암호화(해시)된 비밀번호
+//        user.setPassword(request.getNewPassword()); // 일반 String
         userRepository.save(user); // 유저 정보 update
 
         tokenRepository.delete(token); // 한 번 쓰면 제거

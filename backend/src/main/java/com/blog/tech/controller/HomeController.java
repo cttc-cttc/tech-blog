@@ -2,6 +2,7 @@ package com.blog.tech.controller;
 
 import com.blog.tech.entity.IntroEntity;
 import com.blog.tech.service.IntroService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,19 +12,10 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class HomeController {
 
     private final IntroService introService;
-
-    @Autowired
-    public HomeController(IntroService introService) {
-        this.introService = introService;
-    }
-
-    @GetMapping("/hello")
-    public List<String> hello() {
-        return Arrays.asList("시작 페이지", "hi react");
-    }
 
     @GetMapping("/intro")
     public String findAll() {
