@@ -8,6 +8,8 @@ import Intro from "./pages/home/components/intro";
 import CustomEditorInsert from "./pages/components/toast-ui-editor-custom/custom-editor-insert";
 import CustomEditorUpdate from "./pages/components/toast-ui-editor-custom/custom-editor-update";
 import { Toaster } from "./components/ui/sonner";
+import Register from "./pages/member/register";
+import Login from "./pages/member/login";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
             <Route path="/intro" element={<Intro />} />
             <Route path="/intro/write" element={<CustomEditorInsert />} />
             <Route path="/intro/update" element={<CustomEditorUpdate />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/contents-detail/:id" element={<ContentsDetail />} />
             <Route path="*" element={<NotFound />} />
           </Route>
