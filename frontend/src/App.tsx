@@ -10,6 +10,8 @@ import CustomEditorUpdate from "./pages/components/toast-ui-editor-custom/custom
 import { Toaster } from "./components/ui/sonner";
 import Register from "./pages/member/register";
 import Login from "./pages/member/login";
+import ForgotPasswordPage from "./pages/member/forgot-password-page";
+import ResetPasswordPage from "./pages/member/reset-password-page";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
             <Route path="/intro/update" element={<CustomEditorUpdate />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/contents-detail/:id" element={<ContentsDetail />} />
             <Route path="*" element={<NotFound />} />
           </Route>
