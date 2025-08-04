@@ -47,6 +47,8 @@ npx shadcn@latest add card
 npx shadcn@latest add aspect-ratio
 npm install sonner next-themes --force
 npm install sonner@latest --legacy-peer-deps
+npx shadcn@latest add input
+npm install @radix-ui/react-label --legacy-peer-deps (버전 문제로 설치가 안돼서 직접 컴포넌트 생성함)
 ```
 
 ## 개발 실행 환경
