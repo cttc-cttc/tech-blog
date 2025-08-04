@@ -1,8 +1,8 @@
 package com.blog.tech.controller;
 
 import com.blog.tech.entity.PasswordResetTokenEntity;
-import com.blog.tech.entity.ForgotPasswordRequestDto;
-import com.blog.tech.entity.ResetPasswordRequestDto;
+import com.blog.tech.dto.ForgotPasswordRequestDto;
+import com.blog.tech.dto.ResetPasswordRequestDto;
 import com.blog.tech.entity.UserEntity;
 import com.blog.tech.repository.TokenRepository;
 import com.blog.tech.repository.UserRepository;

@@ -1,4 +1,4 @@
-package com.blog.tech.entity;
+package com.blog.tech.dto;
 
 import lombok.Data;
 
