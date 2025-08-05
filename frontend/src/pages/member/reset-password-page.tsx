@@ -35,12 +35,13 @@ export default function ResetPasswordPage() {
       setMessage(response.data); // 비밀번호 변경 완료
     } catch (error) {
       const err = error as AxiosError;
-      setMessage((err.response?.data as string) || "에러 발생");
+      console.log(err);
+      setMessage("만료된 토큰입니다. 재요청 해주세요.");
     }
   };
 
   return (
-    <div className="container h-[65vh] flex justify-center items-center">
+    <div className="container h-[70vh] flex justify-center items-center">
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-lg mb-2">비밀번호 재설정</CardTitle>
@@ -50,7 +51,7 @@ export default function ResetPasswordPage() {
           <form>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="password1">Password</Label>
+                <Label htmlFor="password1">비밀번호</Label>
                 <Input
                   id="password1"
                   type="password"
@@ -60,7 +61,7 @@ export default function ResetPasswordPage() {
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
-                  <Label htmlFor="password2">Password 재입력</Label>
+                  <Label htmlFor="password2">비밀번호 재입력</Label>
                 </div>
                 <Input
                   id="password2"
@@ -76,7 +77,7 @@ export default function ResetPasswordPage() {
           <Button onClick={handleReset} className="w-full hover:cursor-pointer">
             비밀번호 변경
           </Button>
-          <p className="text-red-500">{message}</p>
+          <p className="text-red-500 text-sm!">{message}</p>
         </CardFooter>
       </Card>
     </div>

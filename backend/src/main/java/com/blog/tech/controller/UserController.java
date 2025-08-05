@@ -18,6 +18,24 @@ public class UserController {
 
     private final UserService userService;
 
+    @PostMapping("/valid-duplicate-userId")
+    public ResponseEntity<Map<String, Boolean>> validDuplicateUserId(@RequestBody UserDto request) {
+        userService.validDuplicateUserId(request.getUserId());
+        return ResponseEntity.ok(Map.of("success", true));
+    }
+
+    @PostMapping("/valid-duplicate-nickName")
+    public ResponseEntity<Map<String, Boolean>> validDuplicateNickName(@RequestBody UserDto request) {
+        userService.validDuplicateNickName(request.getNickName());
+        return ResponseEntity.ok(Map.of("success", true));
+    }
+
+    @PostMapping("/valid-duplicate-email")
+    public ResponseEntity<Map<String, Boolean>> validDuplicateEmail(@RequestBody UserDto request) {
+        userService.validDuplicateEmail(request.getEmail());
+        return ResponseEntity.ok(Map.of("success", true));
+    }
+
     @PostMapping("/register")
     public ResponseEntity<Map<String, Boolean>> register(@RequestBody UserDto request) {
        userService.register(request);

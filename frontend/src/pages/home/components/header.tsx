@@ -15,12 +15,16 @@ export default function Header() {
         </div>
         <div className="flex flex-1 justify-end items-center">
           <NavMenu />
-          <Button className="ml-8 text-sm" variant="outline">
-            <Link to="/register">회원가입</Link>
-          </Button>
-          <Button className="ml-1 text-sm" variant="outline">
-            <Link to="/login">로그인</Link>
-          </Button>
+          <Link to="/register">
+            <Button className="ml-8 text-sm hover:cursor-pointer" variant="outline">
+              회원가입
+            </Button>
+          </Link>
+          <Link to="/login">
+            <Button className="ml-1 text-sm hover:cursor-pointer" variant="outline">
+              로그인
+            </Button>
+          </Link>
           <DarkModeToggle />
         </div>
       </header>

@@ -14,16 +14,43 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void register(UserDto request) {
-        if (userRepository.existsByUserId(request.getUserId())) {
+    public void validDuplicateUserId(String userId) {
+        if (userId == null) {
+            throw new RuntimeException("userId : null");
+        }
+        if (userRepository.existsByUserId(userId)) {
             throw new RuntimeException("이미 존재하는 사용자 ID입니다.");
         }
-        if (userRepository.existsByNickName(request.getNickName())) {
+    }
+
+    public void validDuplicateNickName(String nickName) {
+        if (nickName == null) {
+            throw new RuntimeException("nickName : null");
+        }
+        if (userRepository.existsByNickName(nickName)) {
             throw new RuntimeException("이미 사용 중인 닉네임입니다.");
         }
-        if (userRepository.existsByEmail(request.getEmail())) {
+    }
+
+    public void validDuplicateEmail(String email) {
+        if (email == null) {
+            throw new RuntimeException("email : null");
+        }
+        if (userRepository.existsByEmail(email)) {
             throw new RuntimeException("이미 사용 중인 이메일입니다.");
         }
+    }
+
+    public void register(UserDto request) {
+//        if (userRepository.existsByUserId(request.getUserId())) {
+//            throw new RuntimeException("이미 존재하는 사용자 ID입니다.");
+//        }
+//        if (userRepository.existsByNickName(request.getNickName())) {
+//            throw new RuntimeException("이미 사용 중인 닉네임입니다.");
+//        }
+//        if (userRepository.existsByEmail(request.getEmail())) {
+//            throw new RuntimeException("이미 사용 중인 이메일입니다.");
+//        }
 
         UserEntity user = UserEntity.builder()
                 .userId(request.getUserId())

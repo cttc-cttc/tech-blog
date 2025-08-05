@@ -31,7 +31,7 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="container h-[65vh] flex justify-center items-center">
+    <div className="container h-[70vh] flex justify-center items-center">
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-lg mb-2">비밀번호 재설정 요청</CardTitle>
@@ -60,7 +60,7 @@ export default function ForgotPasswordPage() {
           <Button onClick={handleSubmit} className="w-full hover:cursor-pointer">
             비밀번호 재설정 메일 보내기
           </Button>
-          <p className="text-red-500">{message}</p>
+          <p className="text-red-500 text-sm!">{message}</p>
         </CardFooter>
       </Card>
     </div>

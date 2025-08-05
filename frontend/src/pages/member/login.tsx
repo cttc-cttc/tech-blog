@@ -22,6 +22,10 @@ export default function Login() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
+    if (message) {
+      setMessage("");
+    }
+
     if (!userId || !password) {
       setMessage("아이디와 비밀번호를 입력해주세요.");
       return;
