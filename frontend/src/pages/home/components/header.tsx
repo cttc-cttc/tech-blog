@@ -21,7 +21,7 @@ export default function Header() {
             </Button>
           </Link>
           <Link to="/login">
-            <Button className="ml-1 text-sm hover:cursor-pointer" variant="outline">
+            <Button className="ml-1 text-sm bg-foreground text-background dark:bg-foreground dark:text-background hover:cursor-pointer">
               로그인
             </Button>
           </Link>
