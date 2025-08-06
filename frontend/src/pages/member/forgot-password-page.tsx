@@ -36,20 +36,20 @@ export default function ForgotPasswordPage() {
         <CardHeader>
           <CardTitle className="text-lg mb-2">비밀번호 재설정 요청</CardTitle>
           <CardDescription>
-            <p>ID와 Email 주소를 입력하고</p>
-            <p>메일로 비밀번호 재설정 링크를 받으세요</p>
+            <p className="text-sm!">ID와 Email 주소를 입력하고</p>
+            <p className="text-sm! mt-1">메일로 비밀번호 재설정 링크를 받으세요</p>
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="userId">ID</Label>
+                <Label htmlFor="userId">아이디</Label>
                 <Input id="userId" type="text" onChange={e => setUserId(e.target.value)} required />
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">이메일</Label>
                 </div>
                 <Input id="email" type="email" onChange={e => setEmail(e.target.value)} required />
               </div>

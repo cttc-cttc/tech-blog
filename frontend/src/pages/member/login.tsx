@@ -74,7 +74,7 @@ export default function Login() {
                     to="/forgot-password"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
-                    비밀번호 재설정
+                    비밀번호를 잊어버렸어요
                   </Link>
                 </div>
                 <Input

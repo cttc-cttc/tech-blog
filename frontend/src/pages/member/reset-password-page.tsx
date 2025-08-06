@@ -51,7 +51,7 @@ export default function ResetPasswordPage() {
           <form>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="password1">비밀번호</Label>
+                <Label htmlFor="password1">새 비밀번호</Label>
                 <Input
                   id="password1"
                   type="password"
@@ -61,7 +61,7 @@ export default function ResetPasswordPage() {
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
-                  <Label htmlFor="password2">비밀번호 재입력</Label>
+                  <Label htmlFor="password2">새 비밀번호 재입력</Label>
                 </div>
                 <Input
                   id="password2"
