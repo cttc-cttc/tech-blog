@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ChevronRight, File, Folder } from "lucide-react";
+import { ChevronRight, File, Folder, FolderOpen } from "lucide-react";
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
@@ -15,6 +15,7 @@ import {
   SidebarMenuSub,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { Link, useLocation, useParams } from "react-router-dom";
 
 // This is sample data.
 const data = {
@@ -46,7 +47,7 @@ const data = {
   ],
   customTree: [
     ["IT", "HTML", "CSS", "JavaScript", "React", "DataBase", "Java", "Spring Boot"],
-    // "Read.Me",
+    ["일본어", "JLPT N2 단어", "JLPT N2 문법", "존경어와 겸양어", "JLPT N1 단어", "JLPT N1 문법"],
   ],
 };
 
@@ -71,7 +72,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroupContent>
         </SidebarGroup> */}
         <SidebarGroup>
-          <SidebarGroupLabel>Files</SidebarGroupLabel>
+          <SidebarGroupLabel>Posts</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {data.customTree.map((item, index) => (
@@ -88,15 +89,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
 function Tree({ item }: { item: string | any[] }) {
   const [name, ...items] = Array.isArray(item) ? item : [item];
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const isActive = currentPath.includes(name.toLowerCase());
 
   if (!items.length) {
     return (
-      <SidebarMenuButton
-        isActive={name === "button.tsx"}
-        className="data-[active=true]:bg-transparent"
-      >
+      <SidebarMenuButton isActive={isActive} className="data-[active=true]:bg-sidebar-accent">
         <File />
-        {name}
+        <Link to={currentPath}>{name}</Link>
       </SidebarMenuButton>
     );
   }
@@ -106,12 +107,13 @@ function Tree({ item }: { item: string | any[] }) {
       <Collapsible
         className="group/collapsible [&[data-state=open]>button>svg:first-child]:rotate-90"
         // defaultOpen={name === "components" || name === "ui"}
-        defaultOpen={name === "IT"}
+        defaultOpen={name === "IT" || name === "일본어"}
       >
         <CollapsibleTrigger asChild>
-          <SidebarMenuButton>
+          <SidebarMenuButton isActive={isActive} className="data-[active=true]:bg-sidebar-accent">
             <ChevronRight className="transition-transform" />
-            <Folder />
+            {/* <Folder /> */}
+            <FolderOpen />
             {name}
           </SidebarMenuButton>
         </CollapsibleTrigger>

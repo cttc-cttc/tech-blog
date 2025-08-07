@@ -34,7 +34,10 @@ function App() {
             <Route path="*" element={<NotFound />} />
 
             <Route path="/it" element={<SidebarLayout />}>
-              <Route path="/it/html" element={<PostingHTML />} />
+              <Route path="/it/:posts" element={<PostingHTML />} />
+            </Route>
+            <Route path="/japanese" element={<SidebarLayout />}>
+              <Route path="/japanese/:posts" element={<PostingHTML />} />
             </Route>
           </Route>
         </Routes>
