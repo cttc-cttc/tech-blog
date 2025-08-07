@@ -104,7 +104,9 @@ export function NavMenu() {
         </NavigationMenuItem> */}
 
         <NavigationMenuItem>
-          <NavigationMenuTrigger>IT</NavigationMenuTrigger>
+          <Link to="/it">
+            <NavigationMenuTrigger>IT</NavigationMenuTrigger>
+          </Link>
           <NavigationMenuContent>
             <ul className="grid w-[200px] gap-4">
               <li>
@@ -135,7 +137,9 @@ export function NavMenu() {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuTrigger>일본어</NavigationMenuTrigger>
+          <Link to="/japanese">
+            <NavigationMenuTrigger>일본어</NavigationMenuTrigger>
+          </Link>
           <NavigationMenuContent>
             <ul className="grid w-[200px] gap-4">
               <li>

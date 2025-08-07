@@ -12,6 +12,8 @@ import Register from "./pages/member/register";
 import Login from "./pages/member/login";
 import ForgotPasswordPage from "./pages/member/forgot-password-page";
 import ResetPasswordPage from "./pages/member/reset-password-page";
+import SidebarLayout from "./pages/posting/sidebar-layout";
+import PostingHTML from "./pages/posting/it/posting-html";
 
 function App() {
   return (
@@ -30,6 +32,10 @@ function App() {
             <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/contents-detail/:id" element={<ContentsDetail />} />
             <Route path="*" element={<NotFound />} />
+
+            <Route path="/it" element={<SidebarLayout />}>
+              <Route path="/it/html" element={<PostingHTML />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>
