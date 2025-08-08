@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ChevronRight, File, Folder, FolderOpen } from "lucide-react";
+import { ChevronRight, File, FolderOpen } from "lucide-react";
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
@@ -9,13 +9,13 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuBadge,
+  // SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 // This is sample data.
 const data = {
@@ -46,14 +46,30 @@ const data = {
     "README.md",
   ],
   customTree: [
-    ["IT", "HTML", "CSS", "JavaScript", "React", "DataBase", "Java", "Spring Boot"],
-    ["일본어", "JLPT N2 단어", "JLPT N2 문법", "존경어와 겸양어", "JLPT N1 단어", "JLPT N1 문법"],
+    [
+      { name: "IT", page: "/it" },
+      { name: "HTML", page: "/it/html" },
+      { name: "CSS", page: "/it/css" },
+      { name: "JavaScript", page: "/it/js" },
+      { name: "React", page: "/it/react" },
+      { name: "DataBase", page: "/it/db" },
+      { name: "Java", page: "/it/java" },
+      { name: "Spring Boot", page: "/it/sb" },
+    ],
+    [
+      { name: "일본어", page: "/jp" },
+      { name: "JLPT N2 단어", page: "/jp/n2tan" },
+      { name: "JLPT N2 문법", page: "/jp/n2gm" },
+      { name: "존경어와 겸양어", page: "/jp/reshum" },
+      { name: "JLPT N1 단어", page: "/jp/n1tan" },
+      { name: "JLPT N1 문법", page: "/jp/n1gm" },
+    ],
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar {...props} className="relative">
+    <Sidebar {...props} className="mt-[88px]">
       <SidebarContent>
         {/* <SidebarGroup>
           <SidebarGroupLabel>Changes</SidebarGroupLabel>
@@ -75,8 +91,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarGroupLabel>Posts</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {data.customTree.map((item, index) => (
-                <Tree key={index} item={item} />
+              {data.customTree.map((categoryList, index) => (
+                <Tree key={index} categoryList={categoryList} />
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -87,17 +103,26 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   );
 }
 
-function Tree({ item }: { item: string | any[] }) {
-  const [name, ...items] = Array.isArray(item) ? item : [item];
+function Tree({ categoryList }: { categoryList: { name: string; page: string }[] }) {
   const location = useLocation();
   const currentPath = location.pathname;
-  const isActive = currentPath.includes(name.toLowerCase());
 
-  if (!items.length) {
+  // 첫 번째 요소는 부모 카테고리
+  const [parentCategory, ...subCategories] = categoryList;
+  const isParentActive = currentPath === parentCategory.page;
+
+  // 하위 카테고리가 없으면 단일 항목 렌더링
+  if (subCategories.length === 0) {
     return (
-      <SidebarMenuButton isActive={isActive} className="data-[active=true]:bg-sidebar-accent">
-        <File />
-        <Link to={currentPath}>{name}</Link>
+      <SidebarMenuButton
+        isActive={isParentActive}
+        className="data-[active=true]:bg-sidebar-accent"
+        asChild
+      >
+        <Link to={`${parentCategory.page}`}>
+          <File />
+          {parentCategory.name}
+        </Link>
       </SidebarMenuButton>
     );
   }
@@ -107,21 +132,36 @@ function Tree({ item }: { item: string | any[] }) {
       <Collapsible
         className="group/collapsible [&[data-state=open]>button>svg:first-child]:rotate-90"
         // defaultOpen={name === "components" || name === "ui"}
-        defaultOpen={name === "IT" || name === "일본어"}
+        defaultOpen={true}
       >
         <CollapsibleTrigger asChild>
-          <SidebarMenuButton isActive={isActive} className="data-[active=true]:bg-sidebar-accent">
+          <SidebarMenuButton
+            isActive={isParentActive}
+            className="data-[active=true]:bg-sidebar-accent"
+          >
             <ChevronRight className="transition-transform" />
-            {/* <Folder /> */}
             <FolderOpen />
-            {name}
+            {parentCategory.name}
           </SidebarMenuButton>
         </CollapsibleTrigger>
         <CollapsibleContent>
           <SidebarMenuSub>
-            {items.map((subItem, index) => (
-              <Tree key={index} item={subItem} />
-            ))}
+            {subCategories.map(subCat => {
+              const isSubActive = currentPath === subCat.page;
+              return (
+                <SidebarMenuButton
+                  key={subCat.page}
+                  isActive={isSubActive}
+                  className="data-[active=true]:bg-sidebar-accent"
+                  asChild
+                >
+                  <Link to={`${subCat.page}`}>
+                    <File />
+                    {subCat.name}
+                  </Link>
+                </SidebarMenuButton>
+              );
+            })}
           </SidebarMenuSub>
         </CollapsibleContent>
       </Collapsible>

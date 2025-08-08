@@ -36,8 +36,8 @@ function App() {
             <Route path="/it" element={<SidebarLayout />}>
               <Route path="/it/:posts" element={<PostingHTML />} />
             </Route>
-            <Route path="/japanese" element={<SidebarLayout />}>
-              <Route path="/japanese/:posts" element={<PostingHTML />} />
+            <Route path="/jp" element={<SidebarLayout />}>
+              <Route path="/jp/:posts" element={<PostingHTML />} />
             </Route>
           </Route>
         </Routes>

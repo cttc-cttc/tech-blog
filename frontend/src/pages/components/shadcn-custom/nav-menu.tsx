@@ -117,19 +117,19 @@ export function NavMenu() {
                   <Link to="/it/css">CSS</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
-                  <Link to="/it/javascript">JavaScript</Link>
+                  <Link to="/it/js">JavaScript</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
                   <Link to="/it/react">React</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
-                  <Link to="/it/database">DataBase</Link>
+                  <Link to="/it/db">DataBase</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
                   <Link to="/it/java">Java</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
-                  <Link to="/it/spring-boot">Spring Boot</Link>
+                  <Link to="/it/sb">Spring Boot</Link>
                 </NavigationMenuLink>
               </li>
             </ul>
@@ -137,26 +137,26 @@ export function NavMenu() {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <Link to="/japanese">
+          <Link to="/jp">
             <NavigationMenuTrigger>일본어</NavigationMenuTrigger>
           </Link>
           <NavigationMenuContent>
             <ul className="grid w-[200px] gap-4">
               <li>
                 <NavigationMenuLink asChild>
-                  <Link to="/japanese/jplt-n2-words">JLPT N2 단어</Link>
+                  <Link to="/jp/n2tan">JLPT N2 단어</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
-                  <Link to="/japanese/jplt-n2-grammar">JLPT N2 문법</Link>
+                  <Link to="/jp/n2gm">JLPT N2 문법</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
-                  <Link to="/japanese/res-n-hum-lang">존경어와 겸양어</Link>
+                  <Link to="/jp/reshum">존경어와 겸양어</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
-                  <Link to="/japanese/jplt-n1-words">JLPT N1 단어</Link>
+                  <Link to="/jp/n1tan">JLPT N1 단어</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
-                  <Link to="/japanese/jplt-n1-grammar">JLPT N1 문법</Link>
+                  <Link to="/jp/n1gm">JLPT N1 문법</Link>
                 </NavigationMenuLink>
               </li>
             </ul>
