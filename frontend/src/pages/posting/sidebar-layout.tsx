@@ -10,6 +10,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Outlet, useLocation } from "react-router-dom";
+import { getPathSegment } from "./post-utils";
 
 const pathMap: Record<string, string> = {
   it: "IT",
@@ -31,10 +32,6 @@ const pathMap: Record<string, string> = {
 export default function SidebarLayout() {
   const location = useLocation();
   const currentPath = location.pathname;
-
-  const getPathSegment = (path: string): string[] => {
-    return path.split("/").filter(Boolean);
-  };
 
   const pathArray = getPathSegment(currentPath);
 

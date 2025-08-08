@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,6 +19,8 @@ public class PostResponseDto {
     private String contents;
     private Long categoryId;
     private String categoryName;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public static PostResponseDto fromEntity(PostEntity post) {
         return new PostResponseDto(
@@ -25,7 +29,9 @@ public class PostResponseDto {
                 post.getWriter(),
                 post.getContents(),
                 post.getCategory().getId(),
-                post.getCategory().getName()
+                post.getCategory().getName(),
+                post.getCreatedAt(),
+                post.getUpdatedAt()
         );
     }
 }
