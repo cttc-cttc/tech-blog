@@ -1,44 +1,25 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { getPathLastSegment } from "./post-utils";
+import { Link, useLocation } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import type { PostProps } from "../components/utils/common-interfaces";
+import {
+  getPathFirstSegment,
+  getPathLastSegment,
+  getPathName,
+  pathIdMap,
+  pathStrMap,
+} from "../components/utils/post-utils";
+// import { Separator } from "@/components/ui/separator";
+import axios from "axios";
 import dayjs from "dayjs";
-
-// DB의 category 테이블 id값과 일치해야 함
-const pathIdMap: Record<string, number> = {
-  it: 1,
-  html: 3,
-  css: 4,
-  js: 5,
-  react: 6,
-  db: 7,
-  java: 8,
-  sb: 9,
-  jp: 2,
-  n2tan: 10,
-  n2gm: 11,
-  reshum: 12,
-  n1tan: 13,
-  n1gm: 14,
-};
-
-interface PostProps {
-  id: number;
-  title: string;
-  writer: string;
-  contents: string;
-  categoryId: number;
-  categoryName: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
 
 export default function PostsList() {
   const location = useLocation();
   const currentPath = location.pathname;
   const [postsList, setPostsList] = useState<PostProps[]>([]);
+  const firstPathSegment = getPathFirstSegment(currentPath);
+  const pathName = getPathName(firstPathSegment ?? "");
 
   useEffect(() => {
     const lastPath = getPathLastSegment(currentPath);
@@ -50,26 +31,44 @@ export default function PostsList() {
           categoryId: lastPathId,
         },
       })
-      .then(res => {
-        setPostsList(res.data);
-      });
+      .then(res => setPostsList(res.data))
+      .catch(err => console.error("Error fetching posts:", err));
   }, [currentPath]);
 
   return (
     <>
-      <h1>글 목록</h1>
       {postsList.map((post, index) => (
         <>
-          <Card key={index}>
-            <CardHeader>
-              <CardTitle>{post.title}</CardTitle>
-              <CardDescription>
-                {dayjs(post.createdAt).format("YYYY-MM-DD HH:mm")} · {post.writer}
-              </CardDescription>
-            </CardHeader>
-            <Separator />
-            <CardContent>{post.contents}...</CardContent>
-          </Card>
+          <Link
+            to={`/${firstPathSegment}/${pathStrMap[post.categoryId]}/${post.id}`}
+            key={index}
+            className="max-w-4xl mb-4"
+          >
+            <Card className="hover:shadow-lg transition-shadow duration-200 dark:hover:shadow-gray-800 rounded-md">
+              <CardHeader>
+                <div className="flex justify-between">
+                  <CardTitle className="text-2xl">{post.title}</CardTitle>
+                  {/* 카테고리 표시 */}
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <BreadcrumbItem className="hidden md:block">
+                      <BreadcrumbLink>{pathName}</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator className="hidden md:block" />
+                    <BreadcrumbItem className="hidden md:block">
+                      <BreadcrumbLink>{post.categoryName}</BreadcrumbLink>
+                    </BreadcrumbItem>
+                  </div>
+                </div>
+                <CardDescription>
+                  {dayjs(post.createdAt).format("YYYY-MM-DD HH:mm")} · {post.writer}
+                </CardDescription>
+              </CardHeader>
+              {/* <Separator /> */}
+              <CardContent className="line-clamp-3 break-words text-muted-foreground py-4">
+                {post.contents.substring(0, 150)}...
+              </CardContent>
+            </Card>
+          </Link>
         </>
       ))}
     </>

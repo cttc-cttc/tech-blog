@@ -38,8 +38,8 @@ public class PostEntity {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    @Column(nullable = false)
-    private int delFlag = 0;
+    @Column(name = "del_flag", nullable = false)
+    private boolean delFlag = false; // 기본값 false
 
     @PrePersist
     protected void onCreate() {

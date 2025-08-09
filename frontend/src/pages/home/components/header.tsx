@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 export default function Header() {
   return (
     // bg-[#fafafa] dark:bg-[#0a0d11]
-    <div className="w-full flex justify-center bg-background sticky top-0 z-50">
+    <div className="w-full flex justify-center bg-background sticky top-0 z-50 pb-[16px]">
       <header className="flex w-full max-w-7xl p-6 text-gray-600 dark:text-gray-400">
         <div className="flex flex-1">
           <Link to="/">

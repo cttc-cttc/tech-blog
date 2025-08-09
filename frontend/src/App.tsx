@@ -14,6 +14,7 @@ import ForgotPasswordPage from "./pages/member/forgot-password-page";
 import ResetPasswordPage from "./pages/member/reset-password-page";
 import SidebarLayout from "./pages/posting/sidebar-layout";
 import PostsList from "./pages/posting/postsList";
+import PostsDetail from "./pages/posting/postsDetail";
 
 function App() {
   return (
@@ -34,10 +35,12 @@ function App() {
             <Route path="*" element={<NotFound />} />
 
             <Route path="/it" element={<SidebarLayout />}>
-              <Route path="/it/:posts" element={<PostsList />} />
+              <Route path="/it/:category" element={<PostsList />} />
+              <Route path="/it/:category/:postId" element={<PostsDetail />} />
             </Route>
             <Route path="/jp" element={<SidebarLayout />}>
-              <Route path="/jp/:posts" element={<PostsList />} />
+              <Route path="/jp/:category" element={<PostsList />} />
+              <Route path="/jp/:category/:postId" element={<PostsDetail />} />
             </Route>
           </Route>
         </Routes>
