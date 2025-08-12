@@ -24,7 +24,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
-        String[] publicUrls = {"/api/auth/**", "/api/**", "/uploads/images/**"};
+        String[] publicUrls = {"/api/auth/**", "/api/**", "/api/register", "/uploads/images/**"};
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))

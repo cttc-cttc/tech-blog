@@ -63,7 +63,7 @@ public class UserService {
                 .password(passwordEncoder.encode(request.getPassword())) // 암호화
 //                .password(request.getPassword())
                 .email(request.getEmail())
-                .role(RoleType.valueOf(request.getRole()))
+                .role(RoleType.ROLE_USER)
                 .build();
         userRepository.save(user);
     }
