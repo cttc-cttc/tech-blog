@@ -15,8 +15,23 @@ import ResetPasswordPage from "./pages/member/reset-password-page";
 import SidebarLayout from "./pages/posting/sidebar-layout";
 import PostsList from "./pages/posting/postsList";
 import PostsDetail from "./pages/posting/postsDetail";
+import { useAuthStore } from "./pages/components/utils/useAuthStore";
+import { useEffect } from "react";
 
 function App() {
+  const { setAuth } = useAuthStore();
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      setAuth({
+        token,
+        userId: localStorage.getItem("userId")!,
+        nickName: localStorage.getItem("nickName")!,
+        role: localStorage.getItem("role")!,
+      });
+    }
+  }, [setAuth]);
+
   return (
     <ThemeProvider>
       <BrowserRouter>

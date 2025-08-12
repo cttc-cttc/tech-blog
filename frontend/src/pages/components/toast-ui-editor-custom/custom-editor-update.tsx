@@ -65,7 +65,7 @@ const CustomEditorUpdate: React.FC = () => {
                   headers: { "Content-Type": "multipart/form-data" },
                 });
 
-                // console.log(response.data.url);
+                console.log(response.data.url);
                 const imageUrl = response.data.url; // 서버에서 URL 반환
                 callback(imageUrl, blob.name); // 이 URL이 에디터에 삽입됨
               } catch (err) {

@@ -10,11 +10,13 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+// import { useAuthStore } from "../components/utils/useAuthStore";
 import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Login() {
+  // const { setAuth } = useAuthStore();
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -32,14 +34,24 @@ export default function Login() {
     }
 
     try {
-      const response = await axios.post("/api/login", {
+      const response = await axios.post("/api/auth/login", {
         userId,
         password,
       });
       if (response.data.success) {
+        // setAuth({
+        //   token: response.data.accessToken,
+        //   userId: response.data.userId,
+        //   nickName: response.data.nickName,
+        //   role: response.data.role,
+        // }); // zustand로 저장
+        localStorage.setItem("accessToken", response.data.accessToken);
+        localStorage.setItem("userId", response.data.userId);
+        localStorage.setItem("nickName", response.data.nickName);
+        localStorage.setItem("role", response.data.role);
         window.location.href = "/"; // 로그인 성공 시 홈으로 이동
       } else {
-        setMessage("아이디 또는 비밀번호가 잘못되었습니다.");
+        setMessage(response.data.message + ": 아이디 또는 비밀번호가 잘못되었습니다.");
       }
     } catch (err) {
       setMessage("로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.");

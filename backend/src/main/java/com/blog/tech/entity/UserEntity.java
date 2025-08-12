@@ -1,5 +1,6 @@
 package com.blog.tech.entity;
 
+import com.blog.tech.dto.RoleType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,4 +27,8 @@ public class UserEntity {
 
     @Column(nullable = false, unique = true)
     private String email;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ROLE", nullable = false)
+    private RoleType role;
 }

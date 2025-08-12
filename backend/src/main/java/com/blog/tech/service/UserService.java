@@ -1,14 +1,19 @@
 package com.blog.tech.service;
 
+import com.blog.tech.dto.RoleType;
 import com.blog.tech.dto.UserDto;
 import com.blog.tech.entity.UserEntity;
 import com.blog.tech.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -57,16 +62,10 @@ public class UserService {
                 .nickName(request.getNickName())
                 .password(passwordEncoder.encode(request.getPassword())) // 암호화
 //                .password(request.getPassword())
-                .email(request.getEmail()).build();
+                .email(request.getEmail())
+                .role(RoleType.valueOf(request.getRole()))
+                .build();
         userRepository.save(user);
     }
 
-    public void login(UserDto request) {
-        UserEntity user = userRepository.findByUserId(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
-        }
-    }
 }
