@@ -62,7 +62,7 @@ public class PostController {
      * @param request
      * @return
      */
-    @PostMapping("/posts")
+    @PostMapping("/posts-create")
     public ResponseEntity<PostResponseDto> createPost(@RequestBody PostRequestDto request) {
         return ResponseEntity.ok(postService.createPost(request));
     }

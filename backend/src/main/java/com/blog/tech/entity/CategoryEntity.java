@@ -23,8 +23,13 @@ public class CategoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    // 카테고리 웹 표시명
+    @Column(nullable = false, length = 20)
     private String name;
+
+    // 카테고리 url명
+    @Column(nullable = false, length = 20)
+    private String urlName;
 
     // 자기 자신을 참조하는 필드
     @ManyToOne(fetch = FetchType.LAZY)

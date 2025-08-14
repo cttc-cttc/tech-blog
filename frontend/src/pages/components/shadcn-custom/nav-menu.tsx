@@ -104,32 +104,32 @@ export function NavMenu() {
         </NavigationMenuItem> */}
 
         <NavigationMenuItem>
-          <Link to="/it">
+          <Link to="/posts/it">
             <NavigationMenuTrigger>IT</NavigationMenuTrigger>
           </Link>
           <NavigationMenuContent>
             <ul className="grid w-[200px] gap-4">
               <li>
                 <NavigationMenuLink asChild>
-                  <Link to="/it/html">HTML</Link>
+                  <Link to="/posts/it/html">HTML</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
-                  <Link to="/it/css">CSS</Link>
+                  <Link to="/posts/it/css">CSS</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
-                  <Link to="/it/js">JavaScript</Link>
+                  <Link to="/posts/it/js">JavaScript</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
-                  <Link to="/it/react">React</Link>
+                  <Link to="/posts/it/react">React</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
-                  <Link to="/it/db">DataBase</Link>
+                  <Link to="/posts/it/db">DataBase</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
-                  <Link to="/it/java">Java</Link>
+                  <Link to="/posts/it/java">Java</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
-                  <Link to="/it/sb">Spring Boot</Link>
+                  <Link to="/posts/it/sb">Spring Boot</Link>
                 </NavigationMenuLink>
               </li>
             </ul>
@@ -137,26 +137,26 @@ export function NavMenu() {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <Link to="/jp">
+          <Link to="/posts/jp">
             <NavigationMenuTrigger>일본어</NavigationMenuTrigger>
           </Link>
           <NavigationMenuContent>
             <ul className="grid w-[200px] gap-4">
               <li>
                 <NavigationMenuLink asChild>
-                  <Link to="/jp/n2tan">JLPT N2 단어</Link>
+                  <Link to="/posts/jp/n2tan">JLPT N2 단어</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
-                  <Link to="/jp/n2gm">JLPT N2 문법</Link>
+                  <Link to="/posts/jp/n2gm">JLPT N2 문법</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
-                  <Link to="/jp/reshum">존경어와 겸양어</Link>
+                  <Link to="/posts/jp/reshum">존경어와 겸양어</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
-                  <Link to="/jp/n1tan">JLPT N1 단어</Link>
+                  <Link to="/posts/jp/n1tan">JLPT N1 단어</Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
-                  <Link to="/jp/n1gm">JLPT N1 문법</Link>
+                  <Link to="/posts/jp/n1gm">JLPT N1 문법</Link>
                 </NavigationMenuLink>
               </li>
             </ul>

@@ -9,7 +9,12 @@ export default function Header() {
 
   return (
     // bg-[#fafafa] dark:bg-[#0a0d11]
-    <div className="w-full flex justify-center bg-background sticky top-0 z-50 pb-[16px]">
+    <div
+      className="w-full flex justify-center bg-background sticky top-0 z-50 pb-[16px]
+                      border-b
+                      border-b-foreground/15
+                      dark:border-b-foreground/20"
+    >
       <header className="flex w-full max-w-7xl p-6 text-gray-600 dark:text-gray-400">
         <div className="flex flex-1">
           <Link to="/">
@@ -21,12 +26,12 @@ export default function Header() {
           {!token ? (
             <>
               <Link to="/register" className="ml-8">
-                <Button className="text-sm hover:cursor-pointer" variant="outline">
+                <Button variant="outline" className="hover:cursor-pointer">
                   회원가입
                 </Button>
               </Link>
               <Link to="/login" className="ml-1">
-                <Button className="text-sm bg-foreground text-background dark:bg-foreground dark:text-background hover:cursor-pointer">
+                <Button variant="default" className="hover:cursor-pointer">
                   로그인
                 </Button>
               </Link>

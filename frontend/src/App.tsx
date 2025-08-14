@@ -13,25 +13,11 @@ import Login from "./pages/member/login";
 import ForgotPasswordPage from "./pages/member/forgot-password-page";
 import ResetPasswordPage from "./pages/member/reset-password-page";
 import SidebarLayout from "./pages/posting/sidebar-layout";
-import PostsList from "./pages/posting/postsList";
-import PostsDetail from "./pages/posting/postsDetail";
-// import { useAuthStore } from "./pages/components/utils/useAuthStore";
-// import { useEffect } from "react";
+import PostsList from "./pages/posting/posts-list";
+import PostsDetail from "./pages/posting/posts-detail";
+import PostsCreate from "./pages/posting/posts-create";
 
 function App() {
-  // const { setAuth } = useAuthStore();
-  // useEffect(() => {
-  //   const token = localStorage.getItem("accessToken");
-  //   if (token) {
-  //     setAuth({
-  //       token,
-  //       userId: localStorage.getItem("userId")!,
-  //       nickName: localStorage.getItem("nickName")!,
-  //       role: localStorage.getItem("role")!,
-  //     });
-  //   }
-  // }, [setAuth]);
-
   return (
     <ThemeProvider>
       <BrowserRouter>
@@ -49,13 +35,10 @@ function App() {
             <Route path="/contents-detail/:id" element={<ContentsDetail />} />
             <Route path="*" element={<NotFound />} />
 
-            <Route path="/it" element={<SidebarLayout />}>
-              <Route path="/it/:category" element={<PostsList />} />
-              <Route path="/it/:category/:postId" element={<PostsDetail />} />
-            </Route>
-            <Route path="/jp" element={<SidebarLayout />}>
-              <Route path="/jp/:category" element={<PostsList />} />
-              <Route path="/jp/:category/:postId" element={<PostsDetail />} />
+            <Route path="/posts/:category1" element={<SidebarLayout />}>
+              <Route path="/posts/:category1/:category2" element={<PostsList />} />
+              <Route path="/posts/:category1/:category2/create" element={<PostsCreate />} />
+              <Route path="/posts/:category1/:category2/:postId" element={<PostsDetail />} />
             </Route>
           </Route>
         </Routes>

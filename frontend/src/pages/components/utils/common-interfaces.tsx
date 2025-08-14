@@ -3,8 +3,10 @@ export interface PostProps {
   title: string;
   writer: string;
   contents: string;
-  categoryId: number;
-  categoryName: string;
   createdAt: Date;
   updatedAt: Date;
+  urlNameParent: string | null;
+  urlNameChild: string;
+  nameParent: string | null;
+  nameChild: string;
 }

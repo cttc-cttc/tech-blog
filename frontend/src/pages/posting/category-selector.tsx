@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { SelectLabel } from "@radix-ui/react-select";
 
 interface Category {
   id: number;
@@ -9,39 +18,37 @@ interface Category {
 
 export default function CategorySelector({ onSelect }: { onSelect: (categoryId: number) => void }) {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedId, setSelectedId] = useState<number | null>(null);
 
   useEffect(() => {
     axios.get("/api/categories/tree").then(res => {
-      console.log(res.data);
+      // console.log(res.data);
       setCategories(res.data);
     });
   }, []);
 
-  const renderOptions = (categories: Category[], depth = 0): React.ReactNode[] => {
-    return categories.flatMap(category => {
-      const indent = "—".repeat(depth); // 시각적 들여쓰기
-      const option = (
-        <option key={category.id} value={category.id}>
-          {indent} {category.name}
-        </option>
-      );
-      const children = renderOptions(category.children, depth + 1);
-      return [option, ...children];
-    });
-  };
-
   return (
-    <select
-      value={selectedId ?? ""}
-      onChange={e => {
-        const id = parseInt(e.target.value);
-        setSelectedId(id);
-        onSelect(id); // 상위 컴포넌트에 전달
-      }}
-    >
-      <option value="">카테고리를 선택하세요</option>
-      {renderOptions(categories)}
-    </select>
+    <div className="w-full mb-[24px]">
+      <Select
+        onValueChange={value => {
+          onSelect(Number(value));
+        }}
+      >
+        <SelectTrigger className="w-full dark:border-accent-foreground/80 rounded-sm">
+          <SelectValue placeholder="카테고리를 선택하세요" />
+        </SelectTrigger>
+        <SelectContent className="dark:border-accent-foreground/80 rounded-sm">
+          {categories.map(parent => (
+            <SelectGroup key={parent.id}>
+              <SelectLabel className="text-muted-foreground text-sm p-2">{parent.name}</SelectLabel>
+              {parent.children.map(child => (
+                <SelectItem key={child.id} value={String(child.id)}>
+                  {child.name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   );
 }

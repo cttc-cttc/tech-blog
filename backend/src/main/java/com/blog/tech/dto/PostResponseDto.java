@@ -1,10 +1,8 @@
 package com.blog.tech.dto;
 
+import com.blog.tech.entity.CategoryEntity;
 import com.blog.tech.entity.PostEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -12,26 +10,34 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class PostResponseDto {
     private Long id;
     private String title;
     private String writer;
     private String contents;
-    private Long categoryId;
-    private String categoryName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String urlNameParent;
+    private String urlNameChild;
+    private String nameParent;
+    private String nameChild;
 
     public static PostResponseDto fromEntity(PostEntity post) {
-        return new PostResponseDto(
-                post.getId(),
-                post.getTitle(),
-                post.getWriter(),
-                post.getContents(),
-                post.getCategory().getId(),
-                post.getCategory().getName(),
-                post.getCreatedAt(),
-                post.getUpdatedAt()
-        );
+        CategoryEntity categoryChild = post.getCategory();
+        CategoryEntity categoryParent = categoryChild.getParent(); // 상위 카테고리
+
+        return PostResponseDto.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .contents(post.getContents())
+                .writer(post.getWriter())
+                .createdAt(post.getCreatedAt())
+                .updatedAt(post.getUpdatedAt())
+                .urlNameParent(categoryParent != null ? categoryParent.getUrlName() : null)
+                .urlNameChild(categoryChild.getUrlName())
+                .nameParent(categoryParent != null ? categoryParent.getName() : null)
+                .nameChild(categoryChild.getName())
+                .build();
     }
 }

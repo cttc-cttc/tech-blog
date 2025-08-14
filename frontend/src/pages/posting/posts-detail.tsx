@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { PostProps } from "../components/utils/common-interfaces";
+import CustomViewer from "../components/toast-ui-editor-custom/custom-viewer";
 
 export default function PostsDetail() {
   const { postId } = useParams();
@@ -23,7 +24,8 @@ export default function PostsDetail() {
       <p className="text-sm text-gray-500 mb-6">
         {dayjs(post.createdAt).format("YYYY-MM-DD HH:mm")} · {post.writer}
       </p>
-      <div className="text-gray-800 whitespace-pre-wrap">{post.contents}</div>
+      <CustomViewer contents={post.contents} />
+      {/* <div className="text-gray-800 whitespace-pre-wrap">{post.contents}</div> */}
     </div>
   );
 }

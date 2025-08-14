@@ -2,19 +2,26 @@
  * Posting 관련 공통 함수 모듈
  */
 
-// currentPath가 /it/css 이면 ["it", "css"] 로 반환해주는 함수
+import { BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "react-router-dom";
+import type { PostProps } from "./common-interfaces";
+import dayjs from "dayjs";
+import { toast } from "sonner";
+
+// currentPath가 /posts/it/css 이면 ["posts", "it", "css"] 로 반환해주는 함수
 export const getPathSegment = (path: string): string[] => {
   return path.split("/").filter(Boolean);
 };
 
-// currentPath가 /it/html이면 "html", /jp이면 "jp"를 반환하는 함수
+// currentPath가 /posts/it/html이면 "html", /posts/jp이면 "jp"를 반환하는 함수
 export const getPathLastSegment = (path: string): string | undefined => {
   return path.split("/").filter(Boolean).pop();
 };
 
-// currentPath가 /it/html이면 "it", /jp이면 "jp"를 반환하는 함수
+// currentPath가 /posts/it/html이면 "it", /posts/jp이면 "jp"를 반환하는 함수
 export const getPathFirstSegment = (path: string): string | undefined => {
-  return path.split("/").filter(Boolean).shift();
+  return path.split("/").filter(Boolean).at(1);
 };
 
 export const getPathName = (path: string): string | undefined => {
@@ -87,4 +94,60 @@ export const getParentCategory = (childCategoryId: number): string => {
 
   // 해당되지 않는 경우 빈 문자열 반환
   return "";
+};
+
+export const renderPostsList = (postsList: PostProps[]) => {
+  return (
+    <>
+      {postsList.map((post, index) => (
+        <>
+          <Link
+            to={`/posts/${post.urlNameParent}/${post.urlNameChild}/${post.id}`}
+            key={index}
+            className="w-full max-w-7xl mb-4"
+          >
+            <Card className="hover:shadow-lg transition-shadow duration-200 dark:hover:shadow-gray-800 rounded-md">
+              <CardHeader>
+                <div className="flex justify-between">
+                  <CardTitle className="text-2xl">{post.title}</CardTitle>
+                  {/* 카테고리 표시 */}
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <BreadcrumbItem className="hidden md:block">
+                      <BreadcrumbLink>{post.nameParent}</BreadcrumbLink>
+                    </BreadcrumbItem>
+
+                    <BreadcrumbSeparator className="hidden md:block" />
+
+                    <BreadcrumbItem className="hidden md:block">
+                      <BreadcrumbLink>{post.nameChild}</BreadcrumbLink>
+                    </BreadcrumbItem>
+                  </div>
+                </div>
+                <CardDescription>
+                  {dayjs(post.createdAt).format("YYYY-MM-DD HH:mm")} · {post.writer}
+                </CardDescription>
+              </CardHeader>
+              {/* <Separator /> */}
+              <CardContent className="line-clamp-3 break-words text-muted-foreground py-4">
+                {post.contents.substring(0, 150)}...
+              </CardContent>
+            </Card>
+          </Link>
+        </>
+      ))}
+    </>
+  );
+};
+
+export const validatePostField = (value: string | number | null, message: string) => {
+  if (!value) {
+    toast.warning(message, {
+      action: {
+        label: "확인",
+        onClick: () => toast.dismiss(),
+      },
+    });
+    return false;
+  }
+  return true;
 };
