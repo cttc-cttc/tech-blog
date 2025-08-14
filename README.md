@@ -52,6 +52,7 @@ npm install @radix-ui/react-label --legacy-peer-deps (버전 문제로 설치가
 npx shadcn@latest add sidebar
 npx shadcn@latest add collapsible
 npx shadcn@latest add breadcrumb
+npx shadcn@latest add select
 ```
 
 ## 개발 실행 환경
