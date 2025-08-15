@@ -1,6 +1,4 @@
-/**
- * Posting 관련 공통 함수 모듈
- */
+//? 게시글 posting 관련 공통 함수
 
 import { BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -96,6 +94,11 @@ export const getParentCategory = (childCategoryId: number): string => {
   return "";
 };
 
+/**
+ * 게시글 리스트 출력
+ * @param postsList
+ * @returns
+ */
 export const renderPostsList = (postsList: PostProps[]) => {
   return (
     <>
@@ -110,6 +113,7 @@ export const renderPostsList = (postsList: PostProps[]) => {
               <CardHeader>
                 <div className="flex justify-between">
                   <CardTitle className="text-2xl">{post.title}</CardTitle>
+
                   {/* 카테고리 표시 */}
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <BreadcrumbItem className="hidden md:block">
@@ -139,6 +143,12 @@ export const renderPostsList = (postsList: PostProps[]) => {
   );
 };
 
+/**
+ * 제목, 카테고리, 글 내용 공백 체크
+ * @param value
+ * @param message
+ * @returns
+ */
 export const validatePostField = (value: string | number | null, message: string) => {
   if (!value) {
     toast.warning(message, {

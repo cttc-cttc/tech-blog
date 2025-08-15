@@ -1,17 +1,16 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/home/home";
-import ContentsDetail from "./pages/contents-detail/contents-detail";
-import HomeMain from "./pages/home/components/home-main";
-import NotFound from "./pages/home/components/not-found";
+import HomeMain from "./pages/home/home-main";
+import NotFound from "./pages/home/not-found";
 import { ThemeProvider } from "./components/ui/theme-provider";
-import Intro from "./pages/home/components/intro";
+import Intro from "./pages/home/intro";
 import CustomEditorInsert from "./pages/components/toast-ui-editor-custom/custom-editor-insert";
 import CustomEditorUpdate from "./pages/components/toast-ui-editor-custom/custom-editor-update";
 import { Toaster } from "./components/ui/sonner";
-import Register from "./pages/member/register";
-import Login from "./pages/member/login";
-import ForgotPasswordPage from "./pages/member/forgot-password-page";
-import ResetPasswordPage from "./pages/member/reset-password-page";
+import Register from "./pages/user/register";
+import Login from "./pages/user/login";
+import ForgotPasswordPage from "./pages/user/forgot-password-page";
+import ResetPasswordPage from "./pages/user/reset-password-page";
 import SidebarLayout from "./pages/posting/sidebar-layout";
 import PostsList from "./pages/posting/posts-list";
 import PostsDetail from "./pages/posting/posts-detail";
@@ -32,7 +31,6 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/contents-detail/:id" element={<ContentsDetail />} />
             <Route path="*" element={<NotFound />} />
 
             <Route path="/posts/:category1" element={<SidebarLayout />}>

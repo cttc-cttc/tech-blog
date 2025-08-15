@@ -12,24 +12,30 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 // import { useAuthStore } from "../components/utils/useAuthStore";
 import axios from "axios";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { checkBlankInput, handleKeyDownEnter } from "../components/utils/user-utils";
 
 export default function Login() {
   // const { setAuth } = useAuthStore();
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const userIdRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
+  const handleSubmit = async () => {
     if (message) {
       setMessage("");
     }
 
-    if (!userId || !password) {
-      setMessage("아이디와 비밀번호를 입력해주세요.");
+    if (!checkBlankInput(userId, "아이디를 입력해주세요.")) {
+      userIdRef.current?.focus();
+      return;
+    }
+
+    if (!checkBlankInput(password, "비밀번호를 입력해주세요.")) {
+      passwordRef.current?.focus();
       return;
     }
 
@@ -77,7 +83,14 @@ export default function Login() {
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="userId">아이디</Label>
-                <Input id="userId" type="text" onChange={e => setUserId(e.target.value)} required />
+                <Input
+                  ref={userIdRef}
+                  id="userId"
+                  type="text"
+                  onChange={e => setUserId(e.target.value)}
+                  required
+                  onKeyDown={e => handleKeyDownEnter(e, handleSubmit, setMessage)}
+                />
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
@@ -90,10 +103,12 @@ export default function Login() {
                   </Link>
                 </div>
                 <Input
+                  ref={passwordRef}
                   id="password"
                   type="password"
                   onChange={e => setPassword(e.target.value)}
                   required
+                  onKeyDown={e => handleKeyDownEnter(e, handleSubmit, setMessage)}
                 />
               </div>
             </div>
@@ -103,7 +118,7 @@ export default function Login() {
           <Button onClick={handleSubmit} className="w-full hover:cursor-pointer">
             로그인
           </Button>
-          {message && <p className="text-red-500 text-sm mt-2">{message}</p>}
+          {message && <p className="text-red-500 text-sm!">{message}</p>}
         </CardFooter>
       </Card>
     </div>

@@ -17,8 +17,6 @@ export default function PostsCreate() {
 
   // 글 등록
   const handleSubmit = async () => {
-    const payload = { title, contents, writer: nickName, categoryId: categoryId };
-
     if (
       !validatePostField(title, "제목을 입력해주세요.") ||
       !validatePostField(categoryId, "카테고리를 선택해주세요.") ||
@@ -26,6 +24,8 @@ export default function PostsCreate() {
     ) {
       return; // 하나라도 실패하면 함수 종료
     }
+
+    const payload = { title, contents, writer: nickName, categoryId: categoryId };
 
     try {
       const response = await axios.post("/api/posts-create", payload, {

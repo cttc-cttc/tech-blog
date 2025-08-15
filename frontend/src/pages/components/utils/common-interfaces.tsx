@@ -1,3 +1,4 @@
+// 게시글 타입
 export interface PostProps {
   id: number;
   title: string;
