@@ -16,6 +16,7 @@ import {
   // SidebarRail,
 } from "@/components/ui/sidebar";
 import { Link, useLocation } from "react-router-dom";
+import { getPostBasePath } from "@/pages/components/utils/post-utils";
 
 // This is sample data.
 const data = {
@@ -106,10 +107,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 function Tree({ categoryList }: { categoryList: { name: string; page: string }[] }) {
   const location = useLocation();
   const currentPath = location.pathname;
+  const baseUrl = getPostBasePath(currentPath);
 
   // 첫 번째 요소는 부모 카테고리
   const [parentCategory, ...subCategories] = categoryList;
-  const isParentActive = currentPath === parentCategory.page;
+  const isParentActive = baseUrl === parentCategory.page;
 
   // 하위 카테고리가 없으면 단일 항목 렌더링
   if (subCategories.length === 0) {
@@ -147,7 +149,7 @@ function Tree({ categoryList }: { categoryList: { name: string; page: string }[]
         <CollapsibleContent>
           <SidebarMenuSub>
             {subCategories.map(subCat => {
-              const isSubActive = currentPath === subCat.page;
+              const isSubActive = baseUrl === subCat.page;
               return (
                 <SidebarMenuButton
                   key={subCat.page}
@@ -155,6 +157,7 @@ function Tree({ categoryList }: { categoryList: { name: string; page: string }[]
                   className="data-[active=true]:bg-sidebar-accent"
                   asChild
                 >
+                  {/* 여기가 사이드 바 클릭하는 부분 */}
                   <Link to={`${subCat.page}`}>
                     <File />
                     {subCat.name}

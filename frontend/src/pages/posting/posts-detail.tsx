@@ -59,6 +59,9 @@ export default function PostsDetail() {
       <p className="text-sm text-gray-500 mb-6">
         {dayjs(post.createdAt).format("YYYY-MM-DD HH:mm")} · {post.writer}
       </p>
+      <p className="text-sm text-gray-500 mb-6">
+        {dayjs(post.updatedAt).format("YYYY-MM-DD HH:mm")} · {post.writer}
+      </p>
       <CustomViewer contents={post.contents} />
       {/* <div className="text-gray-800 whitespace-pre-wrap">{post.contents}</div> */}
       <div className="flex justify-end py-6 gap-2">
