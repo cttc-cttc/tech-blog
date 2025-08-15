@@ -1,17 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import CustomEditor, {
   type CustomEditorRef,
 } from "../components/toast-ui-editor-custom/custom-editor";
 import { useAuthStore } from "../components/utils/useAuthStore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CategorySelector from "./category-selector";
 import { extractImgUrl, validatePostField } from "../components/utils/post-utils";
 
-export default function PostsCreate() {
+export default function PostsUpdate() {
+  const { postId } = useParams();
   const editorRef = useRef<CustomEditorRef>(null);
+  const [handled, setHandled] = useState(false);
   const { nickName } = useAuthStore();
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
@@ -20,7 +22,35 @@ export default function PostsCreate() {
   const categoryIdRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  // 글 등록
+  // 페이지 첫 로드 시 처리
+  useEffect(() => {
+    const pageLoad = async () => {
+      try {
+        const response = await axios.get(`/api/posts/${postId}`);
+        setTitle(response.data.title);
+        setCategoryId(response.data.categoryId);
+        setContents(response.data.contents);
+        // console.log("data load successful:", response.data);
+      } catch (error) {
+        console.error("data load failed:", error);
+      }
+    };
+
+    pageLoad();
+  }, [postId]);
+
+  // contents 상태가 설정된 후 에디터에 적용
+  useEffect(() => {
+    if (contents && !handled) {
+      setHandled(true);
+
+      if (editorRef.current) {
+        editorRef.current.getEditorInstance()?.getInstance().setMarkdown(contents);
+      }
+    }
+  }, [contents, handled]);
+
+  // 글 수정
   const handleSubmit = async () => {
     if (!validatePostField(title, "제목을 입력해주세요.")) {
       titleRef.current?.focus();
@@ -53,7 +83,7 @@ export default function PostsCreate() {
     };
 
     try {
-      const response = await axios.post("/api/posts-create", payload, {
+      const response = await axios.put(`/api/posts/${postId}`, payload, {
         headers: { "Contents-Type": "application/json" },
       });
       // console.log(response.data);
@@ -99,7 +129,7 @@ export default function PostsCreate() {
       </div>
 
       {/* 카테고리 */}
-      <CategorySelector onSelect={setCategoryId} />
+      <CategorySelector onSelect={setCategoryId} selectedId={categoryId} />
 
       {/* 에디터 */}
       <CustomEditor onChange={setContents} ref={editorRef} />
@@ -110,7 +140,7 @@ export default function PostsCreate() {
           취소
         </Button>
         <Button variant="default" className="hover:cursor-pointer" onClick={handleSubmit}>
-          등록
+          수정
         </Button>
       </div>
     </div>

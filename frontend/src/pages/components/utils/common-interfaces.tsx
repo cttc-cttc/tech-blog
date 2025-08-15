@@ -6,6 +6,7 @@ export interface PostProps {
   contents: string;
   createdAt: Date;
   updatedAt: Date;
+  categoryId: number;
   urlNameParent: string | null;
   urlNameChild: string;
   nameParent: string | null;

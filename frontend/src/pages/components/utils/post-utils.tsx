@@ -145,9 +145,9 @@ export const renderPostsList = (postsList: PostProps[]) => {
 
 /**
  * 제목, 카테고리, 글 내용 공백 체크
- * @param value
- * @param message
- * @returns
+ * @param value input 폼의 value
+ * @param message toast에 띄울 메시지
+ * @returns value값이 공백이면 false, 공백이 아니면 true
  */
 export const validatePostField = (value: string | number | null, message: string) => {
   if (!value) {
@@ -160,4 +160,19 @@ export const validatePostField = (value: string | number | null, message: string
     return false;
   }
   return true;
+};
+
+/**
+ * 정규표현식으로 HTML 내 이미지 추출
+ * @param html 에디터의 전체 html 내용
+ * @returns 에디터 내용 중 이미지에 대한 html 내용
+ */
+export const extractImgUrl = (html: string) => {
+  const imageUrls =
+    html.match(/<img[^>]+src="([^">]+)"/g)?.map((tag: string) => {
+      const match = tag.match(/src="([^">]+)"/);
+      return match?.[1];
+    }) || [];
+
+  return imageUrls;
 };

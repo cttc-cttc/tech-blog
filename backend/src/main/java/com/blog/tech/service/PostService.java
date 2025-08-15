@@ -5,6 +5,7 @@ import com.blog.tech.dto.PostResponseDto;
 import com.blog.tech.entity.CategoryEntity;
 import com.blog.tech.entity.PostEntity;
 import com.blog.tech.repository.CategoryRepository;
+import com.blog.tech.repository.ImageUrlRepository;
 import com.blog.tech.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -22,6 +23,7 @@ public class PostService {
 
     private final CategoryRepository categoryRepository;
     private final PostRepository postRepository;
+    private final ImageUrlRepository imageUrlRepository;
 
     /**
      * 카테고리 상관 없이 모든 게시글 목록 불러오기
@@ -93,6 +95,10 @@ public class PostService {
         post.setCategory(category);
 
         PostEntity saved = postRepository.save(post);
+        List<String> images = request.getImages();
+        if (!images.isEmpty()) {
+            imageUrlRepository.markImagesAsUsed(images);
+        }
         return PostResponseDto.fromEntity(saved);
     }
 
@@ -103,16 +109,22 @@ public class PostService {
      * @return
      */
     public PostResponseDto updatePost(Long id, PostRequestDto request) {
-        PostEntity updated = postRepository.findById(id)
-                .map(postEntity -> {
-                    postEntity.setTitle(request.getTitle());
-                    postEntity.setContents(request.getContents());
-                    postEntity.getCategory().setId(request.getCategoryId());
-                    return postRepository.save(postEntity);
-                })
-                .orElseThrow(() -> new RuntimeException("Post not found with id" + id));
+        PostEntity post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("id에 해당하는 포스트 없음"));
 
-        return PostResponseDto.fromEntity(updated);
+
+        CategoryEntity category = categoryRepository.findById((request.getCategoryId()))
+                .orElseThrow(() -> new IllegalArgumentException("categoryId에 해당하는 카테고리 없음"));
+
+        Optional.ofNullable(post).map(postEntity -> {
+                postEntity.setTitle(request.getTitle());
+                postEntity.setCategory(category);
+                postEntity.setContents(request.getContents());
+                return postRepository.save(postEntity);
+        })
+        .orElseThrow(() -> new RuntimeException("Post not found with id" + id));
+
+        return PostResponseDto.fromEntity(post);
     }
 
     /**

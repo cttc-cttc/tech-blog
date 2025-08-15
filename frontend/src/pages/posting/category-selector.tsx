@@ -16,21 +16,41 @@ interface Category {
   children: Category[];
 }
 
-export default function CategorySelector({ onSelect }: { onSelect: (categoryId: number) => void }) {
+interface CategorySelectorProps {
+  onSelect: (id: number) => void;
+  selectedId?: number | null;
+}
+
+export default function CategorySelector({ onSelect, selectedId }: CategorySelectorProps) {
+  const [selected, setSelected] = useState<number | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     axios.get("/api/categories/tree").then(res => {
-      // console.log(res.data);
       setCategories(res.data);
+
+      // 데이터 로드 후 초기값 세팅
+      if (selectedId != null) {
+        setSelected(selectedId);
+      }
+      setIsLoading(false);
     });
-  }, []);
+  }, [selectedId]);
+
+  // 데이터 로드 전에는 렌더 안 함 (또는 로딩 표시)
+  if (isLoading) {
+    return <div>카테고리 불러오는 중...</div>;
+  }
 
   return (
     <div className="w-full mb-[24px]">
       <Select
+        value={selected != null ? String(selected) : undefined}
         onValueChange={value => {
-          onSelect(Number(value));
+          const numValue = Number(value);
+          setSelected(numValue);
+          onSelect(numValue);
         }}
       >
         <SelectTrigger className="w-full dark:border-accent-foreground/80 rounded-sm">

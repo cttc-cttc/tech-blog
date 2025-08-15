@@ -18,6 +18,7 @@ public class PostResponseDto {
     private String contents;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Long categoryId;
     private String urlNameParent;
     private String urlNameChild;
     private String nameParent;
@@ -34,6 +35,7 @@ public class PostResponseDto {
                 .writer(post.getWriter())
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
+                .categoryId(categoryChild.getId())
                 .urlNameParent(categoryParent != null ? categoryParent.getUrlName() : null)
                 .urlNameChild(categoryChild.getUrlName())
                 .nameParent(categoryParent != null ? categoryParent.getName() : null)

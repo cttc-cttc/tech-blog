@@ -15,6 +15,7 @@ import SidebarLayout from "./pages/posting/sidebar-layout";
 import PostsList from "./pages/posting/posts-list";
 import PostsDetail from "./pages/posting/posts-detail";
 import PostsCreate from "./pages/posting/posts-create";
+import PostsUpdate from "./pages/posting/posts-update";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
               <Route path="/posts/:category1/:category2" element={<PostsList />} />
               <Route path="/posts/:category1/:category2/create" element={<PostsCreate />} />
               <Route path="/posts/:category1/:category2/:postId" element={<PostsDetail />} />
+              <Route path="/posts/:category1/:category2/update/:postId" element={<PostsUpdate />} />
             </Route>
           </Route>
         </Routes>
