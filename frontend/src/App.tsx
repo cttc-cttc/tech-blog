@@ -3,9 +3,7 @@ import Home from "./pages/home/home";
 import HomeMain from "./pages/home/home-main";
 import NotFound from "./pages/home/not-found";
 import { ThemeProvider } from "./components/ui/theme-provider";
-import Intro from "./pages/home/intro";
-import CustomEditorInsert from "./pages/components/toast-ui-editor-custom/custom-editor-insert";
-import CustomEditorUpdate from "./pages/components/toast-ui-editor-custom/custom-editor-update";
+import Intro from "./pages/intro/intro";
 import { Toaster } from "./components/ui/sonner";
 import Register from "./pages/user/register";
 import Login from "./pages/user/login";
@@ -16,6 +14,18 @@ import PostsList from "./pages/posting/posts-list";
 import PostsDetail from "./pages/posting/posts-detail";
 import PostsCreate from "./pages/posting/posts-create";
 import PostsUpdate from "./pages/posting/posts-update";
+import IntroCreate from "./pages/intro/intro-create";
+import IntroUpdate from "./pages/intro/intro-update";
+
+import "@toast-ui/editor/dist/toastui-editor.css";
+import "@toast-ui/editor/dist/toastui-editor-viewer.css";
+import "@toast-ui/editor/dist/i18n/ko-kr";
+import "tui-color-picker/dist/tui-color-picker.css";
+import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
+import "./pages/components/toast-ui-editor-custom/toast-editor-dark.css";
+
+import "prismjs/themes/prism.css";
+import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
 
 function App() {
   return (
@@ -26,8 +36,8 @@ function App() {
           <Route path="/" element={<Home />}>
             <Route index element={<HomeMain />} />
             <Route path="/intro" element={<Intro />} />
-            <Route path="/intro/write" element={<CustomEditorInsert />} />
-            <Route path="/intro/update" element={<CustomEditorUpdate />} />
+            <Route path="/intro/write" element={<IntroCreate />} />
+            <Route path="/intro/update" element={<IntroUpdate />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />

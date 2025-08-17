@@ -1,15 +1,15 @@
-import { Viewer } from "@toast-ui/react-editor";
 import axios from "axios";
 import { useEffect, useState } from "react";
 // import "@toast-ui/editor/dist/toastui-editor.css";
-import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 // import "tui-color-picker/dist/tui-color-picker.css";
-import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
-import "@toast-ui/editor/dist/i18n/ko-kr";
-import "../../pages/components/toast-ui-editor-custom/toast-editor-dark.css";
+// import "@toast-ui/editor/dist/toastui-editor-viewer.css";
+// import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
+// import "@toast-ui/editor/dist/i18n/ko-kr";
+// import "../../pages/components/toast-ui-editor-custom/toast-editor-dark.css";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "@/pages/components/utils/useAuthStore";
+import CustomViewer from "../components/toast-ui-editor-custom/custom-viewer";
 
 export default function Intro() {
   const { role } = useAuthStore();
@@ -19,8 +19,8 @@ export default function Intro() {
     const pageLoad = async () => {
       try {
         const response = await axios.get("/api/intro");
-        setContents(response.data);
         // console.log("data load successful:", response.data);
+        setContents(response.data.contents);
       } catch (error) {
         console.error("data load failed:", error);
       }
@@ -39,30 +39,30 @@ export default function Intro() {
       if (!hasContents) {
         return (
           <Link to="/intro/write">
-            <Button className="hover:cursor-pointer" variant="outline">
+            <Button className="hover:cursor-pointer" variant="default">
               글쓰기
             </Button>
           </Link>
         );
-        // 작성된 글이 있으면
-      } else {
-        return (
-          <Link to="/intro/update">
-            <Button className="hover:cursor-pointer" variant="outline">
-              수정
-            </Button>
-          </Link>
-        );
       }
+
+      // 작성된 글이 있으면
+      return (
+        <Link to="/intro/update">
+          <Button className="hover:cursor-pointer" variant="default">
+            수정
+          </Button>
+        </Link>
+      );
     }
   };
 
   return (
-    <div className="container max-w-4xl mt-6">
+    <div className="container max-w-4xl mt-10">
       <div className="edit_wrap dark:dark">
         {/* contents 값이 존재하면 뷰어로 내용 표시, 없으면 작성된 내용이 없다는 문자열을 표시 */}
         {contents ? (
-          <Viewer initialValue={contents} />
+          <CustomViewer contents={contents} />
         ) : (
           <p className="text-center p-6">작성된 내용이 없습니다</p>
         )}

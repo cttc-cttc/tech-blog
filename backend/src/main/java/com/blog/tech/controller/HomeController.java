@@ -17,30 +17,14 @@ public class HomeController {
 
     private final IntroService introService;
 
-    @GetMapping("/intro")
-    public String findAll() {
-        List<IntroEntity> result = introService.findAll();
 
-        if(!result.isEmpty()) {
-            return result.getLast().getContents();
-        }
-        return "";
-    }
-
-    @PostMapping("/intro-insert")
-    public void saveIntro(IntroEntity entity, @RequestParam("images") List<String> images) {
-        introService.saveIntro(entity, images);
-    }
 
     @PostMapping("/intro-findLastOne")
     public IntroEntity findLastOne() {
         return introService.findLastOne();
     }
 
-    @PostMapping("/intro-update")
-    public void updateIntro(IntroEntity entity, @RequestParam("images") List<String> images) {
-        introService.updateIntro(entity, images);
-    }
+
 
     @PostMapping("/uploadImg")
     public ResponseEntity<Map<String, String>> uploadImg(@RequestParam("image") MultipartFile file) {

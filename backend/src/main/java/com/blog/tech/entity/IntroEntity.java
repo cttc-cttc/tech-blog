@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class IntroEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int post_id;
+    private int id;
 
     // 업데이트 용 pk를 스트링으로 받는 용도
     private String post_id_str;
@@ -23,27 +23,21 @@ public class IntroEntity {
     @Column(length = 20, nullable = false)
     private String writer;
 
-    @Column(length = 100, nullable = false)
-    private String title;
-
     @Column(length = 4000, nullable = false)
     private String contents;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updatedAt;
-
-    private int del_flag;
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 }

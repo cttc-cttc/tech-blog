@@ -4,8 +4,6 @@ import type { Editor as EditorType } from "@toast-ui/react-editor";
 import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 import axios from "axios";
 
-import "prismjs/themes/prism.css";
-import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
 import Prism from "prismjs";
 import "prismjs/components/prism-java";
 import "prismjs/components/prism-javascript";
@@ -13,6 +11,7 @@ import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
 
 interface CustomEditorProps {
   onChange: (value: string) => void;
+  initialValue?: string;
 }
 
 export interface CustomEditorRef {
@@ -29,63 +28,65 @@ export interface CustomEditorRef {
   focus: () => void;
 }
 
-const CustomEditor = forwardRef<CustomEditorRef, CustomEditorProps>(({ onChange }, ref) => {
-  const editorRef = useRef<EditorType>(null);
+const CustomEditor = forwardRef<CustomEditorRef, CustomEditorProps>(
+  ({ onChange, initialValue = "" }, ref) => {
+    const editorRef = useRef<EditorType>(null);
 
-  const handleChange = () => {
-    const markdown = editorRef.current?.getInstance().getMarkdown();
-    onChange(markdown || "");
-  };
+    const handleChange = () => {
+      const markdown = editorRef.current?.getInstance().getMarkdown();
+      onChange(markdown || "");
+    };
 
-  // 부모 ref에 공개할 메서드 정의
-  useImperativeHandle(ref, () => ({
-    getMarkdown: () => editorRef.current?.getInstance().getMarkdown(),
-    getHTML: () => editorRef.current?.getInstance().getHTML(),
-    getEditorInstance: () => editorRef.current,
-    focus: () => editorRef.current?.getInstance().focus(),
-  }));
+    // 부모 ref에 공개할 메서드 정의
+    useImperativeHandle(ref, () => ({
+      getMarkdown: () => editorRef.current?.getInstance().getMarkdown(),
+      getHTML: () => editorRef.current?.getInstance().getHTML(),
+      getEditorInstance: () => editorRef.current,
+      focus: () => editorRef.current?.getInstance().focus(),
+    }));
 
-  // 이미지 업로드 hook 설정
-  useEffect(() => {
-    if (editorRef.current) {
-      editorRef.current
-        .getInstance()
-        .addHook(
-          "addImageBlobHook",
-          async (blob: File, callback: (url: string, altText: string) => void) => {
-            try {
-              const formData = new FormData();
-              formData.append("image", blob);
+    // 이미지 업로드 hook 설정
+    useEffect(() => {
+      if (editorRef.current) {
+        editorRef.current
+          .getInstance()
+          .addHook(
+            "addImageBlobHook",
+            async (blob: File, callback: (url: string, altText: string) => void) => {
+              try {
+                const formData = new FormData();
+                formData.append("image", blob);
 
-              const response = await axios.post("/api/uploadImg", formData, {
-                headers: { "Content-Type": "multipart/form-data" },
-              });
+                const response = await axios.post("/api/uploadImg", formData, {
+                  headers: { "Content-Type": "multipart/form-data" },
+                });
 
-              // console.log(response.data.url);
-              const imageUrl = response.data.url; // 서버에서 URL 반환
-              callback(imageUrl, blob.name); // 이 URL이 에디터에 삽입됨
-            } catch (err) {
-              console.error("이미지 업로드 실패:", err);
+                // console.log(response.data.url);
+                const imageUrl = response.data.url; // 서버에서 URL 반환
+                callback(imageUrl, blob.name); // 이 URL이 에디터에 삽입됨
+              } catch (err) {
+                console.error("이미지 업로드 실패:", err);
+              }
             }
-          }
-        );
-    }
-  }, []);
+          );
+      }
+    }, []);
 
-  return (
-    <Editor
-      ref={editorRef}
-      initialValue=""
-      previewStyle="vertical"
-      height="600px"
-      initialEditType="wysiwyg"
-      useCommandShortcut={false}
-      hideModeSwitch={true}
-      language="ko-KR"
-      plugins={[colorSyntax, [codeSyntaxHighlight, { highlighter: Prism }]]}
-      onChange={handleChange}
-    />
-  );
-});
+    return (
+      <Editor
+        ref={editorRef}
+        initialValue={initialValue ?? ""}
+        previewStyle="vertical"
+        height="600px"
+        initialEditType="wysiwyg"
+        useCommandShortcut={false}
+        hideModeSwitch={true}
+        language="ko-KR"
+        plugins={[colorSyntax, [codeSyntaxHighlight, { highlighter: Prism }]]}
+        onChange={handleChange}
+      />
+    );
+  }
+);
 
 export default CustomEditor;

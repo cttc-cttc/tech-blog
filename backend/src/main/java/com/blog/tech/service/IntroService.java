@@ -1,5 +1,7 @@
 package com.blog.tech.service;
 
+import com.blog.tech.dto.IntroRequestDto;
+import com.blog.tech.dto.IntroResponseDto;
 import com.blog.tech.entity.ImageUrlEntity;
 import com.blog.tech.entity.IntroEntity;
 import com.blog.tech.repository.ImageUrlRepository;
@@ -16,6 +18,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,12 +27,25 @@ public class IntroService {
     private final IntroRepository introRepository;
     private final ImageUrlRepository imageUrlRepository;
 
-    public void saveIntro(IntroEntity entity, List<String> images) {
-        introRepository.save(entity);
+    public List<IntroResponseDto> findAll() {
+        return introRepository.findAll()
+                .stream()
+                .map(IntroResponseDto::fromEntity)
+                .collect(Collectors.toList());
+    }
 
+    public IntroResponseDto createIntro(IntroRequestDto request) {
+
+        IntroEntity intro = new IntroEntity();
+        intro.setWriter(request.getWriter());
+        intro.setContents(request.getContents());
+
+        IntroEntity saved = introRepository.save(intro);
+        List<String> images = request.getImages();
         if (!images.isEmpty()) {
             imageUrlRepository.markImagesAsUsed(images);
         }
+        return IntroResponseDto.fromEntity(saved);
     }
 
     public IntroEntity findLastOne() {
@@ -37,18 +53,23 @@ public class IntroService {
         return result.map(integer -> introRepository.findById(integer).get()).orElse(new IntroEntity());
     }
 
-    public void updateIntro(IntroEntity entity, List<String> images) {
-        int id = Integer.parseInt(entity.getPost_id_str());
-        entity.setPost_id(id);
-        introRepository.save(entity);
+    public IntroResponseDto updateIntro(IntroRequestDto request) {
+//        int id = Integer.parseInt(entity.getPost_id_str());
+//        entity.setId(id);
+//        introRepository.save(entity);
+        IntroEntity intro = introRepository.findAll().getLast();
 
-        if (!images.isEmpty()) {
-            imageUrlRepository.markImagesAsUsed(images);
-        }
-    }
+        Optional.ofNullable(intro).map(introEntity -> {
+                introEntity.setContents(request.getContents());
+                return introRepository.save(introEntity);
+        })
+        .orElseThrow(() -> new RuntimeException("intro not found"));
 
-    public List<IntroEntity> findAll() {
-        return introRepository.findAll();
+//        List<String> images = request.getImages();
+//        if (!images.isEmpty()) {
+//            imageUrlRepository.markImagesAsUsed(images);
+//        }
+        return IntroResponseDto.fromEntity(intro);
     }
 
     public String upload(MultipartFile file) {

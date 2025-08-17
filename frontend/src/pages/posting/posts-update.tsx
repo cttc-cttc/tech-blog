@@ -13,7 +13,8 @@ import { extractImgUrl, validatePostField } from "../components/utils/post-utils
 export default function PostsUpdate() {
   const { postId } = useParams();
   const editorRef = useRef<CustomEditorRef>(null);
-  const [handled, setHandled] = useState(false);
+  // const [handled, setHandled] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const { nickName } = useAuthStore();
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
@@ -24,31 +25,38 @@ export default function PostsUpdate() {
 
   // 페이지 첫 로드 시 처리
   useEffect(() => {
-    const pageLoad = async () => {
-      try {
-        const response = await axios.get(`/api/posts/${postId}`);
-        setTitle(response.data.title);
-        setCategoryId(response.data.categoryId);
-        setContents(response.data.contents);
-        // console.log("data load successful:", response.data);
-      } catch (error) {
-        console.error("data load failed:", error);
-      }
-    };
+    // const pageLoad = async () => {
+    //   try {
+    //     const response = await axios.get(`/api/posts/${postId}`);
+    //     setTitle(response.data.title);
+    //     setCategoryId(response.data.categoryId);
+    //     setContents(response.data.contents);
+    //     // console.log("data load successful:", response.data);
+    //   } catch (error) {
+    //     console.error("data load failed:", error);
+    //   }
+    // };
 
-    pageLoad();
+    // pageLoad();
+    (async () => {
+      const { data } = await axios.get(`/api/posts/${postId}`);
+      setTitle(data.title);
+      setCategoryId(data.categoryId);
+      setContents(data.contents ?? "");
+      setLoaded(true);
+    })();
   }, [postId]);
 
   // contents 상태가 설정된 후 에디터에 적용
-  useEffect(() => {
-    if (contents && !handled) {
-      setHandled(true);
+  // useEffect(() => {
+  //   if (contents && !handled) {
+  //     setHandled(true);
 
-      if (editorRef.current) {
-        editorRef.current.getEditorInstance()?.getInstance().setMarkdown(contents);
-      }
-    }
-  }, [contents, handled]);
+  //     if (editorRef.current) {
+  //       editorRef.current.getEditorInstance()?.getInstance().setMarkdown(contents);
+  //     }
+  //   }
+  // }, [contents, handled]);
 
   // 글 수정
   const handleSubmit = async () => {
@@ -132,7 +140,7 @@ export default function PostsUpdate() {
       <CategorySelector onSelect={setCategoryId} selectedId={categoryId} />
 
       {/* 에디터 */}
-      <CustomEditor onChange={setContents} ref={editorRef} />
+      {loaded && <CustomEditor onChange={setContents} ref={editorRef} initialValue={contents} />}
 
       {/* 버튼 */}
       <div className="py-6 flex w-full justify-end gap-2">
