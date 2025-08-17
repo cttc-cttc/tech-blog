@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import type { PostProps } from "./common-interfaces";
 import dayjs from "dayjs";
 import { toast } from "sonner";
+import PostCard from "@/pages/posting/post-card";
 
 //? 게시글 posting 관련 공통 함수
 
@@ -112,8 +113,8 @@ export const renderPostsList = (postsList: PostProps[]) => {
                 </CardDescription>
               </CardHeader>
               {/* <Separator /> */}
-              <CardContent className="line-clamp-3 break-words text-muted-foreground py-4">
-                {post.contents.substring(0, 150)}...
+              <CardContent className="py-2">
+                <PostCard post={post} />
               </CardContent>
             </Card>
           </Link>
