@@ -55,6 +55,7 @@ npx shadcn@latest add sidebar
 npx shadcn@latest add collapsible
 npx shadcn@latest add breadcrumb
 npx shadcn@latest add select
+npx shadcn@latest add alert-dialog
 ```
 
 ## 개발 실행 환경
