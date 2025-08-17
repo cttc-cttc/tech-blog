@@ -1,16 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import CustomEditor, {
   type CustomEditorRef,
 } from "../components/toast-ui-editor-custom/custom-editor";
 import { useAuthStore } from "../components/utils/useAuthStore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CategorySelector from "./category-selector";
-import { extractImgUrl, validatePostField } from "../components/utils/post-utils";
+import { categoryIdMap, extractImgUrl, validatePostField } from "../components/utils/post-utils";
 
 export default function PostsCreate() {
+  const { category2 } = useParams();
   const editorRef = useRef<CustomEditorRef>(null);
   const { nickName } = useAuthStore();
   const [title, setTitle] = useState("");
@@ -19,6 +20,11 @@ export default function PostsCreate() {
   const titleRef = useRef<HTMLInputElement>(null);
   const categoryIdRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // 카테고리 설정
+    if (category2) setCategoryId(categoryIdMap[category2]);
+  }, [category2]);
 
   // 글 등록
   const handleSubmit = async () => {
@@ -53,7 +59,7 @@ export default function PostsCreate() {
     };
 
     try {
-      const response = await axios.post("/api/posts-create", payload, {
+      const response = await axios.post("/api/posts", payload, {
         headers: { "Contents-Type": "application/json" },
       });
       // console.log(response.data);
@@ -99,7 +105,7 @@ export default function PostsCreate() {
       </div>
 
       {/* 카테고리 */}
-      <CategorySelector onSelect={setCategoryId} />
+      <CategorySelector onSelect={setCategoryId} selectedId={categoryId} />
 
       {/* 에디터 */}
       <CustomEditor onChange={setContents} ref={editorRef} />

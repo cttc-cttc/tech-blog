@@ -46,7 +46,7 @@ export default function CategorySelector({ onSelect, selectedId }: CategorySelec
   return (
     <div className="w-full mb-[24px]">
       <Select
-        value={selected != null ? String(selected) : undefined}
+        value={selected != null ? String(selected) : ""}
         onValueChange={value => {
           const numValue = Number(value);
           setSelected(numValue);
@@ -59,9 +59,15 @@ export default function CategorySelector({ onSelect, selectedId }: CategorySelec
         <SelectContent className="dark:border-accent-foreground/80 rounded-sm">
           {categories.map(parent => (
             <SelectGroup key={parent.id}>
-              <SelectLabel className="text-muted-foreground text-sm p-2">{parent.name}</SelectLabel>
+              <SelectLabel className="text-muted-foreground text-sm p-2 bg-foreground/10 rounded-sm">
+                {parent.name}
+              </SelectLabel>
               {parent.children.map(child => (
-                <SelectItem key={child.id} value={String(child.id)}>
+                <SelectItem
+                  key={child.id}
+                  value={String(child.id)}
+                  className="hover:cursor-pointer"
+                >
                   {child.name}
                 </SelectItem>
               ))}

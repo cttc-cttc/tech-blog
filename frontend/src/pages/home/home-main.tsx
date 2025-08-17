@@ -9,7 +9,7 @@ export default function HomeMain() {
 
   useEffect(() => {
     axios
-      .get("api/posts-all")
+      .get("api/posts")
       .then(res => setPostsList(res.data))
       .catch(err => console.error("Error fetching posts:", err));
   }, []);

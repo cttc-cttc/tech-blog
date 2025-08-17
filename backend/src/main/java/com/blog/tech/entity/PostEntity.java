@@ -35,7 +35,6 @@ public class PostEntity {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
     @Column(name = "del_flag", nullable = false)
@@ -44,7 +43,6 @@ public class PostEntity {
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
-        this.updatedAt = this.createdAt;
     }
 
     @PreUpdate

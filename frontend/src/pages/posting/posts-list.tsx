@@ -1,40 +1,26 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import type { PostProps } from "../components/utils/common-interfaces";
-import {
-  // getPathFirstSegment,
-  getPathLastSegment,
-  // getPathName,
-  pathIdMap,
-  renderPostsList,
-  // pathStrMap,
-} from "../components/utils/post-utils";
-// import { Separator } from "@/components/ui/separator";
+import { renderPostsList } from "../components/utils/post-utils";
 import axios from "axios";
 
 export default function PostsList() {
-  const location = useLocation();
-  const currentPath = location.pathname;
+  const { category1, category2 } = useParams();
   const [postsList, setPostsList] = useState<PostProps[]>([]);
-  // const firstPathSegment = getPathFirstSegment(currentPath);
-  // const pathName = getPathName(firstPathSegment ?? "");
 
   useEffect(() => {
-    const lastPath = getPathLastSegment(currentPath);
-    const lastPathId = pathIdMap[lastPath ?? "it"]; // lastPath가 undefined라면 "it"라는 값을 사용
+    const params: Record<string, string> = {};
+    if (category1) params.category1 = category1;
+    if (category2) params.category2 = category2;
 
     axios
-      .get("/api/posts", {
-        params: {
-          categoryId: lastPathId,
-        },
-      })
+      .get("/api/posts", { params })
       .then(res => {
         // console.log(res.data);
         setPostsList(res.data);
       })
       .catch(err => console.error("Error fetching posts:", err));
-  }, [currentPath]);
+  }, [category1, category2]);
 
   return <div className="max-w-4xl flex flex-col gap-5">{renderPostsList(postsList)}</div>;
 }

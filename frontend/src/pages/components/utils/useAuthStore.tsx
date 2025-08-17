@@ -1,5 +1,7 @@
 import { create } from "zustand";
 
+//? 사용자 인증 정보를 관리하는 Zustand 스토어
+
 interface AuthState {
   token: string | null;
   userId: string | null;

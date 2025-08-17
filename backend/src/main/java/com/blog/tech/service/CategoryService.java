@@ -28,4 +28,17 @@ public class CategoryService {
 
         categoryRepository.save(category);
     }
+
+    public CategoryEntity findByPath(String category1, String category2) {
+        // 최상위 카테고리 찾기
+        CategoryEntity parent = categoryRepository.findByUrlNameAndParentIsNull(category1)
+                .orElseThrow(() -> new RuntimeException("카테고리 없음: " + category1));
+
+        // 하위 카테고리 찾기 (2단계 구조일 때)
+        if(category2 != null) {
+            return categoryRepository.findByUrlNameAndParent(category2, parent)
+                    .orElseThrow(() -> new RuntimeException("카테고리 없음: " + category1 + "/" + category2));
+        }
+        return parent;
+    }
 }

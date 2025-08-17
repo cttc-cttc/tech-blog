@@ -46,9 +46,9 @@ export default function PostsDetail() {
   // 삭제 버튼
   const handleDelete = () => {
     axios
-      .patch(`/api/posts/${postId}/delete`)
+      .patch(`/api/posts/${postId}`)
       .then(() => {
-        setDialogOpen(true);
+        navigateToList();
       })
       .catch(err => console.error("삭제 실패: ", err));
   };
@@ -57,10 +57,8 @@ export default function PostsDetail() {
     <div className="max-w-4xl p-4">
       <h1 className="text-2xl font-bold mb-4">{post.title}</h1>
       <p className="text-sm text-gray-500 mb-6">
-        {dayjs(post.createdAt).format("YYYY-MM-DD HH:mm")} · {post.writer}
-      </p>
-      <p className="text-sm text-gray-500 mb-6">
-        {dayjs(post.updatedAt).format("YYYY-MM-DD HH:mm")} · {post.writer}
+        {dayjs(post.createdAt).format("YYYY-MM-DD")} · {post.writer}
+        {post.updatedAt && dayjs(post.updatedAt).format(" (수정: YYYY-MM-DD)")}
       </p>
       <CustomViewer contents={post.contents} />
       {/* <div className="text-gray-800 whitespace-pre-wrap">{post.contents}</div> */}
@@ -73,7 +71,11 @@ export default function PostsDetail() {
             <Button variant="default" className="hover:cursor-pointer" onClick={navigateUpdate}>
               수정
             </Button>
-            <Button variant="destructive" className="hover:cursor-pointer" onClick={handleDelete}>
+            <Button
+              variant="destructive"
+              className="hover:cursor-pointer hover:bg-destructive/70 dark:hover:bg-destructive/70"
+              onClick={() => setDialogOpen(true)}
+            >
               삭제
             </Button>
           </>
@@ -88,15 +90,13 @@ export default function PostsDetail() {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>게시글을 삭제 하시겠습니까?</AlertDialogTitle>
-            <AlertDialogDescription>
-              삭제된 글은 복구할 수 없습니다. 신중하게 생각해주세요.
-            </AlertDialogDescription>
+            <AlertDialogDescription>삭제된 글은 복구할 수 없습니다.</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>취소</AlertDialogCancel>
+            <AlertDialogCancel className="hover:cursor-pointer">취소</AlertDialogCancel>
             <AlertDialogAction
-              onClick={navigateToList}
-              className="hover:cursor-pointer bg-destructive"
+              onClick={handleDelete}
+              className="text-white bg-destructive dark:bg-destructive/50 hover:cursor-pointer hover:bg-destructive/70 dark:hover:bg-destructive/70"
             >
               삭제
             </AlertDialogAction>

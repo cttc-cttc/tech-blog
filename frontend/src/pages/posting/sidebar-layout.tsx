@@ -9,50 +9,54 @@ import {
 } from "@/components/ui/breadcrumb";
 // import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { Link, Outlet, useLocation } from "react-router-dom";
-import { getPathSegment, pathTextMap } from "../components/utils/post-utils";
-import PostsList from "./posts-list";
+import { Link, Outlet, useLocation, useParams } from "react-router-dom";
+import { pathTextMap } from "../components/utils/post-utils";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "../components/utils/useAuthStore";
 
 export default function SidebarLayout() {
   const { role } = useAuthStore();
+  const { category1, category2 } = useParams();
   const location = useLocation();
   const currentPath = location.pathname;
-
-  const pathArray = getPathSegment(currentPath);
+  const isStateCreate = currentPath.includes("create");
+  const isStateUpdate = currentPath.includes("update");
 
   // 사이드 바 레이아웃 헤더 조건부 렌더링
   const renderHeader = () => {
-    if (pathArray.length >= 2) {
+    if (category1 && category2) {
       return (
         <>
           <BreadcrumbItem className="hidden md:block">
-            <BreadcrumbLink>{pathTextMap[pathArray[1]]}</BreadcrumbLink>
+            <BreadcrumbLink>{pathTextMap[category1]}</BreadcrumbLink>
           </BreadcrumbItem>
 
           <BreadcrumbSeparator className="hidden md:block" />
 
           <BreadcrumbItem className="hidden md:block">
-            <BreadcrumbPage>{pathTextMap[pathArray[2]]}</BreadcrumbPage>
+            <BreadcrumbPage>{pathTextMap[category2]}</BreadcrumbPage>
           </BreadcrumbItem>
         </>
       );
     }
 
-    return (
-      <BreadcrumbItem className="hidden md:block">
-        <BreadcrumbLink>{pathTextMap[pathArray[1]]}</BreadcrumbLink>
-      </BreadcrumbItem>
-    );
+    if (category1) {
+      return (
+        <BreadcrumbItem className="hidden md:block">
+          <BreadcrumbLink>{pathTextMap[category1]}</BreadcrumbLink>
+        </BreadcrumbItem>
+      );
+    }
+
+    return null;
   };
 
-  // 관리자일 경우 글쓰기 && 카테고리가 최상단이 아닐 경우 버튼 표시
   const renderWriteButton = () => {
-    // /posts/it/html 과 같은 경우에만 보임
-    if (role === "ROLE_ADMIN" && pathArray.length === 3) {
+    // 관리자일 경우 /posts/it/html 과 같이 하위 카테고리에서만,
+    // 그리고 글쓰기, 글 수정 상태가 아닐 때 보임
+    if (role === "ROLE_ADMIN" && category2 && !isStateCreate && !isStateUpdate) {
       return (
-        <Link to={`${currentPath}/create`}>
+        <Link to={`/posts/${category1}/${category2}/create`}>
           <Button variant="secondary" className="hover:cursor-pointer">
             글쓰기
           </Button>
@@ -62,7 +66,7 @@ export default function SidebarLayout() {
   };
 
   return (
-    <SidebarProvider className="min-h-[69vh]">
+    <SidebarProvider className="min-h-[65vh]">
       <AppSidebar />
       <SidebarInset>
         <header
@@ -95,7 +99,7 @@ export default function SidebarLayout() {
           <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
         </div> */}
         <div className="flex flex-1 flex-col gap-4 p-4 mt-20">
-          {pathArray.length >= 3 ? <Outlet /> : <PostsList />}
+          <Outlet /> {/* 라우터에서 PostsList / PostDetail 알아서 들어옴 */}
         </div>
       </SidebarInset>
     </SidebarProvider>

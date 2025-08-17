@@ -1,5 +1,7 @@
 import axios from "axios";
 
+//? 에디터의 이미지 업로드 관련 함수
+
 export const getImage = async (file: File): Promise<string> => {
   const formData = new FormData();
   formData.append("image", file);

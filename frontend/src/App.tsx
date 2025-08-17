@@ -34,11 +34,13 @@ function App() {
             <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="*" element={<NotFound />} />
 
-            <Route path="/posts/:category1" element={<SidebarLayout />}>
-              <Route path="/posts/:category1/:category2" element={<PostsList />} />
-              <Route path="/posts/:category1/:category2/create" element={<PostsCreate />} />
-              <Route path="/posts/:category1/:category2/:postId" element={<PostsDetail />} />
-              <Route path="/posts/:category1/:category2/update/:postId" element={<PostsUpdate />} />
+            <Route path="/posts" element={<SidebarLayout />}>
+              {/* PostsList는 두 가지 경우 존재함 */}
+              <Route path=":category1" element={<PostsList />} />
+              <Route path=":category1/:category2" element={<PostsList />} />
+              <Route path=":category1/:category2/create" element={<PostsCreate />} />
+              <Route path=":category1/:category2/:postId" element={<PostsDetail />} />
+              <Route path=":category1/:category2/update/:postId" element={<PostsUpdate />} />
             </Route>
           </Route>
         </Routes>

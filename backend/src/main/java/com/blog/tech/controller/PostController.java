@@ -25,22 +25,25 @@ public class PostController {
     private final CategoryRepository categoryRepository;
 
     /**
-     * 카테고리 상관 없이 모든 게시글 목록 불러오기
-     * @return
-     */
-    @GetMapping("/posts-all")
-    public ResponseEntity<List<PostResponseDto>> getPostsAll() {
-        return ResponseEntity.ok(postService.getPostsAll());
-    }
-
-    /**
-     * 글 목록 조회 (상위, 하위 카테고리에 따라)
-     * @param categoryId
+     * 카테고리 상관 없이 모든 게시글 목록 조회
+     * 는 상위, 하위 카테고리에 따른 글 목록 조회
+     * @param category1
+     * @param category2
      * @return
      */
     @GetMapping("/posts")
-    public ResponseEntity<List<PostResponseDto>> getPosts(@RequestParam Long categoryId) {
-        return ResponseEntity.ok(postService.getPostsByCategory(categoryId));
+    public ResponseEntity<List<PostResponseDto>> getPosts(
+            @RequestParam(required = false) String category1,
+            @RequestParam(required = false) String category2
+    ) {
+        // category1이 있으면 상위/하위 카테고리 조회
+        if(category1 != null) {
+            CategoryEntity category = categoryService.findByPath(category1, category2);
+            return ResponseEntity.ok(postService.getPostsByCategory(category.getId()));
+        }
+
+        // category1이 없으면 전체 글 조회
+        return ResponseEntity.ok(postService.getPostsAll());
     }
 
     /**
@@ -62,7 +65,7 @@ public class PostController {
      * @param request
      * @return
      */
-    @PostMapping("/posts-create")
+    @PostMapping("/posts")
     public ResponseEntity<PostResponseDto> createPost(@RequestBody PostRequestDto request) {
         return ResponseEntity.ok(postService.createPost(request));
     }
@@ -83,7 +86,7 @@ public class PostController {
      * @param id 삭제하려는 글의 id
      * @return
      */
-    @PatchMapping("/posts/{id}/delete")
+    @PatchMapping("/posts/{id}")
     public ResponseEntity<Void> softDelete(@PathVariable Long id) {
         postService.deletePost(id);
         return ResponseEntity.noContent().build();
