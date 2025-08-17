@@ -98,6 +98,13 @@
 .dark .toastui-editor-contents pre code {
   background-color: #3a3a3a;
   color: #f5f5f5;
+  font-size: 1rem;
+  text-shadow: none;
+}
+
+.toastui-editor-contents pre code {
+  font-size: 1rem;
+  text-shadow: none;
 }
 
 .toastui-editor-contents hr {

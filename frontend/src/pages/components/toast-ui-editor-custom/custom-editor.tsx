@@ -4,6 +4,13 @@ import type { Editor as EditorType } from "@toast-ui/react-editor";
 import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 import axios from "axios";
 
+import "prismjs/themes/prism.css";
+import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
+import Prism from "prismjs";
+import "prismjs/components/prism-java";
+import "prismjs/components/prism-javascript";
+import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
+
 interface CustomEditorProps {
   onChange: (value: string) => void;
 }
@@ -75,7 +82,7 @@ const CustomEditor = forwardRef<CustomEditorRef, CustomEditorProps>(({ onChange 
       useCommandShortcut={false}
       hideModeSwitch={true}
       language="ko-KR"
-      plugins={[colorSyntax]}
+      plugins={[colorSyntax, [codeSyntaxHighlight, { highlighter: Prism }]]}
       onChange={handleChange}
     />
   );

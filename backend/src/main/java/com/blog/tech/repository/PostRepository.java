@@ -8,8 +8,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
+    // 삭제되지 않은 모든 게시글 최근 순으로 조회
+    @Query("SELECT p FROM PostEntity p WHERE p.delFlag = false ORDER BY p.id DESC")
+    List<PostEntity> findAllActivePosts();
 
-    // 카테고리 id에 해당하는 모든 글 리스트 반환 (상위, 하위 둘다 가능)
+    // 카테고리 id에 해당하는 모든 글 리스트 반환 (상위, 하위 둘다 가능) (삭제되지 않은 최신 글 순서)
     @Query("SELECT p FROM PostEntity p WHERE p.category.id IN :categoryIds AND p.delFlag = false ORDER BY p.id DESC")
     List<PostEntity> findAllByCategoryIds(@Param("categoryIds") List<Long> categoryIds);
 }

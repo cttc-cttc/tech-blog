@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import type { PostProps } from "../components/utils/common-interfaces";
 import { renderPostsList } from "../components/utils/post-utils";
 import axios from "axios";
+import "./code-block.css";
 
 export default function PostsList() {
   const { category1, category2 } = useParams();

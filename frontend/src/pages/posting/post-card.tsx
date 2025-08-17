@@ -17,7 +17,7 @@ export default function PostCard({ post }: { post: PostProps }) {
       {/* 왼쪽: 본문 미리보기 */}
       <div className="flex-1 line-clamp-5 text-muted-foreground">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>
-          {stripHtml(textWithoutImage).slice(0, 300)}
+          {stripHtml(textWithoutImage).slice(0, 1000)}
         </ReactMarkdown>
       </div>
 

@@ -30,7 +30,7 @@ public class PostService {
      * @return
      */
     public List<PostResponseDto> getPostsAll() {
-        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "id"))
+        return postRepository.findAllActivePosts()
                 .stream()
                 .map(PostResponseDto::fromEntity)
                 .collect(Collectors.toList());
