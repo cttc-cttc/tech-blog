@@ -10,9 +10,11 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "@/pages/components/utils/useAuthStore";
 import CustomViewer from "../components/toast-ui-editor-custom/custom-viewer";
+import { SkeletonDemo } from "./skeleton-demo";
 
 export default function Intro() {
   const { role } = useAuthStore();
+  const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
 
   useEffect(() => {
@@ -20,7 +22,14 @@ export default function Intro() {
       try {
         const response = await axios.get("/api/intro");
         // console.log("data load successful:", response.data);
-        setContents(response.data.contents);
+        // console.log("http status:" + response.status);
+        if (response.status === 204) {
+          setTitle("");
+          setContents("");
+        } else {
+          setTitle(response.data.title);
+          setContents(response.data.contents);
+        }
       } catch (error) {
         console.error("data load failed:", error);
       }
@@ -59,6 +68,8 @@ export default function Intro() {
 
   return (
     <div className="container max-w-4xl mt-10">
+      <SkeletonDemo />
+      {title && <div className="text-4xl font-bold text-center py-4 mb-4">{title}</div>}
       <div className="edit_wrap dark:dark">
         {/* contents 값이 존재하면 뷰어로 내용 표시, 없으면 작성된 내용이 없다는 문자열을 표시 */}
         {contents ? (

@@ -1,4 +1,4 @@
-import { BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { BreadcrumbItem, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import type { PostProps } from "./common-interfaces";
@@ -83,42 +83,44 @@ export const renderPostsList = (postsList: PostProps[]) => {
   return (
     <>
       {postsList.map((post, index) => (
-        <>
-          <Link
-            to={`/posts/${post.urlNameParent}/${post.urlNameChild}/${post.id}`}
-            key={index}
-            className="w-full max-w-7xl mb-4"
-          >
-            <Card className="hover:shadow-lg transition-shadow duration-200 dark:hover:shadow-gray-800 rounded-md">
-              <CardHeader>
-                <div className="flex justify-between">
-                  <CardTitle className="text-2xl">{post.title}</CardTitle>
+        <Link
+          to={`/posts/${post.urlNameParent}/${post.urlNameChild}/${post.id}`}
+          key={index}
+          className="w-full max-w-7xl mb-4"
+        >
+          <Card className="hover:shadow-lg transition-shadow duration-200 dark:hover:shadow-gray-800 rounded-md">
+            <CardHeader>
+              <div className="flex justify-between">
+                <CardTitle className="text-2xl">{post.title}</CardTitle>
 
-                  {/* 카테고리 표시 */}
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <BreadcrumbItem className="hidden md:block">
-                      <BreadcrumbLink>{post.nameParent}</BreadcrumbLink>
-                    </BreadcrumbItem>
+                {/* 카테고리 표시 */}
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <BreadcrumbItem className="hidden md:block">
+                    <BreadcrumbPage className="text-muted-foreground">
+                      {post.nameParent}
+                    </BreadcrumbPage>
+                  </BreadcrumbItem>
 
-                    <BreadcrumbSeparator className="hidden md:block" />
+                  <BreadcrumbSeparator className="hidden md:block" />
 
-                    <BreadcrumbItem className="hidden md:block">
-                      <BreadcrumbLink>{post.nameChild}</BreadcrumbLink>
-                    </BreadcrumbItem>
-                  </div>
+                  <BreadcrumbItem className="hidden md:block">
+                    <BreadcrumbPage className="text-muted-foreground">
+                      {post.nameChild}
+                    </BreadcrumbPage>
+                  </BreadcrumbItem>
                 </div>
-                <CardDescription>
-                  {dayjs(post.createdAt).format("YYYY-MM-DD")} · {post.writer}
-                  {post.updatedAt && dayjs(post.updatedAt).format(" (수정: YYYY-MM-DD)")}
-                </CardDescription>
-              </CardHeader>
-              {/* <Separator /> */}
-              <CardContent className="py-2">
-                <PostCard post={post} />
-              </CardContent>
-            </Card>
-          </Link>
-        </>
+              </div>
+              <CardDescription>
+                {dayjs(post.createdAt).format("YYYY-MM-DD")} · {post.writer}
+                {post.updatedAt && dayjs(post.updatedAt).format(" (수정: YYYY-MM-DD)")}
+              </CardDescription>
+            </CardHeader>
+            {/* <Separator /> */}
+            <CardContent className="py-2">
+              <PostCard post={post} />
+            </CardContent>
+          </Card>
+        </Link>
       ))}
     </>
   );

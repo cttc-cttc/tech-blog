@@ -14,11 +14,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class IntroEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Id
+    private Integer id; // 고정 PK
 
-    // 업데이트 용 pk를 스트링으로 받는 용도
-    private String post_id_str;
+    @Column(length = 100, nullable = false)
+    private String title;
 
     @Column(length = 20, nullable = false)
     private String writer;

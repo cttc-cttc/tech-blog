@@ -23,7 +23,9 @@ public class IntroController {
      */
     @GetMapping("/intro")
     public ResponseEntity<IntroResponseDto> getIntro() {
-        return ResponseEntity.ok(introService.findAll().getLast());
+        return introService.getIntro()
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.noContent().build()); // 값이 없으면 status:204 No Content
     }
 
     /**
@@ -33,7 +35,7 @@ public class IntroController {
      */
     @PostMapping("intro")
     public ResponseEntity<IntroResponseDto> createIntro(@RequestBody IntroRequestDto request) {
-        return ResponseEntity.ok(introService.createIntro(request));
+        return ResponseEntity.ok(introService.createOrUpdateIntro(request));
     }
 
     /**
@@ -43,6 +45,6 @@ public class IntroController {
      */
     @PutMapping("/intro")
     public ResponseEntity<IntroResponseDto> updateIntro(@RequestBody IntroRequestDto request) {
-        return ResponseEntity.ok(introService.updateIntro(request));
+        return ResponseEntity.ok(introService.createOrUpdateIntro(request));
     }
 }

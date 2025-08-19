@@ -9,13 +9,13 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class IntroResponseDto {
-    private int id;
+    private String title;
     private String writer;
     private String contents;
 
     public static IntroResponseDto fromEntity(IntroEntity intro) {
         return IntroResponseDto.builder()
-                .id(intro.getId())
+                .title(intro.getTitle())
                 .writer(intro.getWriter())
                 .contents(intro.getContents())
                 .build();

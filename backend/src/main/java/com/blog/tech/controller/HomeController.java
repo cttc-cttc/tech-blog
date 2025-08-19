@@ -17,15 +17,6 @@ public class HomeController {
 
     private final IntroService introService;
 
-
-
-    @PostMapping("/intro-findLastOne")
-    public IntroEntity findLastOne() {
-        return introService.findLastOne();
-    }
-
-
-
     @PostMapping("/uploadImg")
     public ResponseEntity<Map<String, String>> uploadImg(@RequestParam("image") MultipartFile file) {
         String imageUrl = introService.upload(file); // db 업로드 후 URL 반환

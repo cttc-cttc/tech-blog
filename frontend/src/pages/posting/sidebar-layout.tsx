@@ -2,7 +2,6 @@ import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -28,7 +27,9 @@ export default function SidebarLayout() {
       return (
         <>
           <BreadcrumbItem className="hidden md:block">
-            <BreadcrumbLink>{pathTextMap[category1]}</BreadcrumbLink>
+            <BreadcrumbPage className="text-muted-foreground">
+              {pathTextMap[category1]}
+            </BreadcrumbPage>
           </BreadcrumbItem>
 
           <BreadcrumbSeparator className="hidden md:block" />
@@ -43,7 +44,9 @@ export default function SidebarLayout() {
     if (category1) {
       return (
         <BreadcrumbItem className="hidden md:block">
-          <BreadcrumbLink>{pathTextMap[category1]}</BreadcrumbLink>
+          <BreadcrumbPage className="text-muted-foreground">
+            {pathTextMap[category1]}
+          </BreadcrumbPage>
         </BreadcrumbItem>
       );
     }

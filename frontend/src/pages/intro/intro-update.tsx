@@ -6,8 +6,11 @@ import { useAuthStore } from "../components/utils/useAuthStore";
 import { useNavigate } from "react-router-dom";
 import CustomEditor from "../components/toast-ui-editor-custom/custom-editor";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function IntroUpdate() {
+  const titleRef = useRef<HTMLInputElement>(null);
+  const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
   const editorRef = useRef<CustomEditorRef>(null);
   //   const [handled, setHandled] = useState(false);
@@ -17,37 +20,21 @@ export default function IntroUpdate() {
 
   // 페이지 첫 로드 시 처리
   useEffect(() => {
-    // const pageLoad = async () => {
-    //   try {
-    //     const response = await axios.get(`/api/intro`);
-    //     // console.log("data load successful:", response.data);
-    //     setContents(response.data.contents);
-    //   } catch (error) {
-    //     console.error("data load failed:", error);
-    //   }
-    // };
-
-    // pageLoad();
     (async () => {
-      const { data } = await axios.get(`/api/intro`);
+      const { data } = await axios.get("/api/intro");
+      setTitle(data.title ?? "");
       setContents(data.contents ?? "");
       setLoaded(true);
     })();
   }, []);
 
-  // contents 상태가 설정된 후 에디터에 적용
-  //   useEffect(() => {
-  //     if (contents && !handled) {
-  //       setHandled(true);
-
-  //       if (editorRef.current) {
-  //         editorRef.current.getEditorInstance()?.getInstance().setMarkdown(contents);
-  //       }
-  //     }
-  //   }, [contents, handled]);
-
   // 글 수정
   const handleSubmit = async () => {
+    if (!validatePostField(title, "제목을 입력해주세요.")) {
+      titleRef.current?.focus();
+      return;
+    }
+
     if (!validatePostField(contents, "내용을 입력해주세요.")) {
       editorRef.current?.focus();
       return;
@@ -61,21 +48,20 @@ export default function IntroUpdate() {
 
     // 백엔드의 @RequestBody 안에 다 포함시켜야 됨 (json 형식)
     const payload = {
+      title,
       contents,
       writer: nickName,
       images: imageUrls,
     };
 
     try {
-      const response = await axios.put(`/api/intro`, payload, {
+      const response = await axios.put("/api/intro", payload, {
         headers: { "Contents-Type": "application/json" },
       });
       console.log(response.data);
-      //   const { urlNameParent, urlNameChild, id } = response.data;
-      //   navigate(`/posts/${urlNameParent}/${urlNameChild}/${id}`);
       navigate("/intro");
     } catch (err) {
-      console.error("등록 실패: ", err);
+      console.error("수정 실패: ", err);
     }
   };
 
@@ -86,6 +72,33 @@ export default function IntroUpdate() {
 
   return (
     <div className="container max-w-4xl mt-10">
+      {/* 제목 */}
+      <div className="flex justify-between items-center pb-1 mb-2">
+        <Input
+          ref={titleRef}
+          id="title"
+          type="text"
+          name="title"
+          value={title}
+          onChange={e => setTitle(e.target.value)}
+          placeholder="제목을 입력하세요"
+          className="
+                      w-full
+                      border
+                      border-foreground/15
+                      dark:border-foreground/70
+                      bg-background
+                      text-foreground
+                      rounded-sm
+                      px-3
+                      py-2
+                      focus:outline-none
+                      focus:ring-2
+                      focus:ring-ring
+                    "
+        />
+      </div>
+
       {/* 에디터 */}
       {loaded && <CustomEditor onChange={setContents} ref={editorRef} initialValue={contents} />}
       <div className="py-6 flex w-full justify-end gap-2">

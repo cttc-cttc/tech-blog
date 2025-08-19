@@ -8,6 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 public class IntroRequestDto {
+    private String title;
     private String writer;
     private String contents;
     private List<String> images;

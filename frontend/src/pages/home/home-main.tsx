@@ -17,7 +17,7 @@ export default function HomeMain() {
   if (!postsList) return <p className="p-4">로딩 중...</p>;
 
   return (
-    <main className="w-full">
+    <main className="w-full mt-8">
       <div className="flex flex-col gap-5 items-center">
         <HomeAspectRatio />
         <div className="mb-8"></div>

@@ -6,6 +6,7 @@ import com.blog.tech.entity.ImageUrlEntity;
 import com.blog.tech.entity.IntroEntity;
 import com.blog.tech.repository.ImageUrlRepository;
 import com.blog.tech.repository.IntroRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,51 +28,61 @@ public class IntroService {
     private final IntroRepository introRepository;
     private final ImageUrlRepository imageUrlRepository;
 
-    public List<IntroResponseDto> findAll() {
-        return introRepository.findAll()
-                .stream()
-                .map(IntroResponseDto::fromEntity)
-                .collect(Collectors.toList());
+    /**
+     * 소개 글 조회
+     * 값이 있으면 Optional.of(dto)
+     * 값이 없으면 Optional.empty()
+     * @return
+     */
+    public Optional<IntroResponseDto> getIntro() {
+        return introRepository.findById(1)
+                .map(IntroResponseDto::fromEntity);
     }
 
-    public IntroResponseDto createIntro(IntroRequestDto request) {
+    /**
+     * 소개 글 등록 또는 수정
+     * 등록 시 pk는 1로 고정
+     * @param request
+     * @return
+     */
+    public IntroResponseDto createOrUpdateIntro(IntroRequestDto request) {
+        // map과 orElseGet의 return 타입이 같아야 함
+        return introRepository.findById(1)
+                .map(intro -> {
+                    // 이미 있으면 수정
+                    intro.setTitle(request.getTitle());
+                    intro.setWriter(request.getWriter());
+                    intro.setContents(request.getContents());
 
-        IntroEntity intro = new IntroEntity();
-        intro.setWriter(request.getWriter());
-        intro.setContents(request.getContents());
+                    IntroEntity updated = introRepository.save(intro);
+                    List<String> images = request.getImages();
+                    if (!images.isEmpty()) {
+                        imageUrlRepository.markImagesAsUsed(images);
+                    }
+                    return IntroResponseDto.fromEntity(updated);
+                })
+                .orElseGet(() -> {
+                    // 없으면 최초 1회 저장
+                    IntroEntity intro = new IntroEntity();
+                    intro.setId(1); // 항상 id=1로 고정
+                    intro.setTitle(request.getTitle());
+                    intro.setWriter(request.getWriter());
+                    intro.setContents(request.getContents());
 
-        IntroEntity saved = introRepository.save(intro);
-        List<String> images = request.getImages();
-        if (!images.isEmpty()) {
-            imageUrlRepository.markImagesAsUsed(images);
-        }
-        return IntroResponseDto.fromEntity(saved);
+                    IntroEntity saved = introRepository.save(intro);
+                    List<String> images = request.getImages();
+                    if (!images.isEmpty()) {
+                        imageUrlRepository.markImagesAsUsed(images);
+                    }
+                    return IntroResponseDto.fromEntity(saved);
+                });
     }
 
-    public IntroEntity findLastOne() {
-        Optional<Integer> result = Optional.ofNullable(introRepository.findMostRecentId());
-        return result.map(integer -> introRepository.findById(integer).get()).orElse(new IntroEntity());
-    }
-
-    public IntroResponseDto updateIntro(IntroRequestDto request) {
-//        int id = Integer.parseInt(entity.getPost_id_str());
-//        entity.setId(id);
-//        introRepository.save(entity);
-        IntroEntity intro = introRepository.findAll().getLast();
-
-        Optional.ofNullable(intro).map(introEntity -> {
-                introEntity.setContents(request.getContents());
-                return introRepository.save(introEntity);
-        })
-        .orElseThrow(() -> new RuntimeException("intro not found"));
-
-//        List<String> images = request.getImages();
-//        if (!images.isEmpty()) {
-//            imageUrlRepository.markImagesAsUsed(images);
-//        }
-        return IntroResponseDto.fromEntity(intro);
-    }
-
+    /**
+     * 에디터에서 이미지 첨부시 이미지를 db와 로컬에 각각 저장
+     * @param file
+     * @return
+     */
     public String upload(MultipartFile file) {
         try {
             // 디렉토리 없으면 생성

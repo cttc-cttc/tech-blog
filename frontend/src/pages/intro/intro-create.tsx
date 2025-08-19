@@ -7,11 +7,14 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../components/utils/useAuthStore";
 import axios from "axios";
+import { Input } from "@/components/ui/input";
 
 export default function IntroCreate() {
   const editorRef = useRef<CustomEditorRef>(null);
+  const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
   const { nickName } = useAuthStore();
+  const titleRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   // 글 등록
@@ -29,22 +32,11 @@ export default function IntroCreate() {
 
     // 백엔드의 @RequestBody 안에 다 포함시켜야 됨 (json 형식)
     const payload = {
+      title,
       contents,
       writer: nickName,
       images: imageUrls,
     };
-
-    // try {
-    //   const response = await axios.post("/api/intro", payload, {
-    //     headers: { "Contents-Type": "application/json" },
-    //   });
-    //   // console.log(response.data);
-    //   const { urlNameParent, urlNameChild, id } = response.data;
-    //   navigate(`/posts/${urlNameParent}/${urlNameChild}/${id}`);
-    //   navigate("/intro");
-    // } catch (err) {
-    //   console.error("등록 실패: ", err);
-    // }
 
     await axios
       .post("/api/intro", payload, {
@@ -65,6 +57,33 @@ export default function IntroCreate() {
   return (
     <>
       <div className="container max-w-4xl mt-10">
+        {/* 제목 */}
+        <div className="flex justify-between items-center pb-1 mb-2">
+          <Input
+            ref={titleRef}
+            id="title"
+            type="text"
+            name="title"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            placeholder="제목을 입력하세요"
+            className="
+                      w-full
+                      border
+                      border-foreground/15
+                      dark:border-foreground/70
+                      bg-background
+                      text-foreground
+                      rounded-sm
+                      px-3
+                      py-2
+                      focus:outline-none
+                      focus:ring-2
+                      focus:ring-ring
+                    "
+          />
+        </div>
+
         {/* 에디터 */}
         <CustomEditor onChange={setContents} ref={editorRef} />
         <div className="py-6 flex w-full justify-end gap-2">
