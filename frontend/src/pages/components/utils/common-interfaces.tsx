@@ -15,3 +15,8 @@ export interface PostProps {
   nameParent: string | null;
   nameChild: string;
 }
+
+// skeleton 타입
+export interface CustomSkeletonProps {
+  type: "home" | "posts" | "comments";
+}

@@ -25,5 +25,9 @@ export default function PostsList() {
       .finally(() => setLoading(false));
   }, [category1, category2]);
 
-  return <div className="max-w-4xl flex flex-col gap-5">{renderPostsList(postsList, loading)}</div>;
+  return (
+    <div className="max-w-4xl flex flex-col gap-5">
+      {renderPostsList({ type: "posts" }, postsList, loading)}
+    </div>
+  );
 }

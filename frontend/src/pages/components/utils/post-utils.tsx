@@ -1,7 +1,7 @@
 import { BreadcrumbItem, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import type { PostProps } from "./common-interfaces";
+import type { CustomSkeletonProps, PostProps } from "./common-interfaces";
 import dayjs from "dayjs";
 import { toast } from "sonner";
 import PostCard from "@/pages/posting/post-card";
@@ -76,11 +76,15 @@ export const categoryIdMap: Record<string, number> = {
  * @param postsList
  * @returns
  */
-export const renderPostsList = (postsList: PostProps[], loading: boolean) => {
+export const renderPostsList = (
+  { type }: CustomSkeletonProps,
+  postsList: PostProps[],
+  loading: boolean
+) => {
   if (loading) {
     return (
       <div className="flex justify-center mt-4">
-        <CustomSkeleton type="posts" />
+        <CustomSkeleton type={type} />
       </div>
     );
   }

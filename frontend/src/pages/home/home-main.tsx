@@ -12,7 +12,6 @@ export default function HomeMain() {
   const [loading, setLoading] = useState(true);
   const [filterType, setFilterType] = useState<"all" | "it" | "jp">("all");
   const searchRef = useRef<HTMLInputElement>(null);
-  // const [searchKeyword, setSearchKeyword] = useState("");
 
   useEffect(() => {
     axios
@@ -97,7 +96,7 @@ export default function HomeMain() {
         </div>
 
         {/* 리스트 랜더링 */}
-        {renderPostsList(postsList, loading)}
+        {renderPostsList({ type: "home" }, postsList, loading)}
       </div>
     </main>
   );
