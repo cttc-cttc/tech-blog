@@ -42,7 +42,7 @@ public class PostService {
      * @param categoryId
      * @return
      */
-    public List<PostResponseDto> getPostsByCategory(Long categoryId) {
+    public List<PostResponseDto> getPostsByCategoryId(Long categoryId) {
         // 선택한 카테고리
         CategoryEntity category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
@@ -136,5 +136,29 @@ public class PostService {
         PostEntity postEntity = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("글 없음"));
         postEntity.setDelFlag(true);
+    }
+
+    /**
+     * 부모 카테고리명에 해당하는 모든 자식 카테고리의 게시글 조회
+     * @param category
+     * @return
+     */
+    public List<PostResponseDto> getPostsByCategoryName(String category) {
+        return postRepository.findByParentCategoryName(category)
+                .stream()
+                .map(PostResponseDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 검색어가 제목에 포함되는 모든 카테고리의 게시글 조회
+     * @param keyword
+     * @return
+     */
+    public List<PostResponseDto> getPostsByKeyword(String keyword) {
+        return postRepository.findByKeywordFromTitle(keyword)
+                .stream()
+                .map(PostResponseDto::fromEntity)
+                .collect(Collectors.toList());
     }
 }

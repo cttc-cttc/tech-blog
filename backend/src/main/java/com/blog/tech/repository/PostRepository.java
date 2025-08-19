@@ -15,4 +15,12 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
     // 카테고리 id에 해당하는 모든 글 리스트 반환 (상위, 하위 둘다 가능) (삭제되지 않은 최신 글 순서)
     @Query("SELECT p FROM PostEntity p WHERE p.category.id IN :categoryIds AND p.delFlag = false ORDER BY p.id DESC")
     List<PostEntity> findAllByCategoryIds(@Param("categoryIds") List<Long> categoryIds);
+
+    // 부모 카테고리 이름에 해당하는 모든 글 리스트 반환 (it / jp)
+    @Query("SELECT p FROM PostEntity p WHERE p.category.parent.urlName = :parentUrlName AND p.delFlag = false ORDER BY p.id DESC")
+    List<PostEntity> findByParentCategoryName(@Param("parentUrlName") String parentUrlName);
+
+    // 제목으로 검색한 모든 글 리스트 반환 (카테고리 무관)
+    @Query("SELECT p FROM PostEntity p WHERE p.title LIKE CONCAT('%', :keyword, '%') AND p.delFlag = false ORDER BY p.id DESC")
+    List<PostEntity> findByKeywordFromTitle(@Param("keyword") String keyword);
 }

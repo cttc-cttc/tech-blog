@@ -36,13 +36,13 @@ public class PostController {
             @RequestParam(required = false) String category1,
             @RequestParam(required = false) String category2
     ) {
-        // category1이 있으면 상위/하위 카테고리 조회
+        // category1이 있으면 상위 혹은 상하위 카테고리 조회
         if(category1 != null) {
             CategoryEntity category = categoryService.findByPath(category1, category2);
-            return ResponseEntity.ok(postService.getPostsByCategory(category.getId()));
+            return ResponseEntity.ok(postService.getPostsByCategoryId(category.getId()));
         }
 
-        // category1이 없으면 전체 글 조회
+        // category1이 없으면 전체 글 조회 (메인 홈 화면에서 요청 보낼 때)
         return ResponseEntity.ok(postService.getPostsAll());
     }
 
@@ -90,6 +90,37 @@ public class PostController {
     public ResponseEntity<Void> softDelete(@PathVariable Long id) {
         postService.deletePost(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 부모 카테고리 이름으로 리스트 조회 (it / jp)
+     * 프론트 영역에서 all을 선택했을 postService.getPostsAll() 실행
+     * @param category
+     * @return
+     */
+    @GetMapping("/posts/filter")
+    public ResponseEntity<List<PostResponseDto>> getPostsFilter(@RequestParam(required = false) String category) {
+        if(category != null) {
+            return ResponseEntity.ok(postService.getPostsByCategoryName(category));
+        }
+
+        return ResponseEntity.ok(postService.getPostsAll());
+    }
+
+    /**
+     * 키보드 이벤트로 입력한 keyword로 리스트 조회
+     * keyword는 글 제목에서 검색
+     * 공백을 입력했다면 postService.getPostsAll() 실행
+     * @param keyword
+     * @return
+     */
+    @GetMapping("/posts/keyword")
+    public ResponseEntity<List<PostResponseDto>> getPostsKeyword(@RequestParam String keyword) {
+        if (keyword.isBlank()) {
+            return ResponseEntity.ok(postService.getPostsAll());
+        }
+
+        return ResponseEntity.ok(postService.getPostsByKeyword(keyword));
     }
 
     // ------------------------------------------------------------------------------------
