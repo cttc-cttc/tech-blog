@@ -8,6 +8,16 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../components/utils/useAuthStore";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export default function IntroCreate() {
   const editorRef = useRef<CustomEditorRef>(null);
@@ -15,15 +25,26 @@ export default function IntroCreate() {
   const [contents, setContents] = useState("");
   const { nickName } = useAuthStore();
   const titleRef = useRef<HTMLInputElement>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const navigate = useNavigate();
 
-  // 글 등록
-  const handleSubmit = async () => {
+  // 글 등록 전 유효성 체크
+  const handleValidate = async () => {
+    if (!validatePostField(title, "제목을 입력해주세요.")) {
+      titleRef.current?.focus();
+      return;
+    }
+
     if (!validatePostField(contents, "내용을 입력해주세요.")) {
       editorRef.current?.focus();
       return;
     }
 
+    setDialogOpen(true);
+  };
+
+  // 글 등록 처리
+  const handleSubmit = async () => {
     // 정규표현식으로 HTML 내 이미지 추출
     // 이후 서버에 함께 전송해서 어떤 이미지가 실제로 쓰였는지 DB에 반영
     const html = editorRef.current?.getHTML() ?? "";
@@ -90,10 +111,29 @@ export default function IntroCreate() {
           <Button className="hover:cursor-pointer" variant="outline" onClick={prevPage}>
             취소
           </Button>
-          <Button className="hover:cursor-pointer" variant="default" onClick={handleSubmit}>
+          <Button className="hover:cursor-pointer" variant="default" onClick={handleValidate}>
             등록
           </Button>
         </div>
+
+        {/* shadcn AlertDialog는 컴포넌트화 못 함 */}
+        <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          {/* <AlertDialogTrigger asChild>
+          <Button variant="outline">Show Dialog</Button>
+        </AlertDialogTrigger> */}
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>소개글을 등록 하시겠습니까?</AlertDialogTitle>
+              <AlertDialogDescription>작성된 내용으로 글을 등록합니다.</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="hover:cursor-pointer">취소</AlertDialogCancel>
+              <AlertDialogAction onClick={handleSubmit} className="hover:cursor-pointer">
+                확인
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </>
   );

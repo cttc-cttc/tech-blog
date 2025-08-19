@@ -7,15 +7,25 @@ import { useNavigate } from "react-router-dom";
 import CustomEditor from "../components/toast-ui-editor-custom/custom-editor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export default function IntroUpdate() {
   const titleRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
   const editorRef = useRef<CustomEditorRef>(null);
-  //   const [handled, setHandled] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const { nickName } = useAuthStore();
+  const [dialogOpen, setDialogOpen] = useState(false);
   const navigate = useNavigate();
 
   // 페이지 첫 로드 시 처리
@@ -28,8 +38,8 @@ export default function IntroUpdate() {
     })();
   }, []);
 
-  // 글 수정
-  const handleSubmit = async () => {
+  // 글 수정 전 유효성 체크
+  const handleValidate = async () => {
     if (!validatePostField(title, "제목을 입력해주세요.")) {
       titleRef.current?.focus();
       return;
@@ -40,6 +50,11 @@ export default function IntroUpdate() {
       return;
     }
 
+    setDialogOpen(true);
+  };
+
+  // 글 수정 처리
+  const handleSubmit = async () => {
     // 정규표현식으로 HTML 내 이미지 추출
     // 이후 서버에 함께 전송해서 어떤 이미지가 실제로 쓰였는지 DB에 반영
     const html = editorRef.current?.getHTML() ?? "";
@@ -105,10 +120,29 @@ export default function IntroUpdate() {
         <Button className="hover:cursor-pointer" variant="outline" onClick={prevPage}>
           취소
         </Button>
-        <Button className="hover:cursor-pointer" variant="default" onClick={handleSubmit}>
+        <Button className="hover:cursor-pointer" variant="default" onClick={handleValidate}>
           수정
         </Button>
       </div>
+
+      {/* shadcn AlertDialog는 컴포넌트화 못 함 */}
+      <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        {/* <AlertDialogTrigger asChild>
+          <Button variant="outline">Show Dialog</Button>
+        </AlertDialogTrigger> */}
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>소개글을 수정 하시겠습니까?</AlertDialogTitle>
+            <AlertDialogDescription>작성된 내용으로 글을 수정합니다.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="hover:cursor-pointer">취소</AlertDialogCancel>
+            <AlertDialogAction onClick={handleSubmit} className="hover:cursor-pointer">
+              확인
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

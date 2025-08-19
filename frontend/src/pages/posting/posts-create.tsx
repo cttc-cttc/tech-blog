@@ -9,6 +9,16 @@ import { useAuthStore } from "../components/utils/useAuthStore";
 import { useNavigate, useParams } from "react-router-dom";
 import CategorySelector from "./category-selector";
 import { categoryIdMap, extractImgUrl, validatePostField } from "../components/utils/post-utils";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export default function PostsCreate() {
   const { category2 } = useParams();
@@ -19,6 +29,7 @@ export default function PostsCreate() {
   const [categoryId, setCategoryId] = useState<number | null>(null);
   const titleRef = useRef<HTMLInputElement>(null);
   const categoryIdRef = useRef<HTMLInputElement>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,8 +37,8 @@ export default function PostsCreate() {
     if (category2) setCategoryId(categoryIdMap[category2]);
   }, [category2]);
 
-  // 글 등록
-  const handleSubmit = async () => {
+  // 글 등록 전 유효성 체크
+  const handleValidate = async () => {
     if (!validatePostField(title, "제목을 입력해주세요.")) {
       titleRef.current?.focus();
       return;
@@ -43,6 +54,11 @@ export default function PostsCreate() {
       return;
     }
 
+    setDialogOpen(true);
+  };
+
+  // 글 등록 처리
+  const handleSubmit = async () => {
     // 정규표현식으로 HTML 내 이미지 추출
     // 이후 서버에 함께 전송해서 어떤 이미지가 실제로 쓰였는지 DB에 반영
     const html = editorRef.current?.getHTML() ?? "";
@@ -115,10 +131,29 @@ export default function PostsCreate() {
         <Button variant="outline" className="hover:cursor-pointer" onClick={prevPage}>
           취소
         </Button>
-        <Button variant="default" className="hover:cursor-pointer" onClick={handleSubmit}>
+        <Button variant="default" className="hover:cursor-pointer" onClick={handleValidate}>
           등록
         </Button>
       </div>
+
+      {/* shadcn AlertDialog는 컴포넌트화 못 함 */}
+      <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        {/* <AlertDialogTrigger asChild>
+          <Button variant="outline">Show Dialog</Button>
+        </AlertDialogTrigger> */}
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>게시글을 등록 하시겠습니까?</AlertDialogTitle>
+            <AlertDialogDescription>작성된 내용으로 글을 등록합니다.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="hover:cursor-pointer">취소</AlertDialogCancel>
+            <AlertDialogAction onClick={handleSubmit} className="hover:cursor-pointer">
+              확인
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

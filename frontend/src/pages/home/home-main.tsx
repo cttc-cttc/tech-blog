@@ -6,12 +6,14 @@ import { renderPostsList } from "@/pages/components/utils/post-utils";
 
 export default function HomeMain() {
   const [postsList, setPostsList] = useState<PostProps[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
       .get("api/posts")
       .then(res => setPostsList(res.data))
-      .catch(err => console.error("Error fetching posts:", err));
+      .catch(err => console.error("Error fetching posts:", err))
+      .finally(() => setLoading(false));
   }, []);
 
   if (!postsList) return <p className="p-4">로딩 중...</p>;
@@ -21,7 +23,7 @@ export default function HomeMain() {
       <div className="flex flex-col gap-5 items-center">
         <HomeAspectRatio />
         <div className="mb-8"></div>
-        {renderPostsList(postsList)}
+        {renderPostsList(postsList, loading)}
       </div>
     </main>
   );

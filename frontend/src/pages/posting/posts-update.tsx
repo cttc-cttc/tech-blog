@@ -9,6 +9,16 @@ import { useAuthStore } from "../components/utils/useAuthStore";
 import { useNavigate, useParams } from "react-router-dom";
 import CategorySelector from "./category-selector";
 import { extractImgUrl, validatePostField } from "../components/utils/post-utils";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export default function PostsUpdate() {
   const { postId } = useParams();
@@ -21,23 +31,11 @@ export default function PostsUpdate() {
   const [categoryId, setCategoryId] = useState<number | null>(null);
   const titleRef = useRef<HTMLInputElement>(null);
   const categoryIdRef = useRef<HTMLInputElement>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const navigate = useNavigate();
 
   // 페이지 첫 로드 시 처리
   useEffect(() => {
-    // const pageLoad = async () => {
-    //   try {
-    //     const response = await axios.get(`/api/posts/${postId}`);
-    //     setTitle(response.data.title);
-    //     setCategoryId(response.data.categoryId);
-    //     setContents(response.data.contents);
-    //     // console.log("data load successful:", response.data);
-    //   } catch (error) {
-    //     console.error("data load failed:", error);
-    //   }
-    // };
-
-    // pageLoad();
     (async () => {
       const { data } = await axios.get(`/api/posts/${postId}`);
       setTitle(data.title);
@@ -47,19 +45,8 @@ export default function PostsUpdate() {
     })();
   }, [postId]);
 
-  // contents 상태가 설정된 후 에디터에 적용
-  // useEffect(() => {
-  //   if (contents && !handled) {
-  //     setHandled(true);
-
-  //     if (editorRef.current) {
-  //       editorRef.current.getEditorInstance()?.getInstance().setMarkdown(contents);
-  //     }
-  //   }
-  // }, [contents, handled]);
-
-  // 글 수정
-  const handleSubmit = async () => {
+  // 글 수정 전 유효성 체크
+  const handleValidate = async () => {
     if (!validatePostField(title, "제목을 입력해주세요.")) {
       titleRef.current?.focus();
       return;
@@ -74,7 +61,11 @@ export default function PostsUpdate() {
       editorRef.current?.focus();
       return;
     }
+    setDialogOpen(true);
+  };
 
+  // 글 수정 처리
+  const handleSubmit = async () => {
     // 정규표현식으로 HTML 내 이미지 추출
     // 이후 서버에 함께 전송해서 어떤 이미지가 실제로 쓰였는지 DB에 반영
     const html = editorRef.current?.getHTML() ?? "";
@@ -147,10 +138,29 @@ export default function PostsUpdate() {
         <Button variant="outline" className="hover:cursor-pointer" onClick={prevPage}>
           취소
         </Button>
-        <Button variant="default" className="hover:cursor-pointer" onClick={handleSubmit}>
+        <Button variant="default" className="hover:cursor-pointer" onClick={handleValidate}>
           수정
         </Button>
       </div>
+
+      {/* shadcn AlertDialog는 컴포넌트화 못 함 */}
+      <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        {/* <AlertDialogTrigger asChild>
+          <Button variant="outline">Show Dialog</Button>
+        </AlertDialogTrigger> */}
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>게시글을 수정 하시겠습니까?</AlertDialogTitle>
+            <AlertDialogDescription>작성된 내용으로 글을 수정합니다.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="hover:cursor-pointer">취소</AlertDialogCancel>
+            <AlertDialogAction onClick={handleSubmit} className="hover:cursor-pointer">
+              확인
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

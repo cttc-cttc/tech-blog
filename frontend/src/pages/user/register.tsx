@@ -1,3 +1,13 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -49,6 +59,7 @@ export default function Register() {
   const [password2Status, setPassword2Status] = useState<true | false>(false);
   const [messageEmail, setMessageEmail] = useState("");
   const [emailStatus, setEmailStatus] = useState<true | false>(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const validations: ValidationProps[] = [
     {
@@ -140,8 +151,8 @@ export default function Register() {
     }
   }, [password, password2]);
 
-  // 가입 버튼 클릭
-  const handleSubmit = async (event: React.FormEvent) => {
+  // 가입 버튼 클릭 시 유효성 검사 처리
+  const handleValidate = (event: React.FormEvent) => {
     event.preventDefault();
     let isValid = true;
 
@@ -160,6 +171,7 @@ export default function Register() {
     if (userId.trim() !== "") {
       if (!userIdStatus) {
         setMessageUserId("아이디 중복 검사가 필요합니다.");
+        isValid = false;
       } else {
         setMessageUserId("사용 가능한 아이디입니다.");
       }
@@ -168,6 +180,7 @@ export default function Register() {
     if (nickName.trim() !== "") {
       if (!nickNameStatus) {
         setMessageNickName("닉네임 중복 검사가 필요합니다.");
+        isValid = false;
       } else {
         setMessageNickName("사용 가능한 닉네임입니다.");
       }
@@ -176,6 +189,7 @@ export default function Register() {
     if (email.trim() !== "") {
       if (!emailStatus) {
         setMessageEmail("이메일 중복 검사가 필요합니다.");
+        isValid = false;
       } else {
         setMessageEmail("사용 가능한 이메일입니다.");
       }
@@ -196,12 +210,16 @@ export default function Register() {
 
     if (!isValid) return;
 
+    // validate 처리가 모두 통과하면 alert dialog 띄움
+    setDialogOpen(true);
+  };
+
+  // 가입 처리
+  const handleSubmit = async () => {
+    const payload = { userId, nickName, password, email };
     try {
-      const response = await axios.post("/api/register", {
-        userId,
-        nickName,
-        password,
-        email,
+      const response = await axios.post("/api/register", payload, {
+        headers: { "Contents-Type": "application/json" },
       });
       if (response.data.success) {
         toast.success("회원가입이 완료되었습니다.", {
@@ -444,11 +462,32 @@ export default function Register() {
           </form>
         </CardContent>
         <CardFooter className="flex-col gap-2">
-          <Button onClick={handleSubmit} className="w-full hover:cursor-pointer">
+          <Button onClick={handleValidate} className="w-full hover:cursor-pointer">
             회원가입
           </Button>
         </CardFooter>
       </Card>
+
+      {/* shadcn AlertDialog는 컴포넌트화 못 함 */}
+      <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        {/* <AlertDialogTrigger asChild>
+          <Button variant="outline">Show Dialog</Button>
+        </AlertDialogTrigger> */}
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>회원가입 하시겠습니까?</AlertDialogTitle>
+            <AlertDialogDescription>
+              입력하신 회원 정보로 가입 처리를 진행합니다.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="hover:cursor-pointer">취소</AlertDialogCancel>
+            <AlertDialogAction onClick={handleSubmit} className="hover:cursor-pointer">
+              확인
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
