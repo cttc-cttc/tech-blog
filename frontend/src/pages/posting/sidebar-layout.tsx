@@ -12,6 +12,8 @@ import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 import { pathTextMap } from "../components/utils/post-utils";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "../components/utils/useAuthStore";
+import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 export default function SidebarLayout() {
   const { role } = useAuthStore();
@@ -20,6 +22,28 @@ export default function SidebarLayout() {
   const currentPath = location.pathname;
   const isStateCreate = currentPath.includes("create");
   const isStateUpdate = currentPath.includes("update");
+
+  // 검색란
+  const searchBar = () => {
+    return (
+      <div className="relative w-full max-w-48">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+        <Input
+          type="text"
+          placeholder="제목으로 검색 + Enter"
+          className="pl-10 pr-4 py-2 rounded-2xl border border-input bg-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          onKeyDown={handleSearchKeyDown}
+        />
+      </div>
+    );
+  };
+
+  // 검색어 입력 후 Enter
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      // fetchPostsKeyword(e.currentTarget.value.trim());
+    }
+  };
 
   // 사이드 바 레이아웃 헤더 조건부 렌더링
   const renderHeader = () => {
@@ -91,7 +115,11 @@ export default function SidebarLayout() {
               </BreadcrumbList>
             </Breadcrumb>
           </div>
-          <div className="flex items-center">{renderWriteButton()}</div>
+
+          <div className="flex gap-4 items-center">
+            {searchBar()}
+            {renderWriteButton()}
+          </div>
         </header>
         {/* <div className="flex flex-1 flex-col gap-4 p-4">
           <div className="grid auto-rows-min gap-4 md:grid-cols-3">
