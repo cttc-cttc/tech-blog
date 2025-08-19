@@ -8,6 +8,7 @@ import "./code-block.css";
 export default function PostsList() {
   const { category1, category2 } = useParams();
   const [postsList, setPostsList] = useState<PostProps[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const params: Record<string, string> = {};
@@ -20,8 +21,9 @@ export default function PostsList() {
         // console.log(res.data);
         setPostsList(res.data);
       })
-      .catch(err => console.error("Error fetching posts:", err));
+      .catch(err => console.error("Error fetching posts:", err))
+      .finally(() => setLoading(false));
   }, [category1, category2]);
 
-  return <div className="max-w-4xl flex flex-col gap-5">{renderPostsList(postsList)}</div>;
+  return <div className="max-w-4xl flex flex-col gap-5">{renderPostsList(postsList, loading)}</div>;
 }

@@ -10,12 +10,13 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "@/pages/components/utils/useAuthStore";
 import CustomViewer from "../components/toast-ui-editor-custom/custom-viewer";
-import { SkeletonDemo } from "./skeleton-demo";
+import { CustomSkeleton } from "../components/shadcn-custom/custom-skeleton";
 
 export default function Intro() {
   const { role } = useAuthStore();
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const pageLoad = async () => {
@@ -32,6 +33,8 @@ export default function Intro() {
         }
       } catch (error) {
         console.error("data load failed:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -68,19 +71,23 @@ export default function Intro() {
 
   return (
     <div className="container max-w-4xl mt-10">
-      <SkeletonDemo />
-      {title && <div className="text-4xl font-bold text-center py-4 mb-4">{title}</div>}
-      <div className="edit_wrap dark:dark">
-        {/* contents 값이 존재하면 뷰어로 내용 표시, 없으면 작성된 내용이 없다는 문자열을 표시 */}
-        {contents ? (
-          <CustomViewer contents={contents} />
-        ) : (
-          <p className="text-center p-6">작성된 내용이 없습니다</p>
-        )}
-        <div className="py-6 flex w-full justify-end">
-          {/* 로그인 유저가 관리자이면 글쓰기/수정 버튼 표시 */}
-          {renderActionButton()}
+      {loading ? (
+        <div className="flex justify-center mt-4">
+          <CustomSkeleton type="posts" />
         </div>
+      ) : contents ? (
+        <>
+          {title && <div className="text-4xl font-bold text-center py-4 mb-4">{title}</div>}
+          <div className="edit_wrap dark:dark">
+            <CustomViewer contents={contents} />
+          </div>
+        </>
+      ) : (
+        <p className="text-center p-6">작성된 내용이 없습니다</p>
+      )}
+      <div className="py-6 flex w-full justify-end">
+        {/* 로그인 유저가 관리자이면 글쓰기/수정 버튼 표시 */}
+        {renderActionButton()}
       </div>
     </div>
   );

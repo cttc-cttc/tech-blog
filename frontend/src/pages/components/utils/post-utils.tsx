@@ -5,6 +5,7 @@ import type { PostProps } from "./common-interfaces";
 import dayjs from "dayjs";
 import { toast } from "sonner";
 import PostCard from "@/pages/posting/post-card";
+import { CustomSkeleton } from "../shadcn-custom/custom-skeleton";
 
 //? 게시글 posting 관련 공통 함수
 
@@ -75,7 +76,15 @@ export const categoryIdMap: Record<string, number> = {
  * @param postsList
  * @returns
  */
-export const renderPostsList = (postsList: PostProps[]) => {
+export const renderPostsList = (postsList: PostProps[], loading: boolean) => {
+  if (loading) {
+    return (
+      <div className="flex justify-center mt-4">
+        <CustomSkeleton type="posts" />
+      </div>
+    );
+  }
+
   if (postsList.length === 0) {
     return <p className="p-4 text-center mt-4">게시글이 없습니다.</p>;
   }
