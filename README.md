@@ -58,6 +58,7 @@ npx shadcn@latest add collapsible
 npx shadcn@latest add breadcrumb
 npx shadcn@latest add select
 npx shadcn@latest add alert-dialog
+npx shadcn@latest add skeleton
 ```
 
 ## 개발 실행 환경
