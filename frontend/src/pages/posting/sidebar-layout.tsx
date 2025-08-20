@@ -30,6 +30,10 @@ export default function SidebarLayout() {
   const [searchPostsList, setSearchPostsList] = useState<PostProps[]>([]);
   const { setSearchState, searchKeyword, setSearchKeyword } = usePostsStore();
 
+  const [searchPage, setSearchPage] = useState(0); // 검색 페이징
+  const [totalSearchPages, setTotalSearchPages] = useState(0); // 총 페이지 수
+  const [searchLoading, setSearchLoading] = useState(true);
+
   // 검색창
   const searchBar = () => {
     // 게시글 상세 페이지, 글쓰기 페이지, 글 수정 페이지에 들어가면 검색창 숨김
@@ -56,22 +60,30 @@ export default function SidebarLayout() {
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       setSearchState(true);
-      fetchPostsKeyword(e.currentTarget.value.trim());
+      fetchPostsKeyword(searchKeyword.trim(), 0); // 검색 시작은 page 0
     }
   };
 
   // 검색어 입력에 따른 게시글 리스트 select
-  const fetchPostsKeyword = async (keyword: string) => {
-    const params: Record<string, string> = {};
-    if (category1) params.category1 = category1;
-    if (category2) params.category2 = category2;
-    params.keyword = keyword;
+  const fetchPostsKeyword = async (keyword: string, page = 0) => {
+    setSearchLoading(true);
+    const query: Record<string, string | number> = {
+      keyword,
+      size: 10,
+      page, // 페이지 번호 전달
+    };
+    if (category1) query.category1 = category1;
+    if (category2) query.category2 = category2;
 
     try {
-      const res = await axios.get("/api/posts/board/keyword", { params });
-      setSearchPostsList(res.data);
+      const res = await axios.get("/api/posts/board/keyword", { params: query });
+      setSearchPostsList(res.data.content);
+      setTotalSearchPages(res.data.totalPages); // 총 페이지 저장
+      setSearchPage(page); // 현재 페이지 저장
     } catch (err) {
       console.log("검색어로 조회 실패", err);
+    } finally {
+      setSearchLoading(false);
     }
   };
 
@@ -160,8 +172,16 @@ export default function SidebarLayout() {
           <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
         </div> */}
         <div className="flex flex-1 flex-col gap-4 p-4 mt-20">
-          <Outlet context={{ searchPostsList }} />
           {/* 라우터에서 PostsList / PostDetail 알아서 들어옴 */}
+          <Outlet
+            context={{
+              searchPostsList,
+              searchPage,
+              setSearchPage,
+              totalSearchPages,
+              searchLoading,
+            }}
+          />
         </div>
       </SidebarInset>
     </SidebarProvider>

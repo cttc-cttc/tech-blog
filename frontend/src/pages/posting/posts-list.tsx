@@ -9,18 +9,31 @@ import PaginationComponent from "./pagination-component";
 
 type OutletContextType = {
   searchPostsList: PostProps[];
+  searchPage: number;
+  setSearchPage: React.Dispatch<React.SetStateAction<number>>;
+  totalSearchPages: number;
+  searchLoading: boolean;
 };
 
 export default function PostsList() {
+  const { searchPostsList, searchPage, setSearchPage, totalSearchPages, searchLoading } =
+    useOutletContext<OutletContextType>();
+
   const { category1, category2 } = useParams();
   const [postsList, setPostsList] = useState<PostProps[]>([]);
-  const [page, setPage] = useState(0); // 현재 페이지
+  const [page, setPage] = useState(0); // 일반 게시글용 페이지
   const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
   const [loading, setLoading] = useState(true);
-  const { searchPostsList } = useOutletContext<OutletContextType>();
   const { isSearching } = usePostsStore();
 
+  // 카테고리 바뀔 때 page 초기화
   useEffect(() => {
+    setPage(0);
+  }, [category1, category2]);
+
+  // 페이지가 바뀔 때마다 postsList를 새로 불러옴
+  useEffect(() => {
+    setLoading(true);
     const query: Record<string, string | number> = {
       page,
       size: 10,
@@ -44,11 +57,15 @@ export default function PostsList() {
       {renderPostsList(
         { type: "posts" },
         isSearching ? searchPostsList : postsList, // 검색을 한 상태이면 검색 결과를 보여줌
-        loading
+        isSearching ? searchLoading : loading
       )}
 
       {/* 페이지네이션 */}
-      <PaginationComponent page={page} setPage={setPage} totalPages={totalPages} />
+      <PaginationComponent
+        page={isSearching ? searchPage : page}
+        setPage={isSearching ? setSearchPage : setPage}
+        totalPages={isSearching ? totalSearchPages : totalPages}
+      />
     </div>
   );
 }

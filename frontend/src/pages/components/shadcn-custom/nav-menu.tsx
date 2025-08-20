@@ -30,7 +30,7 @@ const jpCategories = [
   { name: "JLPT N2 문법", url: "n2gm" },
   { name: "존경어와 겸양어", url: "reshum" },
   { name: "JLPT N1 단어", url: "n1tan" },
-  { name: "JLPT N1 문법 Boot", url: "n1gm" },
+  { name: "JLPT N1 문법", url: "n1gm" },
 ];
 
 // const components: { title: string; href: string; description: string }[] = [
@@ -75,6 +75,7 @@ export function NavMenu() {
   const handleClick = () => {
     setSearchState(false); // 게시글 리스트의 검색 상태를 false로 설정
     setSearchKeyword(""); // 게시글 리스트의 검색창 값을 ""로 설정
+    window.scrollTo({ top: 0 }); // 페이지 상단으로 스크롤
   };
 
   return (

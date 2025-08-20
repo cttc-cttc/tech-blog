@@ -29,28 +29,6 @@ public class PostController {
     private final CategoryRepository categoryRepository;
 
     /**
-     * 카테고리 상관 없이 모든 게시글 목록 조회
-     * 또는 상위, 하위 카테고리에 따른 글 목록 조회
-     * @param category1
-     * @param category2
-     * @return
-     */
-    @GetMapping("/posts")
-    public ResponseEntity<List<PostResponseDto>> getPosts(
-            @RequestParam(required = false) String category1,
-            @RequestParam(required = false) String category2
-    ) {
-        // category1이 있으면 상위 혹은 상하위 카테고리 조회
-        if(category1 != null) {
-            CategoryEntity category = categoryService.findByPath(category1, category2);
-            return ResponseEntity.ok(postService.getPostsByCategoryId(category.getId()));
-        }
-
-        // category1이 없으면 전체 글 조회 (메인 홈 화면에서 요청 보낼 때)
-        return ResponseEntity.ok(postService.getPostsAll());
-    }
-
-    /**
      * [홈 화면 필터링 포함]
      * 페이지 처리 된 게시글 리스트
      * 카테고리 상관 없이 모든 게시글 페이지 목록 조회
@@ -62,7 +40,7 @@ public class PostController {
      * @return
      */
     @GetMapping("/posts/page")
-    public ResponseEntity<Page<PostResponseDto>> getPaginationPosts(
+    public ResponseEntity<Page<PostResponseDto>> getPagePosts(
             @RequestParam(required = false) String category1,
             @RequestParam(required = false) String category2,
             @RequestParam(defaultValue = "0") int page,
@@ -129,26 +107,10 @@ public class PostController {
     }
 
     /**
-     * [ 필터링 ]
-     * 부모 카테고리 이름으로 리스트 조회 (it / jp)
-     * 프론트 영역에서 all을 선택했을 postService.getPostsAll() 실행
-     * @param category
-     * @return
-     */
-//    @GetMapping("/posts/filter")
-//    public ResponseEntity<Page<PostResponseDto>> getPostsFilter(@RequestParam(required = false) String category) {
-//        if(category != null) {
-//            return getPaginationPosts(category,null,0,10);
-//        }
-//
-//        return getPaginationPosts(null,null,0,10);
-//    }
-
-    /**
      * [ 홈 검색 ]
      * 홈 화면에서 키보드 이벤트로 입력한 keyword로 리스트 조회
      * keyword는 글 제목에서 검색
-     * 공백을 입력했다면 postService.getPostsAll() 실행
+     * 공백을 입력했다면 postService.getPagePostsAll(pageable) 실행
      * @param keyword
      * @return
      */
@@ -170,23 +132,28 @@ public class PostController {
     /**
      * [ 게시판 검색 ]
      * 게시글 목록 페이지에서 검색을 하면 해당 카테고리에 맞는 글 리스트 반환
-     * 검색어 없이 Enter key 입력을 하면 현재 카테고리에 맞게 위에서 선언한 getPosts(category1, category2)를 실행
+     * 검색어 없이 Enter key 입력을 하면 현재 카테고리에 맞게 위에서 선언한
+     * getPagePosts(category1, category2, page, size)를 실행
      * @param category1
      * @param category2 없을 수도 있음 (null)
      * @param keyword
      * @return
      */
     @GetMapping("/posts/board/keyword")
-    public ResponseEntity<List<PostResponseDto>> getPostsBoardKeyword(
+    public ResponseEntity<Page<PostResponseDto>> getPostsBoardKeyword(
             @RequestParam String category1,
             @RequestParam(required = false) String category2,
-            @RequestParam String keyword
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
     ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+
         if(keyword.isBlank()) {
-            return getPosts(category1, category2);
+            return getPagePosts(category1, category2, page, size);
         }
 
-        return ResponseEntity.ok(postService.getPostsByKeywordInBoard(category1, category2, keyword));
+        return ResponseEntity.ok(postService.getPostsByKeywordInBoard(category1, category2, keyword, pageable));
     }
 
     // ------------------------------------------------------------------------------------

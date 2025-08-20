@@ -114,6 +114,7 @@ function Tree({ categoryList }: { categoryList: { name: string; page: string }[]
   const handleClick = () => {
     setSearchState(false); // 게시글 리스트의 검색 상태를 false로 설정
     setSearchKeyword(""); // 게시글 리스트의 검색창 값을 ""로 설정
+    window.scrollTo({ top: 0 }); // 페이지 상단으로 스크롤
   };
 
   // 첫 번째 요소는 부모 카테고리
