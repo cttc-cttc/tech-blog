@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { HomeAspectRatio } from "@/pages/components/shadcn-custom/home-aspect-ratio";
 import type { PostProps } from "@/pages/components/utils/common-interfaces";
 import axios from "axios";
@@ -6,6 +6,7 @@ import { renderPostsList } from "@/pages/components/utils/post-utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 export default function HomeMain() {
   const [postsList, setPostsList] = useState<PostProps[]>([]);
@@ -67,20 +68,27 @@ export default function HomeMain() {
         <HomeAspectRatio />
 
         {/* 필터링 버튼, 검색란 랜더링 */}
-        <div className="mt-4 flex w-full justify-end gap-4">
-          {filters.map(filter => (
-            <Button
-              key={filter.type}
-              variant="link"
-              className={`hover:cursor-pointer text-muted-foreground ${
-                filterType === filter.type
-                  ? "text-foreground underline underline-offset-4 font-bold"
-                  : ""
-              }`}
-              onClick={() => fetchPostsFilter(filter.type)}
-            >
-              {filter.label}
-            </Button>
+        <div className="mt-4 flex w-full justify-end gap-2">
+          {filters.map((filter, index) => (
+            <React.Fragment key={index}>
+              <Button
+                variant="link"
+                className={`hover:cursor-pointer text-muted-foreground ${
+                  filterType === filter.type
+                    ? "text-foreground underline underline-offset-4 font-bold"
+                    : ""
+                }`}
+                onClick={() => fetchPostsFilter(filter.type)}
+              >
+                {filter.label}
+              </Button>
+
+              {index !== filters.length - 1 && ( // 마지막 버튼 뒤엔 separator 넣지 않기
+                <div className="flex ">
+                  <Separator orientation="vertical" className="h-4! self-center bg-foreground/20" />
+                </div>
+              )}
+            </React.Fragment>
           ))}
 
           <div className="relative w-full max-w-48">
