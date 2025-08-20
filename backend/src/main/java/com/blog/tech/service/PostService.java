@@ -161,4 +161,28 @@ public class PostService {
                 .map(PostResponseDto::fromEntity)
                 .collect(Collectors.toList());
     }
+
+    /**
+     * 해당 하위 카테고리에서 검색 결과를 반환 또는
+     * 해당 상위 카테고리에 속하는 하위 카테고리들에서 검색 결과를 반환
+     * @param category1
+     * @param category2
+     * @param keyword
+     * @return
+     */
+    public List<PostResponseDto> getPostsByKeywordInBoard(String category1, String category2, String keyword) {
+        if(category2 != null) {
+            // 해당 하위 카테고리에서 검색 결과를 반환
+            return postRepository.findByCategoryWithKeyword(category2, keyword)
+                    .stream()
+                    .map(PostResponseDto::fromEntity)
+                    .collect(Collectors.toList());
+        }
+
+        // 해당 상위 카테고리에 속하는 하위 카테고리들에서 검색 결과를 반환
+        return postRepository.findByParentCategoryWithKeyword(category1, keyword)
+                .stream()
+                .map(PostResponseDto::fromEntity)
+                .collect(Collectors.toList());
+    }
 }

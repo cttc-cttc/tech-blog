@@ -23,4 +23,26 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
     // 제목으로 검색한 모든 글 리스트 반환 (카테고리 무관)
     @Query("SELECT p FROM PostEntity p WHERE p.title LIKE CONCAT('%', :keyword, '%') AND p.delFlag = false ORDER BY p.id DESC")
     List<PostEntity> findByKeywordFromTitle(@Param("keyword") String keyword);
+
+    // 해당 하위 카테고리에서 검색 결과를 반환
+    @Query("SELECT p FROM PostEntity p " +
+            "WHERE p.category.urlName = :category2 " +
+            "AND p.title LIKE CONCAT('%', :keyword, '%') " +
+            "AND p.delFlag = false " +
+            "ORDER BY p.id DESC")
+    List<PostEntity> findByCategoryWithKeyword(
+            @Param("category2") String category2,
+            @Param("keyword") String keyword
+    );
+
+    // 해당 상위 카테고리에 속하는 하위 카테고리들에서 검색 결과를 반환
+    @Query("SELECT p FROM PostEntity p " +
+            "WHERE p.category.parent.urlName = :category1 " +
+            "AND p.title LIKE CONCAT('%', :keyword, '%') " +
+            "AND p.delFlag = false " +
+            "ORDER BY p.id DESC")
+    List<PostEntity> findByParentCategoryWithKeyword(
+            @Param("category1") String category1,
+            @Param("keyword") String keyword
+    );
 }

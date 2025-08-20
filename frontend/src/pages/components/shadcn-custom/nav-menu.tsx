@@ -13,6 +13,25 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { usePostsStore } from "../utils/usePostsStore";
+
+const itCategories = [
+  { name: "HTML", url: "html" },
+  { name: "CSS", url: "css" },
+  { name: "JavaScript", url: "js" },
+  { name: "React", url: "react" },
+  { name: "DataBase", url: "db" },
+  { name: "Java", url: "java" },
+  { name: "Spring Boot", url: "sb" },
+];
+
+const jpCategories = [
+  { name: "JLPT N2 단어", url: "n2tan" },
+  { name: "JLPT N2 문법", url: "n2gm" },
+  { name: "존경어와 겸양어", url: "reshum" },
+  { name: "JLPT N1 단어", url: "n1tan" },
+  { name: "JLPT N1 문법 Boot", url: "n1gm" },
+];
 
 // const components: { title: string; href: string; description: string }[] = [
 //   {
@@ -52,6 +71,12 @@ import {
 // ];
 
 export function NavMenu() {
+  const { setSearchState, setSearchKeyword } = usePostsStore();
+  const handleClick = () => {
+    setSearchState(false); // 게시글 리스트의 검색 상태를 false로 설정
+    setSearchKeyword(""); // 게시글 리스트의 검색창 값을 ""로 설정
+  };
+
   return (
     <NavigationMenu viewport={false}>
       <NavigationMenuList>
@@ -104,60 +129,38 @@ export function NavMenu() {
         </NavigationMenuItem> */}
 
         <NavigationMenuItem>
-          <Link to="/posts/it">
-            <NavigationMenuTrigger>IT</NavigationMenuTrigger>
+          <Link to="/posts/it" onClick={handleClick}>
+            <NavigationMenuTrigger className="hover:cursor-pointer">IT</NavigationMenuTrigger>
           </Link>
           <NavigationMenuContent>
             <ul className="grid w-[200px] gap-4">
               <li>
-                <NavigationMenuLink asChild>
-                  <Link to="/posts/it/html">HTML</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link to="/posts/it/css">CSS</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link to="/posts/it/js">JavaScript</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link to="/posts/it/react">React</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link to="/posts/it/db">DataBase</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link to="/posts/it/java">Java</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link to="/posts/it/sb">Spring Boot</Link>
-                </NavigationMenuLink>
+                {itCategories.map(cat => (
+                  <NavigationMenuLink asChild key={cat.url}>
+                    <Link to={`/posts/it/${cat.url}`} onClick={handleClick}>
+                      {cat.name}
+                    </Link>
+                  </NavigationMenuLink>
+                ))}
               </li>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <Link to="/posts/jp">
-            <NavigationMenuTrigger>일본어</NavigationMenuTrigger>
+          <Link to="/posts/jp" onClick={handleClick}>
+            <NavigationMenuTrigger className="hover:cursor-pointer">일본어</NavigationMenuTrigger>
           </Link>
           <NavigationMenuContent>
             <ul className="grid w-[200px] gap-4">
               <li>
-                <NavigationMenuLink asChild>
-                  <Link to="/posts/jp/n2tan">JLPT N2 단어</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link to="/posts/jp/n2gm">JLPT N2 문법</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link to="/posts/jp/reshum">존경어와 겸양어</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link to="/posts/jp/n1tan">JLPT N1 단어</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link to="/posts/jp/n1gm">JLPT N1 문법</Link>
-                </NavigationMenuLink>
+                {jpCategories.map(cat => (
+                  <NavigationMenuLink asChild key={cat.url}>
+                    <Link to={`/posts/jp/${cat.url}`} onClick={handleClick}>
+                      {cat.name}
+                    </Link>
+                  </NavigationMenuLink>
+                ))}
               </li>
             </ul>
           </NavigationMenuContent>

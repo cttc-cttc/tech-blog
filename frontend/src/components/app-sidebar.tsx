@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Link, useLocation } from "react-router-dom";
 import { getPostBasePath } from "@/pages/components/utils/post-utils";
+import { usePostsStore } from "@/pages/components/utils/usePostsStore";
 
 // This is sample data.
 const data = {
@@ -109,11 +110,17 @@ function Tree({ categoryList }: { categoryList: { name: string; page: string }[]
   const currentPath = location.pathname;
   const baseUrl = getPostBasePath(currentPath);
 
+  const { setSearchState, setSearchKeyword } = usePostsStore();
+  const handleClick = () => {
+    setSearchState(false); // 게시글 리스트의 검색 상태를 false로 설정
+    setSearchKeyword(""); // 게시글 리스트의 검색창 값을 ""로 설정
+  };
+
   // 첫 번째 요소는 부모 카테고리
   const [parentCategory, ...subCategories] = categoryList;
   const isParentActive = baseUrl === parentCategory.page;
 
-  // 하위 카테고리가 없으면 단일 항목 렌더링
+  // 하위 카테고리가 없으면 단일 항목 렌더링 (상위 카테고리)
   if (subCategories.length === 0) {
     return (
       <SidebarMenuButton
@@ -157,8 +164,8 @@ function Tree({ categoryList }: { categoryList: { name: string; page: string }[]
                   className="data-[active=true]:bg-sidebar-accent"
                   asChild
                 >
-                  {/* 여기가 사이드 바 클릭하는 부분 */}
-                  <Link to={`${subCat.page}`}>
+                  {/* 여기가 사이드 바 클릭하는 부분 (하위 카테고리) */}
+                  <Link to={`${subCat.page}`} onClick={handleClick}>
                     <File />
                     {subCat.name}
                   </Link>

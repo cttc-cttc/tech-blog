@@ -108,7 +108,7 @@ public class PostController {
     }
 
     /**
-     * 키보드 이벤트로 입력한 keyword로 리스트 조회
+     * 홈 화면에서 키보드 이벤트로 입력한 keyword로 리스트 조회
      * keyword는 글 제목에서 검색
      * 공백을 입력했다면 postService.getPostsAll() 실행
      * @param keyword
@@ -121,6 +121,27 @@ public class PostController {
         }
 
         return ResponseEntity.ok(postService.getPostsByKeyword(keyword));
+    }
+
+    /**
+     * 게시글 목록 페이지에서 검색을 하면 해당 카테고리에 맞는 글 리스트 반환
+     * 검색어 없이 Enter key 입력을 하면 현재 카테고리에 맞게 위에서 선언한 getPosts(category1, category2)를 실행
+     * @param category1
+     * @param category2 없을 수도 있음 (null)
+     * @param keyword
+     * @return
+     */
+    @GetMapping("/posts/board/keyword")
+    public ResponseEntity<List<PostResponseDto>> getPostsBoardKeyword(
+            @RequestParam String category1,
+            @RequestParam(required = false) String category2,
+            @RequestParam String keyword
+    ) {
+        if(keyword.isBlank()) {
+            return getPosts(category1, category2);
+        }
+
+        return ResponseEntity.ok(postService.getPostsByKeywordInBoard(category1, category2, keyword));
     }
 
     // ------------------------------------------------------------------------------------

@@ -14,24 +14,38 @@ import { Button } from "@/components/ui/button";
 import { useAuthStore } from "../components/utils/useAuthStore";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import axios from "axios";
+import { useState } from "react";
+import type { PostProps } from "../components/utils/common-interfaces";
+import { usePostsStore } from "../components/utils/usePostsStore";
 
 export default function SidebarLayout() {
   const { role } = useAuthStore();
-  const { category1, category2 } = useParams();
+  const { category1, category2, postId } = useParams();
   const location = useLocation();
   const currentPath = location.pathname;
+  const isStateDetail = !!postId; // 게시글 id 여부 -> 게시글 상세 페이지로 들어왔는지 아닌지
   const isStateCreate = currentPath.includes("create");
   const isStateUpdate = currentPath.includes("update");
+  const [searchPostsList, setSearchPostsList] = useState<PostProps[]>([]);
+  const { setSearchState, searchKeyword, setSearchKeyword } = usePostsStore();
 
-  // 검색란
+  // 검색창
   const searchBar = () => {
+    // 게시글 상세 페이지, 글쓰기 페이지, 글 수정 페이지에 들어가면 검색창 숨김
+    if (isStateDetail || isStateCreate || isStateUpdate) {
+      return null;
+    }
+
     return (
       <div className="relative w-full max-w-48">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
         <Input
           type="text"
+          value={searchKeyword}
           placeholder="제목으로 검색 + Enter"
           className="pl-10 pr-4 py-2 rounded-2xl border border-input bg-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          onChange={e => setSearchKeyword(e.target.value)}
           onKeyDown={handleSearchKeyDown}
         />
       </div>
@@ -41,7 +55,23 @@ export default function SidebarLayout() {
   // 검색어 입력 후 Enter
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      // fetchPostsKeyword(e.currentTarget.value.trim());
+      setSearchState(true);
+      fetchPostsKeyword(e.currentTarget.value.trim());
+    }
+  };
+
+  // 검색어 입력에 따른 게시글 리스트 select
+  const fetchPostsKeyword = async (keyword: string) => {
+    const params: Record<string, string> = {};
+    if (category1) params.category1 = category1;
+    if (category2) params.category2 = category2;
+    params.keyword = keyword;
+
+    try {
+      const res = await axios.get("/api/posts/board/keyword", { params });
+      setSearchPostsList(res.data);
+    } catch (err) {
+      console.log("검색어로 조회 실패", err);
     }
   };
 
@@ -130,7 +160,8 @@ export default function SidebarLayout() {
           <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
         </div> */}
         <div className="flex flex-1 flex-col gap-4 p-4 mt-20">
-          <Outlet /> {/* 라우터에서 PostsList / PostDetail 알아서 들어옴 */}
+          <Outlet context={{ searchPostsList }} />
+          {/* 라우터에서 PostsList / PostDetail 알아서 들어옴 */}
         </div>
       </SidebarInset>
     </SidebarProvider>
