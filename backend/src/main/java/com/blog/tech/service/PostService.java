@@ -197,11 +197,16 @@ public class PostService {
      * @param keyword
      * @return
      */
-    public List<PostResponseDto> getPostsByKeyword(String keyword) {
-        return postRepository.findByKeywordFromTitle(keyword)
-                .stream()
-                .map(PostResponseDto::fromEntity)
-                .collect(Collectors.toList());
+//    public List<PostResponseDto> getPostsByKeyword(String keyword) {
+//        return postRepository.findByKeywordFromTitle(keyword)
+//                .stream()
+//                .map(PostResponseDto::fromEntity)
+//                .collect(Collectors.toList());
+//    }
+
+    public Page<PostResponseDto> getPagePostsByKeyword(String keyword, Pageable pageable) {
+        return postRepository.findByTitleContainingIgnoreCase(keyword, pageable)
+                .map(PostResponseDto::fromEntity);
     }
 
     /**

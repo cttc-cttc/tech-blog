@@ -15,20 +15,8 @@ export default function HomeMain() {
   const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
   const [loading, setLoading] = useState(true);
   const [filterType, setFilterType] = useState<"all" | "it" | "jp">("all");
+  const [keyword, setKeyword] = useState<string>(""); // 🔑 검색어 상태 추가
   const searchRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    axios
-      .get("api/posts/page", {
-        params: { page, size: 10 }, // 백엔드에 page, size 전달
-      })
-      .then(res => {
-        setPostsList(res.data.content);
-        setTotalPages(res.data.totalPages);
-      })
-      .catch(err => console.error("Error fetching posts:", err))
-      .finally(() => setLoading(false));
-  }, [page]);
 
   // 버튼을 map으로 랜더링하기 위한 배열
   const filters: { type: "all" | "it" | "jp"; label: string }[] = [
@@ -37,36 +25,55 @@ export default function HomeMain() {
     { type: "jp", label: "일본어" },
   ];
 
-  // 카테고리에 따른 게시글 리스트 select
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setLoading(true);
+
+      try {
+        let res;
+        if (keyword) {
+          // 🔎 검색 API (페이지 적용)
+          res = await axios.get("/api/posts/keyword", {
+            params: { keyword, page, size: 10 },
+          });
+        } else if (filterType === "all") {
+          // 전체 게시글 (페이지 적용)
+          res = await axios.get("/api/posts/page", {
+            params: { page, size: 10 },
+          });
+        } else {
+          // 필터 적용 게시글 (페이지 적용)
+          res = await axios.get("/api/posts/page", {
+            params: { category1: filterType, page, size: 10 },
+          });
+        }
+
+        setPostsList(res.data.content);
+        setTotalPages(res.data.totalPages);
+      } catch (err) {
+        console.error("Error fetching posts:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, [page, filterType, keyword]);
+
+  // 카테고리 필터 클릭 -> useEffect 실행
   const fetchPostsFilter = async (category: typeof filterType) => {
     setFilterType(category);
+    setKeyword(""); // 필터 선택 시 검색어 초기화
+    setPage(0); // 첫 페이지부터
     if (searchRef.current) searchRef.current.value = "";
-
-    try {
-      const res = await axios.get(
-        `/api/posts/filter${category !== "all" ? `?category=${category}` : ""}`
-      );
-      setPostsList(res.data);
-    } catch (err) {
-      console.error("카테고리로 조회 실패", err);
-    }
   };
 
-  // 검색어 입력에 따른 게시글 리스트 select
-  const fetchPostsKeyword = async (keyword: string) => {
-    try {
-      const res = await axios.get(`/api/posts/keyword?keyword=${keyword}`);
-      setPostsList(res.data);
-    } catch (err) {
-      console.log("검색어로 조회 실패", err);
-    }
-  };
-
-  // 검색어 입력 후 Enter
+  // 검색 (Enter 입력 시) -> useEffect 실행
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      setFilterType("all");
-      fetchPostsKeyword(e.currentTarget.value.trim());
+      setFilterType("all"); // 검색 시 필터는 전체 기준
+      setKeyword(e.currentTarget.value.trim());
+      setPage(0); // 항상 첫 페이지부터
     }
   };
 

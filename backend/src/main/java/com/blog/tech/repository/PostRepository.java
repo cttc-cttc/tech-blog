@@ -23,8 +23,8 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
     List<PostEntity> findByParentCategoryName(@Param("parentUrlName") String parentUrlName);
 
     // 제목으로 검색한 모든 글 리스트 반환 (카테고리 무관)
-    @Query("SELECT p FROM PostEntity p WHERE p.title LIKE CONCAT('%', :keyword, '%') AND p.delFlag = false ORDER BY p.id DESC")
-    List<PostEntity> findByKeywordFromTitle(@Param("keyword") String keyword);
+//    @Query("SELECT p FROM PostEntity p WHERE p.title LIKE CONCAT('%', :keyword, '%') AND p.delFlag = false ORDER BY p.id DESC")
+//    List<PostEntity> findByKeywordFromTitle(@Param("keyword") String keyword);
 
     // 해당 하위 카테고리에서 검색 결과를 반환
     @Query("SELECT p FROM PostEntity p " +
@@ -67,4 +67,7 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
            WHERE p.delFlag = false
            """)
     Page<PostEntity> findPageAllActive(Pageable pageable);
+
+    // 제목에 keyword 포함된 게시글 검색 (페이지 적용)
+    Page<PostEntity> findByTitleContainingIgnoreCase(String keyword, Pageable pageable);
 }
