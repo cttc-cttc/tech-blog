@@ -9,6 +9,10 @@ import com.blog.tech.repository.CategoryRepository;
 import com.blog.tech.service.CategoryService;
 import com.blog.tech.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +30,7 @@ public class PostController {
 
     /**
      * 카테고리 상관 없이 모든 게시글 목록 조회
-     * 는 상위, 하위 카테고리에 따른 글 목록 조회
+     * 또는 상위, 하위 카테고리에 따른 글 목록 조회
      * @param category1
      * @param category2
      * @return
@@ -44,6 +48,37 @@ public class PostController {
 
         // category1이 없으면 전체 글 조회 (메인 홈 화면에서 요청 보낼 때)
         return ResponseEntity.ok(postService.getPostsAll());
+    }
+
+    /**
+     * 페이지 처리 된 게시글 리스트
+     * 카테고리 상관 없이 모든 게시글 페이지 목록 조회
+     * 또는 상위, 하위 카테고리에 따른 페이지 글 목록 조회
+     * @param category1
+     * @param category2
+     * @param page
+     * @param size
+     * @return
+     */
+    @GetMapping("/posts/page")
+    public ResponseEntity<Page<PostResponseDto>> getPaginationPosts(
+            @RequestParam(required = false) String category1,
+            @RequestParam(required = false) String category2,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+
+        // category1이 있으면 상위 혹은 상하위 카테고리 조회 (게시판)
+        if(category1 != null) {
+            CategoryEntity category = categoryService.findByPath(category1, category2);
+            Page<PostResponseDto> posts = postService.getPagePostsByCategoryId(category.getId(), pageable);
+            return ResponseEntity.ok(posts);
+        }
+
+        // category1이 없으면 전체 글 조회 (홈 화면)
+        Page<PostResponseDto> posts = postService.getPagePostsAll(pageable);
+        return ResponseEntity.ok(posts);
     }
 
     /**

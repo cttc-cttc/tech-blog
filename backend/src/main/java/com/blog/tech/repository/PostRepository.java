@@ -1,6 +1,8 @@
 package com.blog.tech.repository;
 
 import com.blog.tech.entity.PostEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -45,4 +47,24 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
             @Param("category1") String category1,
             @Param("keyword") String keyword
     );
+
+    // 카테고리 id에 해당하는 페이지 처리된 모든 글 리스트 반환 (상위, 하위 둘다 가능)
+    @Query("""
+            SELECT p
+            FROM PostEntity p
+            WHERE p.category.id IN :categoryIds
+            AND p.delFlag = false
+            """)
+    Page<PostEntity> findPageByCategoryIds(
+            @Param("categoryIds") List<Long> categoryIds,
+            Pageable pageable
+    );
+
+    // 카테고리 상관 없이 페이지 처리된 모든 글 리스트 반환
+    @Query("""
+           SELECT p
+           FROM PostEntity p
+           WHERE p.delFlag = false
+           """)
+    Page<PostEntity> findPageAllActive(Pageable pageable);
 }

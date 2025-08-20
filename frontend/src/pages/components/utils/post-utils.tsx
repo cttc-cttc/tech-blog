@@ -104,6 +104,7 @@ export const renderPostsList = (
 
   return (
     <>
+      {/* 게시글 리스트 */}
       {postsList.map((post, index) => (
         <Link
           to={`/posts/${post.urlNameParent}/${post.urlNameChild}/${post.id}`}

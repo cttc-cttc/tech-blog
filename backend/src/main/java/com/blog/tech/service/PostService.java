@@ -8,6 +8,8 @@ import com.blog.tech.repository.CategoryRepository;
 import com.blog.tech.repository.ImageUrlRepository;
 import com.blog.tech.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,6 +68,46 @@ public class PostService {
         return postRepository.findAllByCategoryIds(categoryIds).stream()
                 .map(PostResponseDto::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 전체 글 조회 (페이지 적용)
+     * @param pageable
+     * @return
+     */
+    public Page<PostResponseDto> getPagePostsAll(Pageable pageable) {
+        return postRepository.findPageAllActive(pageable)
+                .map(PostResponseDto::fromEntity);
+    }
+
+    /**
+     * 특정 카테고리 글 조회 (페이지 적용)
+     * 상위, 하위 카테고리에 따른 해당하는 글 전체 리스트
+     * @param categoryId
+     * @param pageable
+     * @return
+     */
+    public Page<PostResponseDto> getPagePostsByCategoryId(Long categoryId, Pageable pageable) {
+        // 선택한 카테고리
+        CategoryEntity category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        List<Long> categoryIds;
+
+        if (category.getParent() == null) {
+            // 상위 카테고리 -> 자기 자신 + 하위 카테고리 IDs 전부
+            categoryIds = categoryRepository.findAllByParentId(categoryId)
+                    .stream()
+                    .map(CategoryEntity::getId)
+                    .collect(Collectors.toList());
+            categoryIds.add(categoryId); // 자기 자신도 포함
+        } else {
+            // 하위 카테고리 -> 자기 자신만
+            categoryIds = List.of(categoryId);
+        }
+
+        return postRepository.findPageByCategoryIds(categoryIds, pageable)
+                .map(PostResponseDto::fromEntity);
     }
 
     /**

@@ -7,20 +7,28 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import PaginationComponent from "../posting/pagination-component";
 
 export default function HomeMain() {
   const [postsList, setPostsList] = useState<PostProps[]>([]);
+  const [page, setPage] = useState(0); // 현재 페이지
+  const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
   const [loading, setLoading] = useState(true);
   const [filterType, setFilterType] = useState<"all" | "it" | "jp">("all");
   const searchRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     axios
-      .get("api/posts")
-      .then(res => setPostsList(res.data))
+      .get("api/posts/page", {
+        params: { page, size: 10 }, // 백엔드에 page, size 전달
+      })
+      .then(res => {
+        setPostsList(res.data.content);
+        setTotalPages(res.data.totalPages);
+      })
       .catch(err => console.error("Error fetching posts:", err))
       .finally(() => setLoading(false));
-  }, []);
+  }, [page]);
 
   // 버튼을 map으로 랜더링하기 위한 배열
   const filters: { type: "all" | "it" | "jp"; label: string }[] = [
@@ -105,6 +113,9 @@ export default function HomeMain() {
 
         {/* 리스트 랜더링 */}
         {renderPostsList({ type: "home" }, postsList, loading)}
+
+        {/* 페이지네이션 */}
+        <PaginationComponent page={page} setPage={setPage} totalPages={totalPages} />
       </div>
     </main>
   );
