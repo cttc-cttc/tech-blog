@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useAuthStore } from "../components/utils/useAuthStore";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { CustomSkeleton } from "../components/shadcn-custom/custom-skeleton";
 
 type CommentType = {
   id: number;
@@ -48,6 +49,8 @@ export default function CommentSection() {
   useEffect(() => {
     fetchComment();
   }, [fetchComment]);
+
+  if (!comments) return <CustomSkeleton type="comments" />;
 
   /// 댓글/답글 등록
   const handleSubmit = (parentId?: number) => {

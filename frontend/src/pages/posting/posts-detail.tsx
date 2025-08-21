@@ -17,6 +17,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import CommentSection from "./comment-section";
+import { CustomSkeleton } from "../components/shadcn-custom/custom-skeleton";
 
 export default function PostsDetail() {
   const { role } = useAuthStore();
@@ -32,7 +33,7 @@ export default function PostsDetail() {
       .catch(err => console.error("Error fetching post:", err));
   }, [postId]);
 
-  if (!post) return <p className="p-4">로딩 중...</p>;
+  if (!post) return <CustomSkeleton type="posts" />;
 
   // 목록 페이지 버튼
   const navigateToList = () => {
