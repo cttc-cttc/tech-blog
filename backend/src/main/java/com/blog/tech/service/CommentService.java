@@ -1,7 +1,7 @@
 package com.blog.tech.service;
 
-import com.blog.tech.dto.CommentDto;
-import com.blog.tech.entity.Comment;
+import com.blog.tech.dto.CommentResponseDto;
+import com.blog.tech.entity.CommentEntity;
 import com.blog.tech.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,15 +16,16 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
+    // 댓글/답글 추가
     @Transactional
-    public CommentDto addComment(Long postId, Long userId, String nickName, String content, Long parentId) {
-        Comment parent = null;
+    public CommentResponseDto addComment(Long postId, String userId, String nickName, String content, Long parentId) {
+        CommentEntity parent = null;
         if (parentId != null) {
             parent = commentRepository.findById(parentId)
                     .orElseThrow(() -> new IllegalArgumentException("부모 댓글이 존재하지 않습니다."));
         }
 
-        Comment comment = Comment.builder()
+        CommentEntity comment = CommentEntity.builder()
                 .postId(postId)
                 .userId(userId)
                 .nickName(nickName)
@@ -32,15 +33,44 @@ public class CommentService {
                 .parent(parent)
                 .build();
 
-        Comment saved = commentRepository.save(comment);
-        return CommentDto.fromEntity(saved);
+        CommentEntity saved = commentRepository.save(comment);
+        return CommentResponseDto.fromEntity(saved);
     }
 
+    // 댓글 조회
     @Transactional(readOnly = true)
-    public List<CommentDto> getComments(Long postId) {
-        return commentRepository.findByPostIdAndParentIsNullOrderByIdAsc(postId)
+    public List<CommentResponseDto> getComments(Long postId) {
+        return commentRepository.findCommentsWithChildren(postId)
                 .stream()
-                .map(CommentDto::fromEntity)
+                .map(CommentResponseDto::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    // 댓글 수정
+    public CommentResponseDto updateComment(Long id, String userId, String content) {
+        CommentEntity comment = commentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("댓글이 존재하지 않습니다."));
+
+        if (!comment.getUserId().equals(userId)) {
+            throw new RuntimeException("본인 댓글만 수정할 수 있습니다.");
+        }
+
+        comment.setContent(content);
+        commentRepository.save(comment);
+
+        return CommentResponseDto.fromEntity(comment);
+    }
+
+    // 댓글 소프트 삭제
+    @Transactional
+    public void deleteComment(Long id, String userId) {
+        CommentEntity comment = commentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("댓글이 존재하지 않습니다."));
+
+        if (!comment.getUserId().equals(userId)) {
+            throw new RuntimeException("본인 댓글만 삭제할 수 있습니다.");
+        }
+
+        comment.setDelFlag(true);
     }
 }

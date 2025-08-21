@@ -1,6 +1,6 @@
 package com.blog.tech.dto;
 
-import com.blog.tech.entity.Comment;
+import com.blog.tech.entity.CommentEntity;
 import lombok.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,20 +10,22 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CommentDto {
+public class CommentResponseDto {
     private Long id;
+    private String userId;
     private String writer;
     private String content;
-    private List<CommentDto> children;
+    private List<CommentResponseDto> children;
 
-    public static CommentDto fromEntity(Comment comment) {
-        return CommentDto.builder()
+    public static CommentResponseDto fromEntity(CommentEntity comment) {
+        return CommentResponseDto.builder()
                 .id(comment.getId())
+                .userId(comment.getUserId())
                 .writer(comment.getNickName())
                 .content(comment.getContent())
                 .children(comment.getChildren()
                         .stream()
-                        .map(CommentDto::fromEntity)
+                        .map(CommentResponseDto::fromEntity)
                         .collect(Collectors.toList()))
                 .build();
     }

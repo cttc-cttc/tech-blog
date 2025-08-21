@@ -16,8 +16,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import CommentSection from "./comment-section";
+// import CommentSection from "./comment-section";
 import { CustomSkeleton } from "../components/shadcn-custom/custom-skeleton";
+import CommentSection from "./comment/CommentSection";
 
 export default function PostsDetail() {
   const { role } = useAuthStore();
