@@ -16,6 +16,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import CommentSection from "./comment-section";
 
 export default function PostsDetail() {
   const { role } = useAuthStore();
@@ -103,6 +104,9 @@ export default function PostsDetail() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* 댓글 영역 */}
+      <CommentSection />
     </div>
   );
 }
