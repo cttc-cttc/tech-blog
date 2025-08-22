@@ -2,6 +2,8 @@ package com.blog.tech.dto;
 
 import com.blog.tech.entity.CommentEntity;
 import lombok.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +17,8 @@ public class CommentResponseDto {
     private String userId;
     private String writer;
     private String content;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private List<CommentResponseDto> children;
 
     public static CommentResponseDto fromEntity(CommentEntity comment) {
@@ -23,6 +27,8 @@ public class CommentResponseDto {
                 .userId(comment.getUserId())
                 .writer(comment.getNickName())
                 .content(comment.getContent())
+                .createdAt(comment.getCreatedAt())
+                .updatedAt(comment.getUpdatedAt())
                 .children(comment.getChildren()
                         .stream()
                         .map(CommentResponseDto::fromEntity)

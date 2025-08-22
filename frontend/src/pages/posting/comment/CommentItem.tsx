@@ -4,6 +4,7 @@ import { useState } from "react";
 import { CommentForm } from "./CommentForm";
 import type { CommentType } from "./useComments";
 import { useAuthStore } from "@/pages/components/utils/useAuthStore";
+import dayjs from "dayjs";
 
 interface CommentItemProps {
   comment: CommentType;
@@ -29,8 +30,20 @@ export function CommentItem({
   return (
     <div className="mt-4 mb-4">
       <Card className="p-3">
-        <CardContent>
-          <p className="font-semibold mb-2">{comment.writer}</p>
+        <CardContent className="px-2">
+          <div className="flex justify-between">
+            <p className="font-semibold mb-2">{comment.writer}</p>
+            <div className="flex">
+              <p className="text-muted-foreground mb-2">
+                {dayjs(comment.createdAt).format("YYYY-MM-DD")}
+              </p>
+              {comment.updatedAt && (
+                <p className="text-muted-foreground mb-2 ml-2">
+                  {dayjs(comment.updatedAt).format("(수정: YYYY-MM-DD)")}
+                </p>
+              )}
+            </div>
+          </div>
 
           {editing ? (
             <CommentForm

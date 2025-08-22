@@ -17,7 +17,7 @@ export function CommentForm({ onSubmit, onCancel, initialValue = "" }: CommentFo
         value={content}
         onChange={e => setContent(e.target.value)}
         placeholder="댓글을 입력하세요..."
-        className="mb-2"
+        className="mb-2 h-20"
       />
       <div className="flex gap-2">
         {onCancel && (

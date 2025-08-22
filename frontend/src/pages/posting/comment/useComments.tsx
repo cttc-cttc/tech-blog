@@ -6,6 +6,8 @@ export interface CommentType {
   userId: string;
   writer: string;
   content: string;
+  createdAt: Date;
+  updatedAt: Date;
   children?: CommentType[];
 }
 
