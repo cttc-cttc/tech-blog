@@ -36,9 +36,9 @@ export const getPostBasePath = (currentPath: string): string => {
  * @param currentPath
  * @returns
  */
-// export const getPathLastSegment = (currentPath: string): string => {
-//   return currentPath.split("/").filter(Boolean).pop() ?? "";
-// };
+export const getPathLastSegment = (currentPath: string): string => {
+  return currentPath.split("/").filter(Boolean).pop() ?? "";
+};
 
 /**
  * 사이드 바 레이아웃 헤더에서 경로의 마지막 세그먼트를 웹 페이지용 이름으로 반환하는 함수

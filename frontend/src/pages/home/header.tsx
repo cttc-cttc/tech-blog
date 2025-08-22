@@ -5,7 +5,7 @@ import { useAuthStore } from "@/pages/components/utils/useAuthStore";
 import { Link } from "react-router-dom";
 
 export default function Header() {
-  const { token, nickName, clearAuth } = useAuthStore();
+  const { token, role, nickName, clearAuth } = useAuthStore();
 
   return (
     // bg-[#fafafa] dark:bg-[#0a0d11]
@@ -42,11 +42,19 @@ export default function Header() {
                 <p>{nickName}님</p>
                 <p>환영합니다</p>
               </div>
-              <Link to="/auth/mypage" className="ml-8">
-                <Button className="text-sm hover:cursor-pointer" variant="outline">
-                  마이페이지
-                </Button>
-              </Link>
+              {role === "ROLE_USER" ? (
+                <Link to="/auth/mypage" className="ml-8">
+                  <Button className="text-sm hover:cursor-pointer" variant="outline">
+                    마이페이지
+                  </Button>
+                </Link>
+              ) : (
+                <Link to="/auth/adminpage" className="ml-8">
+                  <Button className="text-sm hover:cursor-pointer" variant="outline">
+                    관리페이지
+                  </Button>
+                </Link>
+              )}
               <Link to="/" className="ml-1">
                 <Button
                   className="text-sm bg-foreground text-background dark:bg-foreground dark:text-background hover:cursor-pointer"

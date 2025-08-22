@@ -23,9 +23,15 @@ import "@toast-ui/editor/dist/i18n/ko-kr";
 import "tui-color-picker/dist/tui-color-picker.css";
 import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
 import "./pages/components/toast-ui-editor-custom/toast-editor-dark.css";
-
 import "prismjs/themes/prism.css";
 import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
+
+import Adminpage from "./pages/user/adminpage/adminpage";
+import Mypage from "./pages/user/mypage/mypage";
+import MyInfoUpdate from "./pages/user/mypage/my-info-update";
+import MyComments from "./pages/user/mypage/my-comments";
+import MemberSidebarLayout from "./pages/user/member-sidebar-layout";
+import AdminCategoryManagement from "./pages/user/adminpage/admin-category-management";
 
 function App() {
   return (
@@ -51,6 +57,14 @@ function App() {
               <Route path=":category1/:category2/create" element={<PostsCreate />} />
               <Route path=":category1/:category2/:postId" element={<PostsDetail />} />
               <Route path=":category1/:category2/update/:postId" element={<PostsUpdate />} />
+            </Route>
+
+            <Route path="/auth" element={<MemberSidebarLayout />}>
+              <Route path="/auth/adminpage" element={<Adminpage />} />
+              <Route path="/auth/adminpage/category" element={<AdminCategoryManagement />} />
+              <Route path="/auth/mypage" element={<Mypage />} />
+              <Route path="/auth/mypage/updateInfo" element={<MyInfoUpdate />} />
+              <Route path="/auth/mypage/comments" element={<MyComments />} />
             </Route>
           </Route>
         </Routes>
