@@ -61,6 +61,7 @@ npx shadcn@latest add alert-dialog
 npx shadcn@latest add skeleton
 npx shadcn@latest add pagination
 npx shadcn@latest add textarea
+npx shadcn@latest add dashboard-01
 ```
 
 ## 개발 실행 환경
