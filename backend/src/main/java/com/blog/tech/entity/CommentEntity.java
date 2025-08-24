@@ -2,6 +2,7 @@ package com.blog.tech.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class CommentEntity {
 
     // 답글 리스트
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @SQLRestriction("del_flag = false")
     @Builder.Default
     private List<CommentEntity> children = new ArrayList<>();
 }
