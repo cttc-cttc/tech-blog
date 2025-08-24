@@ -9,6 +9,7 @@ public class UserDto {
     private String userId;
     private String nickName;
     private String password;
+    private String confirmPassword;
     private String email;
-    private String role;
+    private RoleType role;
 }

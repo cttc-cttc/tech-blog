@@ -16,6 +16,14 @@ export interface PostProps {
   nameChild: string;
 }
 
+// 유저 타입
+export interface User {
+  userId: string;
+  nickName: string;
+  email: string;
+  role: string;
+}
+
 // skeleton 타입
 export interface CustomSkeletonProps {
   type: "home" | "posts" | "comments";
