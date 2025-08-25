@@ -1,12 +1,15 @@
 package com.blog.tech.service;
 
 import com.blog.tech.dto.CommentResponseDto;
+import com.blog.tech.dto.PostResponseDto;
 import com.blog.tech.entity.CommentEntity;
+import com.blog.tech.entity.PostEntity;
 import com.blog.tech.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +29,7 @@ public class CommentService {
         }
 
         CommentEntity comment = CommentEntity.builder()
-                .postId(postId)
+                .post(PostEntity.builder().id(postId).build())
                 .userId(userId)
                 .nickName(nickName)
                 .content(content)
@@ -71,6 +74,22 @@ public class CommentService {
             throw new RuntimeException("본인 댓글만 삭제할 수 있습니다.");
         }
 
+        markDeleted(comment);
+    }
+    private void markDeleted(CommentEntity comment) {
         comment.setDelFlag(true);
+
+        if(comment.getChildren() != null) {
+            for(CommentEntity child : comment.getChildren()) {
+                markDeleted(child); // 재귀 호출
+            }
+        }
+    }
+
+    public List<CommentResponseDto> getMyCommentList(String userId) {
+        return commentRepository.findCommentsWithChildrenAndPostAndCategory(userId)
+                .stream()
+                .map(CommentResponseDto::fromEntity)
+                .collect(Collectors.toList());
     }
 }

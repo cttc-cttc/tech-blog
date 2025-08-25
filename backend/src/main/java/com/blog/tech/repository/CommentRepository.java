@@ -17,8 +17,19 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
 //            """)
     @Query("""
             SELECT c FROM CommentEntity c LEFT JOIN FETCH c.children
-            WHERE c.postId = :postId AND c.parent IS NULL AND c.delFlag = false
+            WHERE c.post.id = :postId AND c.parent IS NULL AND c.delFlag = false
             ORDER BY c.id ASC
             """)
     List<CommentEntity> findCommentsWithChildren(@Param("postId") Long postId);
+
+    @Query("""
+        SELECT c 
+        FROM CommentEntity c
+        LEFT JOIN FETCH c.children
+        JOIN FETCH c.post p
+        JOIN FETCH p.category cat
+        WHERE c.userId = :userId
+        ORDER BY c.id DESC
+    """)
+    List<CommentEntity> findCommentsWithChildrenAndPostAndCategory(@Param("userId") String userId);
 }

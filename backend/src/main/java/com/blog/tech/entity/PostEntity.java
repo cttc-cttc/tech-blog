@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class PostEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +39,7 @@ public class PostEntity {
     private LocalDateTime updatedAt;
 
     @Column(name = "del_flag", nullable = false)
+    @Builder.Default
     private boolean delFlag = false; // 기본값 false
 
     @PrePersist

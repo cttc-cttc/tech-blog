@@ -20,7 +20,7 @@ public class CommentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long postId; // 어느 글에 달린 댓글인지
+//    private Long postId; // 어느 글에 달린 댓글인지
 
     private String userId; // 작성자 ID (User 테이블이 있으면 ManyToOne으로 매핑 가능)
     private String nickName;
@@ -31,6 +31,10 @@ public class CommentEntity {
     @Column(name = "del_flag", nullable = false)
     @Builder.Default
     private boolean delFlag = false; // 기본값 false
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private PostEntity post;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

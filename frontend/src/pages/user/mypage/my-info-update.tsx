@@ -31,7 +31,7 @@ export default function MyInfoUpdate() {
 
   if (loading) return <CustomSkeleton type="posts" />;
 
-  const validateDuplicate = async (url: string, value: string) => {
+  const validateDuplicate = async (url: string, value: string, message: string) => {
     try {
       const response = await axios.post("/api/valid-duplicate-" + url, {
         nickName: value,
@@ -41,8 +41,8 @@ export default function MyInfoUpdate() {
         return true;
       }
     } catch (err) {
-      alert("이미 사용중인 " + url + " 입니다");
-      console.log(err);
+      alert("이미 사용중인 " + message + "입니다");
+      console.error(err);
       return false;
     }
   };
@@ -54,13 +54,13 @@ export default function MyInfoUpdate() {
 
     // nickName 변경 감지
     if (formData.nickName !== userInfo.nickName) {
-      if (!validateDuplicate("nickName", formData.nickName)) return;
+      if (!validateDuplicate("nickName", formData.nickName, "닉네임")) return;
       updatedData.nickName = formData.nickName;
     }
 
     // email 변경 감지
     if (formData.email !== userInfo.email) {
-      if (!validateDuplicate("email", formData.email)) return;
+      if (!validateDuplicate("email", formData.email, "이메일")) return;
       updatedData.email = formData.email;
     }
 

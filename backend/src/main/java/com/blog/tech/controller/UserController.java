@@ -1,5 +1,6 @@
 package com.blog.tech.controller;
 
+import com.blog.tech.dto.CommentResponseDto;
 import com.blog.tech.dto.UserDto;
 import com.blog.tech.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -41,14 +43,33 @@ public class UserController {
        return ResponseEntity.ok(Map.of("success", true));
     }
 
+    /**
+     * 마이페이지 메인 접속 시 내 정보 불러오기
+     * @param userId
+     * @return
+     */
     @GetMapping("/user/userInfo")
     public ResponseEntity<UserDto> getUserInfo(@RequestParam String userId) {
         return ResponseEntity.ok(userService.getUserInfo((userId)));
     }
 
+    /**
+     * 마이페이지 내 정보 업데이트
+     * @param formData
+     * @return
+     */
     @PutMapping("/user/update")
     public ResponseEntity<UserDto> updateUserInfo(@RequestBody UserDto formData) {
         return ResponseEntity.ok(userService.updateUserInfo(formData));
     }
 
+    /**
+     * 마이페이지 내가 쓴 댓글 불러오기
+     * @param userId
+     * @return
+     */
+    @GetMapping("/user/myComment")
+    public ResponseEntity<List<CommentResponseDto>> getMyComment(@RequestParam String userId) {
+        return ResponseEntity.ok(userService.getMyComment(userId));
+    }
 }

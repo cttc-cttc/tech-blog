@@ -1,7 +1,9 @@
 package com.blog.tech.service;
 
+import com.blog.tech.dto.CommentResponseDto;
 import com.blog.tech.dto.RoleType;
 import com.blog.tech.dto.UserDto;
+import com.blog.tech.entity.CommentEntity;
 import com.blog.tech.entity.UserEntity;
 import com.blog.tech.exception.UserNotFoundException;
 import com.blog.tech.repository.UserRepository;
@@ -12,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +24,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CommentService commentService;
 
     public void validDuplicateUserId(String userId) {
         if (userId == null) {
@@ -129,5 +134,14 @@ public class UserService {
         dto.setEmail(user.getEmail());
         dto.setRole(user.getRole());
         return dto;
+    }
+
+    /**
+     * userId로 해당 유저가 쓴 댓글 목록 불러오기
+     * @param userId
+     * @return
+     */
+    public List<CommentResponseDto> getMyComment(String userId) {
+        return commentService.getMyCommentList(userId);
     }
 }
