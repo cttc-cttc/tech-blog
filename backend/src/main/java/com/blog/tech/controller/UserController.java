@@ -5,6 +5,10 @@ import com.blog.tech.dto.UserDto;
 import com.blog.tech.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,12 +68,17 @@ public class UserController {
     }
 
     /**
-     * 마이페이지 내가 쓴 댓글 불러오기
+     * 마이페이지 내가 쓴 댓글 불러오기 [페이징]
      * @param userId
      * @return
      */
     @GetMapping("/user/myComment")
-    public ResponseEntity<List<CommentResponseDto>> getMyComment(@RequestParam String userId) {
-        return ResponseEntity.ok(userService.getMyComment(userId));
+    public ResponseEntity<Page<CommentResponseDto>> getMyCommentPage(
+            @RequestParam String userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        return ResponseEntity.ok(userService.getMyCommentPage(userId, pageable));
     }
 }

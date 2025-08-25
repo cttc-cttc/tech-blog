@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { CustomSkeleton } from "@/pages/components/shadcn-custom/custom-skeleton";
 import { useAuthStore } from "@/pages/components/utils/useAuthStore";
+import PaginationComponent from "@/pages/posting/pagination-component";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -21,21 +22,29 @@ interface CommentProps {
 export default function MyComments() {
   const { userId } = useAuthStore();
   const [commentList, setCommentList] = useState<CommentProps[]>([]);
+  const [page, setPage] = useState(0); // 댓글 페이지
+  const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
   const [loading, setLoading] = useState(false);
 
+  // 페이지 바뀔 때마다 랜더링
   const fetchMyComment = useCallback(() => {
     setLoading(true);
+    const query: Record<string, string | number> = {
+      page,
+      size: 10,
+    };
+    if (userId) query.userId = userId;
+
     axios
-      .get("/api/user/myComment", {
-        params: { userId },
-      })
+      .get("/api/user/myComment", { params: query })
       .then(res => {
         console.log(res.data);
-        setCommentList(res.data);
+        setCommentList(res.data.content);
+        setTotalPages(res.data.totalPages);
       })
       .catch(err => console.error(err))
       .finally(() => setLoading(false));
-  }, [userId]);
+  }, [userId, page]);
 
   useEffect(() => {
     fetchMyComment();
@@ -61,6 +70,9 @@ export default function MyComments() {
           </Card>
         </Link>
       ))}
+
+      {/* 페이지네이션 */}
+      <PaginationComponent page={page} setPage={setPage} totalPages={totalPages} />
     </div>
   );
 }

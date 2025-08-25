@@ -6,6 +6,8 @@ import com.blog.tech.entity.CommentEntity;
 import com.blog.tech.entity.PostEntity;
 import com.blog.tech.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,10 +88,14 @@ public class CommentService {
         }
     }
 
-    public List<CommentResponseDto> getMyCommentList(String userId) {
-        return commentRepository.findCommentsWithChildrenAndPostAndCategory(userId)
-                .stream()
-                .map(CommentResponseDto::fromEntity)
-                .collect(Collectors.toList());
+    /**
+     * 내가 쓴 댓글 불러오기
+     * @param userId
+     * @param pageable
+     * @return
+     */
+    public Page<CommentResponseDto> getMyCommentPage(String userId, Pageable pageable) {
+        return commentRepository.findCommentsWithChildrenAndPostAndCategoryPage(userId, pageable)
+                .map(CommentResponseDto::fromEntity);
     }
 }

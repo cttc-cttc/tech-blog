@@ -1,6 +1,8 @@
 package com.blog.tech.repository;
 
 import com.blog.tech.entity.CommentEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,13 +25,13 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
     List<CommentEntity> findCommentsWithChildren(@Param("postId") Long postId);
 
     @Query("""
-        SELECT c 
+        SELECT c
         FROM CommentEntity c
         LEFT JOIN FETCH c.children
         JOIN FETCH c.post p
         JOIN FETCH p.category cat
-        WHERE c.userId = :userId
+        WHERE c.userId = :userId AND c.delFlag = false
         ORDER BY c.id DESC
     """)
-    List<CommentEntity> findCommentsWithChildrenAndPostAndCategory(@Param("userId") String userId);
+    Page<CommentEntity> findCommentsWithChildrenAndPostAndCategoryPage(@Param("userId") String userId, Pageable pageable);
 }
