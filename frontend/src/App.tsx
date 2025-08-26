@@ -32,6 +32,7 @@ import MyInfoUpdate from "./pages/user/mypage/my-info-update";
 import MyComments from "./pages/user/mypage/my-comments";
 import MemberSidebarLayout from "./pages/user/member-sidebar-layout";
 import AdminCategoryManagement from "./pages/user/adminpage/admin-category-management";
+import TodoList from "./pages/todo/todo-list";
 
 function App() {
   return (
@@ -66,6 +67,8 @@ function App() {
               <Route path="/auth/mypage/updateInfo" element={<MyInfoUpdate />} />
               <Route path="/auth/mypage/comments" element={<MyComments />} />
             </Route>
+
+            <Route path="/todo" element={<TodoList />} />
           </Route>
         </Routes>
       </BrowserRouter>

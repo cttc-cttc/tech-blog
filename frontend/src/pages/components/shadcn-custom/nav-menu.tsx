@@ -205,7 +205,7 @@ export function NavMenu() {
 
         <NavigationMenuItem>
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-            <Link to="/todo-list">Todo List</Link>
+            <Link to="/todo">Todo List</Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
 
