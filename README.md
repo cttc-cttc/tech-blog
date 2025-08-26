@@ -40,6 +40,9 @@ npm install @toast-ui/editor-plugin-code-syntax-highlight
 npm install --save-dev @types/prismjs
 
 npm install react-markdown remark-gfm
+
+npm install react-beautiful-dnd --save
+npm i --save-dev @types/react-beautiful-dnd
 ```
 
 ## 설치한 shadcn 컴포넌트
