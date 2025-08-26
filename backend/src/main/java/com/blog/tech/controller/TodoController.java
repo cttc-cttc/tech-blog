@@ -56,4 +56,9 @@ public class TodoController {
         todoService.deleteTodo(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/todo/{id}")
+    public ResponseEntity<TodoResponseDto> dragTodoUpdateState(@PathVariable Long id, @RequestBody TodoRequestDto request) {
+        return ResponseEntity.ok(todoService.dragTodoUpdateState(id, request.getState()));
+    }
 }

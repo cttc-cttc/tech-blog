@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Todo } from "./todo-list";
 import dayjs from "dayjs";
-import { useRef, useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import {
   Dialog,
   DialogContent,
@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import axios from "axios";
+// import DragTest from "./dragtest";
 
 const typeName: Record<string, string> = {
   todo: "할 일",
@@ -23,14 +24,15 @@ const typeName: Record<string, string> = {
 interface BoardProps {
   type: string;
   todos: Todo[];
+  setTodos: Dispatch<SetStateAction<Todo[]>>;
   onSuccess: () => void;
 }
 
 export default function Board({ type, todos, onSuccess }: BoardProps) {
   const [selectedTodo, setSelectedTodo] = useState<Todo>();
   const [openDialog, setOpenDialog] = useState(false);
-  const nameRef = useRef<HTMLInputElement>(null);
-  const contentRef = useRef<HTMLInputElement>(null);
+  //   const nameRef = useRef<HTMLInputElement>(null);
+  //   const contentRef = useRef<HTMLInputElement>(null);
 
   const renderTodo = (todos: Todo[]) => {
     if (todos.length === 0) return <p className="text-center">작성된 업무가 없습니다</p>;
@@ -76,8 +78,8 @@ export default function Board({ type, todos, onSuccess }: BoardProps) {
     axios
       .put("/api/todo", todoData)
       .then(() => {
-        if (nameRef.current) nameRef.current.value = "";
-        if (contentRef.current) contentRef.current.value = "";
+        // if (nameRef.current) nameRef.current.value = "";
+        // if (contentRef.current) contentRef.current.value = "";
         alert("업무 내용이 수정 되었습니다.");
         onSuccess(); // post 성공 시 부모에게 알려줌
       })
@@ -122,7 +124,7 @@ export default function Board({ type, todos, onSuccess }: BoardProps) {
                 <div className="grid gap-3">
                   <Label htmlFor="todoName">업무 제목</Label>
                   <Input
-                    ref={nameRef}
+                    // ref={nameRef}
                     id="todoName"
                     name="todoName"
                     type="text"
@@ -133,7 +135,7 @@ export default function Board({ type, todos, onSuccess }: BoardProps) {
                 <div className="grid gap-3">
                   <Label htmlFor="todoContent">작업 내용</Label>
                   <Input
-                    ref={contentRef}
+                    // ref={contentRef}
                     id="todoContent"
                     name="todoContent"
                     type="text"
@@ -156,7 +158,7 @@ export default function Board({ type, todos, onSuccess }: BoardProps) {
                 </Button>
                 <Button
                   type="button"
-                  className="hover:cursor-pointer"
+                  className="hover:cursor-pointer hover:bg-destructive/70 dark:hover:bg-destructive/70"
                   variant="destructive"
                   onClick={handleDelete}
                 >

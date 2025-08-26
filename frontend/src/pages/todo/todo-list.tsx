@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../components/utils/useAuthStore";
-import Board from "./board";
 import TodoDialog from "./todo-dialog";
 import axios from "axios";
 import { CustomSkeleton } from "../components/shadcn-custom/custom-skeleton";
+import DragBoard from "./drag-board";
 
 export interface Todo {
   id: number;
   title: string;
   content: string;
-  state: string;
+  state: "TODO_TODO" | "TODO_IN_PROGRESS" | "TODO_DONE";
   createdAt: Date;
 }
 
@@ -43,29 +43,8 @@ export default function TodoList() {
         </div>
       </div>
       <hr className="border-muted-foreground/50 mb-4" />
-      <main className="grid grid-cols-3 divide-x divide-muted-foreground/50 w-full min-h-[52vh]">
-        <div className="p-4">
-          <Board
-            type="todo"
-            todos={todos.filter(t => t.state === "TODO_TODO")}
-            onSuccess={fetchTodo}
-          />
-        </div>
-        <div className="p-4">
-          <Board
-            type="inprogress"
-            todos={todos.filter(t => t.state === "TODO_IN_PROGRESS")}
-            onSuccess={fetchTodo}
-          />
-        </div>
-        <div className="p-4">
-          <Board
-            type="done"
-            todos={todos.filter(t => t.state === "TODO_DONE")}
-            onSuccess={fetchTodo}
-          />
-        </div>
-      </main>
+      <DragBoard todos={todos} setTodos={setTodos} onSuccess={fetchTodo} />
+
       {role === "ROLE_ADMIN" && (
         <>
           <div className="flex justify-end px-4 pt-4">

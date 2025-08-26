@@ -2,6 +2,7 @@ package com.blog.tech.service;
 
 import com.blog.tech.dto.todo.TodoRequestDto;
 import com.blog.tech.dto.todo.TodoResponseDto;
+import com.blog.tech.dto.todo.TodoState;
 import com.blog.tech.entity.TodoEntity;
 import com.blog.tech.repository.TodoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -69,5 +70,16 @@ public class TodoService {
             throw new EntityNotFoundException("Todo not found with id: " + id);
         }
         todoRepository.deleteById(id);
+    }
+
+    public TodoResponseDto dragTodoUpdateState(Long id, String state) {
+        System.out.println(state);
+        TodoEntity todo = todoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("todo가 존재하지 않습니다 id: "+ id));
+
+        todo.setState(TodoState.valueOf(state));
+
+        TodoEntity updated = todoRepository.save(todo);
+        return TodoResponseDto.fromEntity(updated);
     }
 }
