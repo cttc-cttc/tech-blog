@@ -34,4 +34,26 @@ public class TodoController {
     public ResponseEntity<List<TodoResponseDto>> getTodos() {
         return ResponseEntity.ok(todoService.getTodos());
     }
+
+    /**
+     * todo 업데이트
+     * @param request
+     * @return
+     */
+    @PutMapping("/todo")
+    public ResponseEntity<TodoResponseDto> updateTodo(@RequestBody TodoRequestDto request) {
+        return ResponseEntity.ok(todoService.updateTodo(request));
+    }
+
+    /**
+     * todo 삭제
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/todo/{id}")
+    public ResponseEntity<Void> deleteTodo(@PathVariable Long id) {
+        System.out.println("id 들어오나: " + id);
+        todoService.deleteTodo(id);
+        return ResponseEntity.noContent().build();
+    }
 }

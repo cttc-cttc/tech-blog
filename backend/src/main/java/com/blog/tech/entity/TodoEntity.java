@@ -36,10 +36,6 @@ public class TodoEntity {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "del_flag", nullable = false)
-    @Builder.Default
-    private boolean delFlag = false; // 기본값 false
-
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();

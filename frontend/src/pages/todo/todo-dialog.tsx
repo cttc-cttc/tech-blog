@@ -35,7 +35,7 @@ export default function TodoDialog({ onSuccess }: { onSuccess: () => void }) {
       .then(() => {
         if (nameRef.current) nameRef.current.value = "";
         if (contentRef.current) contentRef.current.value = "";
-        alert("할 일이 추가되었습니다.");
+        alert("할 일이 추가 되었습니다.");
         onSuccess(); // post 성공 시 부모에게 알려줌
       })
       .catch(err => console.error("todo 등록 실패: ", err));
