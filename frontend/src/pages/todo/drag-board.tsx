@@ -15,6 +15,7 @@ import dayjs from "dayjs";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useAuthStore } from "../components/utils/useAuthStore";
 
 interface BoardProps {
   todos: Todo[];
@@ -25,6 +26,8 @@ interface BoardProps {
 export default function DragBoard({ todos, setTodos, onSuccess }: BoardProps) {
   const [selectedTodo, setSelectedTodo] = useState<Todo>();
   const [openDialog, setOpenDialog] = useState(false);
+  const { role } = useAuthStore();
+  const isAdmin = role === "ROLE_ADMIN";
 
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
@@ -131,13 +134,14 @@ export default function DragBoard({ todos, setTodos, onSuccess }: BoardProps) {
                           draggableId={String(todo.id)}
                           index={index}
                           key={String(todo.id)}
+                          isDragDisabled={!isAdmin} // 관리자만 가능
                         >
                           {provided => (
                             <Card
                               ref={provided.innerRef}
                               {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              onDoubleClick={() => handleDoubleClick(todo)}
+                              {...(!isAdmin ? {} : provided.dragHandleProps)} // 관리자가 아니면 dragHandleProps 안 줌
+                              onDoubleClick={isAdmin ? () => handleDoubleClick(todo) : undefined} // 더블 클릭도 관리자만
                             >
                               <CardHeader>
                                 <CardTitle>{todo.title}</CardTitle>

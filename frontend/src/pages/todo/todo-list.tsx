@@ -37,10 +37,12 @@ export default function TodoList() {
     <div className="flex flex-col w-full max-w-7xl">
       <div className="flex justify-between">
         <p className="text-lg font-bold px-2 py-4">Todo List</p>
-        <div className="flex flex-col items-end justify-center text-muted-foreground pr-2">
-          <p>업무 카드 더블 클릭으로 내용 수정/삭제</p>
-          <p>업무 카드 드래그로 상태 변경</p>
-        </div>
+        {role === "ROLE_ADMIN" && (
+          <div className="flex flex-col items-end justify-center text-muted-foreground pr-2">
+            <p>업무 카드 더블 클릭으로 내용 수정/삭제</p>
+            <p>업무 카드 드래그로 상태 변경</p>
+          </div>
+        )}
       </div>
       <hr className="border-muted-foreground/50 mb-4" />
       <DragBoard todos={todos} setTodos={setTodos} onSuccess={fetchTodo} />
