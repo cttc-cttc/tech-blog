@@ -16,12 +16,13 @@ import axios from "axios";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
-dayjs.extend(relativeTime);
-dayjs.locale("ko");
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function CommentList() {
+dayjs.extend(relativeTime);
+dayjs.locale("ko");
+
+export default function AdminCommentList() {
   const [commentList, setCommentList] = useState<CommentProps[]>([]);
   const [page, setPage] = useState(0); // 댓글 페이지
   const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
@@ -53,12 +54,16 @@ export default function CommentList() {
   if (loading) return <CustomSkeleton type="comments" />;
 
   if (commentList.length === 0)
-    return <p className="flex h-full items-center justify-center">작성된 댓글이 없습니다.</p>;
+    return (
+      <p className="flex h-full items-center justify-center bg-muted/50 rounded-xl">
+        작성된 댓글이 없습니다.
+      </p>
+    );
 
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="mb-2">댓글</CardTitle>
+        <CardTitle className="mb-1">댓글</CardTitle>
         <CardDescription>블로그에 작성된 모든 댓글을 표시합니다.</CardDescription>
       </CardHeader>
       <Separator />

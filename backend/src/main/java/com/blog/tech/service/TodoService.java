@@ -7,6 +7,8 @@ import com.blog.tech.entity.TodoEntity;
 import com.blog.tech.repository.TodoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -72,6 +74,12 @@ public class TodoService {
         todoRepository.deleteById(id);
     }
 
+    /**
+     * 마우스 드래그로 Todo의 상태 변경
+     * @param id
+     * @param state
+     * @return
+     */
     public TodoResponseDto dragTodoUpdateState(Long id, String state) {
         System.out.println(state);
         TodoEntity todo = todoRepository.findById(id)
@@ -81,5 +89,15 @@ public class TodoService {
 
         TodoEntity updated = todoRepository.save(todo);
         return TodoResponseDto.fromEntity(updated);
+    }
+
+    /**
+     * 관리자 페이지 - 전체 Todo 리스트 불러오기
+     * @param pageable
+     * @return
+     */
+    public Page<TodoResponseDto> getTodoList(Pageable pageable) {
+        return todoRepository.findAllPage(pageable)
+                .map(TodoResponseDto::fromEntity);
     }
 }

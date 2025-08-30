@@ -42,3 +42,12 @@ export interface CommentProps {
   category2: string;
   createdAt: Date;
 }
+
+// todo 타입
+export interface Todo {
+  id: number;
+  title: string;
+  content: string;
+  state: "TODO_TODO" | "TODO_IN_PROGRESS" | "TODO_DONE";
+  createdAt: Date;
+}

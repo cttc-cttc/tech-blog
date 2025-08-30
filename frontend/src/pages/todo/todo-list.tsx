@@ -4,19 +4,17 @@ import TodoDialog from "./todo-dialog";
 import axios from "axios";
 import { CustomSkeleton } from "../components/shadcn-custom/custom-skeleton";
 import DragBoard from "./drag-board";
-
-export interface Todo {
-  id: number;
-  title: string;
-  content: string;
-  state: "TODO_TODO" | "TODO_IN_PROGRESS" | "TODO_DONE";
-  createdAt: Date;
-}
+import type { Todo } from "../components/utils/common-interfaces";
+import { useSearchParams } from "react-router-dom";
 
 export default function TodoList() {
   const { role } = useAuthStore();
   const [todos, setTodos] = useState<Todo[]>([]);
   const [loading, setLoading] = useState(false);
+  const [searchParams] = useSearchParams();
+
+  // 관리자 페이지에서 넘겨준 값 받기
+  const highlightId = searchParams.get("highlightId");
 
   const fetchTodo = () => {
     setLoading(true);
@@ -30,6 +28,27 @@ export default function TodoList() {
   useEffect(() => {
     fetchTodo();
   }, []);
+
+  // ✅ todos가 렌더링된 뒤 해당 todo로 스크롤
+  useEffect(() => {
+    if (highlightId && todos.length > 0) {
+      const el = document.getElementById(`todo-${highlightId}`);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.classList.add(
+          "transition-colors",
+          "duration-700",
+          "ease-in-out",
+          "bg-muted-foreground/30",
+          "dark:bg-muted-foreground/30"
+        );
+
+        setTimeout(() => {
+          el.classList.remove("bg-muted-foreground/30", "dark:bg-muted-foreground/30");
+        }, 500);
+      }
+    }
+  }, [highlightId, todos]);
 
   if (loading) return <CustomSkeleton type="posts" />;
 

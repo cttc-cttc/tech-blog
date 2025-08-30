@@ -9,13 +9,13 @@ import {
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import type { DropResult } from "react-beautiful-dnd";
 import { useState, type Dispatch, type SetStateAction } from "react";
-import type { Todo } from "./todo-list";
 import axios from "axios";
 import dayjs from "dayjs";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "../components/utils/useAuthStore";
+import type { Todo } from "../components/utils/common-interfaces";
 
 interface BoardProps {
   todos: Todo[];
@@ -142,6 +142,7 @@ export default function DragBoard({ todos, setTodos, onSuccess }: BoardProps) {
                               {...provided.draggableProps}
                               {...(!isAdmin ? {} : provided.dragHandleProps)} // 관리자가 아니면 dragHandleProps 안 줌
                               onDoubleClick={isAdmin ? () => handleDoubleClick(todo) : undefined} // 더블 클릭도 관리자만
+                              id={`todo-${todo.id}`}
                             >
                               <CardHeader>
                                 <CardTitle>{todo.title}</CardTitle>

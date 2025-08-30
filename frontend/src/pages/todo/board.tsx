@@ -1,5 +1,4 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import type { Todo } from "./todo-list";
 import dayjs from "dayjs";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import {
@@ -13,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import axios from "axios";
+import type { Todo } from "../components/utils/common-interfaces";
 // import DragTest from "./dragtest";
 
 const typeName: Record<string, string> = {

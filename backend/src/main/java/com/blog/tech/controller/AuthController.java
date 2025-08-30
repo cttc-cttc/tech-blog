@@ -2,10 +2,12 @@ package com.blog.tech.controller;
 
 import com.blog.tech.dto.CommentResponseDto;
 import com.blog.tech.dto.UserDto;
+import com.blog.tech.dto.todo.TodoResponseDto;
 import com.blog.tech.entity.UserEntity;
 import com.blog.tech.jwt.JwtTokenProvider;
 import com.blog.tech.repository.UserRepository;
 import com.blog.tech.service.CommentService;
+import com.blog.tech.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +33,7 @@ public class AuthController {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
     private final CommentService commentService;
+    private final TodoService todoService;
 
     @PostMapping("/auth/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody UserDto request) {
@@ -68,12 +71,33 @@ public class AuthController {
         }
     }
 
+    /**
+     * 관리자 페이지 - 전체 댓글 페이징 리스트
+     * @param page
+     * @param size
+     * @return
+     */
     @GetMapping("/auth/commentList")
     public Page<CommentResponseDto> getCommentList(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "5") int size
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         return commentService.getCommentList(pageable);
+    }
+
+    /**
+     * 관리자 페이지 - 전체 todo list 페이징 리스트
+     * @param page
+     * @param size
+     * @return
+     */
+    @GetMapping("/auth/todoList")
+    public Page<TodoResponseDto> getTodoList(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        return todoService.getTodoList(pageable);
     }
 }

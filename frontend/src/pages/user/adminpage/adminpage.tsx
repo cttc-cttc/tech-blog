@@ -1,5 +1,6 @@
+import AdminCommentList from "./dashboard/admin-comment-list";
+import AdminTodoList from "./dashboard/admin-todo-list";
 import { ChartAreaInteractiveDemo } from "./dashboard/chartDemo";
-import CommentList from "./dashboard/comment-list";
 
 export default function Adminpage() {
   return (
@@ -8,12 +9,13 @@ export default function Adminpage() {
         <ChartAreaInteractiveDemo />
       </div>
       <div className="flex gap-5">
-        <div className="flex-1 bg-muted/50 min-h-[100px] rounded-xl">
-          <CommentList />
+        <div className="flex-1 min-h-[100px]">
+          <AdminCommentList />
         </div>
-        <div className="flex-1 bg-muted/50 rounded-xl"></div>
+        <div className="flex-1 min-h-[100px]">
+          <AdminTodoList />
+        </div>
       </div>
-      {/* <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" /> */}
     </div>
   );
 }
