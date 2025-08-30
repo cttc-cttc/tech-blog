@@ -130,7 +130,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function ChartAreaInteractive() {
+export function ChartAreaInteractiveDemo() {
   const [timeRange, setTimeRange] = React.useState("90d");
 
   const filteredData = chartData.filter(item => {

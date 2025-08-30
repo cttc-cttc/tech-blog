@@ -28,3 +28,16 @@ export interface User {
 export interface CustomSkeletonProps {
   type: "home" | "posts" | "comments";
 }
+
+// 댓글 타입
+export interface CommentProps {
+  id: number;
+  userId: string;
+  content: string;
+  writer: string;
+  postId: number;
+  parentId: number;
+  postTitle: string;
+  category1: string;
+  category2: string;
+}

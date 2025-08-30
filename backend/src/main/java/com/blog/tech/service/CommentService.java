@@ -89,13 +89,23 @@ public class CommentService {
     }
 
     /**
-     * 내가 쓴 댓글 불러오기
+     * 마이페이지 - 내가 쓴 댓글 불러오기
      * @param userId
      * @param pageable
      * @return
      */
     public Page<CommentResponseDto> getMyCommentPage(String userId, Pageable pageable) {
         return commentRepository.findCommentsWithChildrenAndPostAndCategoryPage(userId, pageable)
+                .map(CommentResponseDto::fromEntity);
+    }
+
+    /**
+     * 관리자 페이지 - 게시글의 모든 댓글 리스트 불러오기
+     * @param pageable
+     * @return
+     */
+    public Page<CommentResponseDto> getCommentList(Pageable pageable) {
+        return commentRepository.findAllPage(pageable)
                 .map(CommentResponseDto::fromEntity);
     }
 }

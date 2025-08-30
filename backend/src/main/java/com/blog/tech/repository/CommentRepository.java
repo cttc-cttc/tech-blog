@@ -31,7 +31,16 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
         JOIN FETCH c.post p
         JOIN FETCH p.category cat
         WHERE c.userId = :userId AND c.delFlag = false
-        ORDER BY c.id DESC
     """)
     Page<CommentEntity> findCommentsWithChildrenAndPostAndCategoryPage(@Param("userId") String userId, Pageable pageable);
+
+    @Query("""
+            SELECT c
+            FROM CommentEntity c
+            LEFT JOIN FETCH c.children
+            JOIN FETCH c.post p
+            JOIN FETCH p.category cat
+            WHERE c.delFlag = false
+            """)
+    Page<CommentEntity> findAllPage(Pageable pageable);
 }

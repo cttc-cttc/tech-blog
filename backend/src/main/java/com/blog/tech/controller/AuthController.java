@@ -1,10 +1,16 @@
 package com.blog.tech.controller;
 
+import com.blog.tech.dto.CommentResponseDto;
 import com.blog.tech.dto.UserDto;
 import com.blog.tech.entity.UserEntity;
 import com.blog.tech.jwt.JwtTokenProvider;
 import com.blog.tech.repository.UserRepository;
+import com.blog.tech.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +30,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
+    private final CommentService commentService;
 
     @PostMapping("/auth/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody UserDto request) {
@@ -61,4 +68,12 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/auth/commentList")
+    public Page<CommentResponseDto> getCommentList(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        return commentService.getCommentList(pageable);
+    }
 }

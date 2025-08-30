@@ -1,23 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { CustomSkeleton } from "@/pages/components/shadcn-custom/custom-skeleton";
+import type { CommentProps } from "@/pages/components/utils/common-interfaces";
 import { useAuthStore } from "@/pages/components/utils/useAuthStore";
 import PaginationComponent from "@/pages/posting/pagination-component";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-interface CommentProps {
-  id: number;
-  userId: string;
-  content: string;
-  writer: string;
-  postId: number;
-  parentId: number;
-  postTitle: string;
-  category1: string;
-  category2: string;
-}
 
 export default function MyComments() {
   const { userId } = useAuthStore();
