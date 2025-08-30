@@ -65,6 +65,7 @@ export default function PostsList() {
         page={isSearching ? searchPage : page}
         setPage={isSearching ? setSearchPage : setPage}
         totalPages={isSearching ? totalSearchPages : totalPages}
+        pageSize={10}
       />
     </div>
   );

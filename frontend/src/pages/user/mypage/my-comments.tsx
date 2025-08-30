@@ -61,7 +61,7 @@ export default function MyComments() {
       ))}
 
       {/* 페이지네이션 */}
-      <PaginationComponent page={page} setPage={setPage} totalPages={totalPages} />
+      <PaginationComponent page={page} setPage={setPage} totalPages={totalPages} pageSize={10} />
     </div>
   );
 }

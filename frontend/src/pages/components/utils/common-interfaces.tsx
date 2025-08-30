@@ -40,4 +40,5 @@ export interface CommentProps {
   postTitle: string;
   category1: string;
   category2: string;
+  createdAt: Date;
 }

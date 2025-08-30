@@ -8,16 +8,21 @@ import {
 } from "@/components/ui/pagination";
 
 interface PaginationProps {
-  page: number;
+  page: number; // 현재 페이지 번호
   setPage: (value: React.SetStateAction<number>) => void;
-  totalPages: number;
+  totalPages: number; // 전체 페이지 수
+  pageSize: number; // 한 번에 보여줄 페이지 수
 }
 
-export default function PaginationComponent({ page, setPage, totalPages }: PaginationProps) {
-  const maxPageButtons = 10;
-
-  const start = Math.floor(page / maxPageButtons) * maxPageButtons;
-  const end = Math.min(start + maxPageButtons, totalPages);
+export default function PaginationComponent({
+  page,
+  setPage,
+  totalPages,
+  pageSize,
+}: PaginationProps) {
+  const adminMaxPageSize = 3; // 관리자 페이지에서 한 번에 보여줄 최대 페이지 수
+  const start = Math.floor(page / pageSize) * pageSize;
+  const end = Math.min(start + pageSize, totalPages);
 
   const pageNumbers = Array.from({ length: end - start }, (_, i) => start + i);
 
@@ -33,7 +38,10 @@ export default function PaginationComponent({ page, setPage, totalPages }: Pagin
                 e.preventDefault();
                 if (page > 0) {
                   setPage(page - 1);
-                  window.scrollTo({ top: 0, behavior: "smooth" });
+
+                  if (pageSize !== adminMaxPageSize) {
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }
                 }
               }}
             />
@@ -47,7 +55,10 @@ export default function PaginationComponent({ page, setPage, totalPages }: Pagin
             onClick={e => {
               e.preventDefault();
               setPage(0);
-              window.scrollTo({ top: 0, behavior: "smooth" });
+
+              if (pageSize !== adminMaxPageSize) {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
             }}
           >
             {"<<"} {/* 또는 First */}
@@ -63,7 +74,10 @@ export default function PaginationComponent({ page, setPage, totalPages }: Pagin
             onClick={e => {
               e.preventDefault();
               setPage(i);
-              window.scrollTo({ top: 0, behavior: "smooth" });
+
+              if (pageSize !== adminMaxPageSize) {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
             }}
           >
             {i + 1}
@@ -77,7 +91,10 @@ export default function PaginationComponent({ page, setPage, totalPages }: Pagin
             onClick={e => {
               e.preventDefault();
               setPage(totalPages - 1);
-              window.scrollTo({ top: 0, behavior: "smooth" });
+
+              if (pageSize !== adminMaxPageSize) {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
             }}
           >
             {">>"} {/* 또는 Last */}
@@ -93,7 +110,10 @@ export default function PaginationComponent({ page, setPage, totalPages }: Pagin
                 e.preventDefault();
                 if (page < totalPages - 1) {
                   setPage(page + 1);
-                  window.scrollTo({ top: 0, behavior: "smooth" });
+
+                  if (pageSize !== adminMaxPageSize) {
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }
                 }
               }}
             />
