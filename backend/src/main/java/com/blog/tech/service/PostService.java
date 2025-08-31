@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,6 +27,16 @@ public class PostService {
     private final CategoryRepository categoryRepository;
     private final PostRepository postRepository;
     private final ImageUrlRepository imageUrlRepository;
+
+    public List<PostResponseDto> getOneYearPosts() {
+        // 365일 전부터 오늘까지
+        LocalDateTime oneYearAgo = LocalDateTime.now().minusDays(365);
+
+        return postRepository.findOneYearPosts(oneYearAgo)
+                .stream()
+                .map(PostResponseDto::fromEntity)
+                .collect(Collectors.toList());
+    }
 
     /**
      * 전체 글 조회 (페이지 적용)

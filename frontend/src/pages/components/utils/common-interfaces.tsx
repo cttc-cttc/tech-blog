@@ -9,7 +9,7 @@ export interface PostProps {
   createdAt: Date;
   updatedAt: Date;
   categoryId: number;
-  // parentCategoryId: number | null;
+  parentCategoryId: number | null;
   urlNameParent: string | null;
   urlNameChild: string;
   nameParent: string | null;

@@ -7,9 +7,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
+
+    // 최근 1년 간 작성한 게시글 모두 불러오기
+    @Query("""
+            SELECT p FROM PostEntity p
+            WHERE p.delFlag = false
+            AND p.createdAt >= :oneYearAgo
+            """)
+    List<PostEntity> findOneYearPosts(@Param("oneYearAgo") LocalDateTime oneYearAgo);
 
     // 해당 하위 카테고리에서 검색 결과를 반환
     @Query("""

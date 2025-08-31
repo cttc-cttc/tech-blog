@@ -47,7 +47,7 @@ export default function HomeMain() {
             params: { category1: filterType, page, size: 10 },
           });
         }
-
+        // console.log(res.data);
         setPostsList(res.data.content);
         setTotalPages(res.data.totalPages);
       } catch (err) {
