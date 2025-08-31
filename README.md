@@ -34,6 +34,9 @@ npx shadcn@latest init
 
 npm install react-router-dom
 
+npm i dayjs
+npm i date-fns
+
 npm install @toast-ui/react-editor @toast-ui/editor --legacy-peer-deps
 npm install @toast-ui/editor-plugin-color-syntax --legacy-peer-deps
 npm install @toast-ui/editor-plugin-code-syntax-highlight
