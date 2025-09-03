@@ -33,6 +33,7 @@ npm install -D @types/node
 npx shadcn@latest init
 
 npm install react-router-dom
+npm install zustand
 
 npm i dayjs
 npm i date-fns
