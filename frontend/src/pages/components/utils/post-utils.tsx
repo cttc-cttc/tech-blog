@@ -55,7 +55,7 @@ export const pathTextMap: Record<string, string> = {
   jp: "일본어",
   n2tan: "JLPT N2 단어",
   n2gm: "JLPT N2 문법",
-  reshum: "존경어와 겸양어",
+  conv: "일본어 회화",
   n1tan: "JLPT N1 단어",
   n1gm: "JLPT N1 문법",
 };
@@ -75,7 +75,7 @@ export const categoryIdMap: Record<string, number> = {
   jp: 2,
   n2tan: 10,
   n2gm: 11,
-  reshum: 12,
+  conv: 12,
   n1tan: 13,
   n1gm: 14,
 };

@@ -62,7 +62,7 @@ const data = {
       { name: "일본어", page: "/posts/jp" },
       { name: "JLPT N2 단어", page: "/posts/jp/n2tan" },
       { name: "JLPT N2 문법", page: "/posts/jp/n2gm" },
-      { name: "존경어와 겸양어", page: "/posts/jp/reshum" },
+      { name: "일본어 회화", page: "/posts/jp/conv" },
       { name: "JLPT N1 단어", page: "/posts/jp/n1tan" },
       { name: "JLPT N1 문법", page: "/posts/jp/n1gm" },
     ],
