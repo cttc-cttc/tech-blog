@@ -151,3 +151,8 @@ td,
 code {
   font-size: 1rem;
 }
+
+/* 코드블럭 내에서 = 사용시 배경색이 들어가는 것 무시 */
+.token.operator {
+  background: none !important;
+}
